@@ -1558,16 +1558,94 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 #    Classes
 #################################################################
 
+###  http://www.semanticweb.org/AMISecOnto#AccessLog
+amiseconto:AccessLog rdf:type owl:Class ;
+                     rdfs:subClassOf amiseconto:ApplicationLog ;
+                     rdfs:label "Access Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#AccessLogEvent
+amiseconto:AccessLogEvent rdf:type owl:Class ;
+                          rdfs:subClassOf :ApplicationLogEvent ;
+                          rdfs:label "Acess Log Event"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#ApplicationLog
+amiseconto:ApplicationLog rdf:type owl:Class ;
+                          rdfs:subClassOf amiseconto:Log ;
+                          rdfs:label "Application Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#AuditLog
+amiseconto:AuditLog rdf:type owl:Class ;
+                    rdfs:subClassOf amiseconto:SecurityLog ;
+                    rdfs:label "Audit Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#Audit_Log_Event
+amiseconto:Audit_Log_Event rdf:type owl:Class ;
+                           rdfs:subClassOf :SecurityLogEvent ;
+                           rdfs:label "Audit Log Event"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#AuthenticationLog
+amiseconto:AuthenticationLog rdf:type owl:Class ;
+                             rdfs:subClassOf amiseconto:SecurityLog ;
+                             rdfs:label "Authentication Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#AuthenticationLogEvent
+amiseconto:AuthenticationLogEvent rdf:type owl:Class ;
+                                  rdfs:subClassOf :SecurityLogEvent ;
+                                  rdfs:label "Authentication Log Event"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#Class
 amiseconto:Class rdf:type owl:Class ;
                  rdfs:comment "An implementation unit within a package that encapsulates attributes and methods and can generate runtime events."@en ;
                  rdfs:label "Class"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#ContainerLog
+amiseconto:ContainerLog rdf:type owl:Class ;
+                        rdfs:subClassOf amiseconto:ApplicationLog ;
+                        rdfs:label "Container Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#ContainerLogEvent
+amiseconto:ContainerLogEvent rdf:type owl:Class ;
+                             rdfs:subClassOf :ApplicationLogEvent ;
+                             rdfs:label "Container Log Event"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#Environment
 amiseconto:Environment rdf:type owl:Class ;
                        rdfs:comment "Represents the context or setting in which a system, application, or component is deployed and operates, including its underlying infrastructure, software stack, and configuration."@en ;
                        rdfs:label "Environment"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#ErrorLogEvent
+amiseconto:ErrorLogEvent rdf:type owl:Class ;
+                         rdfs:subClassOf :ApplicationLogEvent ;
+                         rdfs:label "Error Log Event"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#Error_Log
+amiseconto:Error_Log rdf:type owl:Class ;
+                     rdfs:subClassOf amiseconto:ApplicationLog ;
+                     rdfs:label "Error Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#FirewallLog
+amiseconto:FirewallLog rdf:type owl:Class ;
+                       rdfs:subClassOf amiseconto:SecurityLog ;
+                       rdfs:label "Firewall Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#Firewall_Log
+amiseconto:Firewall_Log rdf:type owl:Class ;
+                        rdfs:subClassOf :SecurityLogEvent ;
+                        rdfs:label "Firewall Log"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#Log
@@ -1600,6 +1678,18 @@ amiseconto:PackageLibrary rdf:type owl:Class ;
                           rdfs:label "Package Library"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#PackageLogEvent
+amiseconto:PackageLogEvent rdf:type owl:Class ;
+                           rdfs:subClassOf amiseconto:SystemLog ;
+                           rdfs:label "Package Log Event"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#Package_Log_Event
+amiseconto:Package_Log_Event rdf:type owl:Class ;
+                             rdfs:subClassOf :SystemLogEvent ;
+                             rdfs:label "Package log Event"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#Process
 amiseconto:Process rdf:type owl:Class ;
                    rdfs:comment "Represents an executing instance of a program or application within a system, including its runtime state, resources, and behavior."@en ;
@@ -1612,10 +1702,22 @@ amiseconto:Request rdf:type owl:Class ;
                    rdfs:label "Request"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#SecurityLog
+amiseconto:SecurityLog rdf:type owl:Class ;
+                       rdfs:subClassOf amiseconto:Log ;
+                       rdfs:label "Securtiy Log"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#SuspiciousEvent
 amiseconto:SuspiciousEvent rdf:type owl:Class ;
                            rdfs:comment "Represents a Log Event that is considered suspicious due to its association with a known vulnerability, indicator, or anomalous behavior."@en ;
                            rdfs:label "Suspicious Event"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#SystemLog
+amiseconto:SystemLog rdf:type owl:Class ;
+                     rdfs:subClassOf amiseconto:Log ;
+                     rdfs:label "System Log"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#Trasnct
