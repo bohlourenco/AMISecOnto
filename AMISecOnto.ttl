@@ -23,29 +23,7 @@
 
 ###  http://www.semanticweb.org/AMISecOnto#affectsSystem
 amiseconto:affectsSystem rdf:type owl:ObjectProperty ;
-                         rdfs:domain :Vulnerability ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :affectsCPE ;
-                                       owl:someValuesFrom :CPE
-                                     ] ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :hasDescription ;
-                                       owl:someValuesFrom xsd:string
-                                     ] ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :hasPubDate ;
-                                       owl:someValuesFrom xsd:dateTime
-                                     ] ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :hasReferenceURL ;
-                                       owl:someValuesFrom xsd:string
-                                     ] ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :hasCVEId ;
-                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                       owl:onDataRange xsd:string
-                                     ] ;
-                         rdfs:range :SoftwareSystem ;
+                         rdfs:domain :Vulnerability ;
                          rdfs:comment "Relates a Vulnerability to a Software System that it affects, based on vulnerabilities identified in artifacts that represent the system."@en ;
                          rdfs:label "affects system"@en .
 
@@ -75,24 +53,8 @@ amiseconto:containsEvent rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto#correlatedWith
 amiseconto:correlatedWith rdf:type owl:ObjectProperty ;
-                          rdfs:domain :LogEvent ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty :hasNextLogEvent ;
-                                        owl:someValuesFrom :LogEvent
-                                      ] ,
-                                      [ rdf:type owl:Restriction ;
-                                        owl:onProperty :hasPreviousLogEvent ;
-                                        owl:someValuesFrom :LogEvent
-                                      ] ;
-                          rdfs:range :LogEvent ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :hasNextLogEvent ;
-                                       owl:someValuesFrom :LogEvent
-                                     ] ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty :hasPreviousLogEvent ;
-                                       owl:someValuesFrom :LogEvent
-                                     ] ;
+                          rdfs:domain :LogEvent ;
+                          rdfs:range :LogEvent ;
                           rdfs:comment "Relates a Log Event to another Log Event that is contextually, temporally, or causally associated with it."@en ;
                           rdfs:label "correlated with" .
 
@@ -102,7 +64,7 @@ amiseconto:declaresDependency rdf:type owl:ObjectProperty ;
                               rdfs:domain :Application ;
                               rdfs:range :Dependency ;
                               rdfs:comment "Relates an application to a dependency that it explicitly declares as required for its execution, build, or functionality."@en ;
-                              rdfs:label "delcares dependency"@en .
+                              rdfs:label "declares dependency"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#evidenceByLogEvent
@@ -117,31 +79,7 @@ amiseconto:evidenceByLogEvent rdf:type owl:ObjectProperty ;
 amiseconto:executedInEnvironment rdf:type owl:ObjectProperty ;
                                  rdfs:domain :ApplicationLogEvent ;
                                  rdfs:range amiseconto:Environment ;
-                                 rdfs:label "executedInEnvironment"@en .
-
-
-###  http://www.semanticweb.org/AMISecOnto#follows
-amiseconto:follows rdf:type owl:ObjectProperty ;
-                   rdfs:domain :LogEvent ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasNextLogEvent ;
-                                 owl:someValuesFrom :LogEvent
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasPreviousLogEvent ;
-                                 owl:someValuesFrom :LogEvent
-                               ] ;
-                   rdfs:range :LogEvent ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :hasNextLogEvent ;
-                                owl:someValuesFrom :LogEvent
-                              ] ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :hasPreviousLogEvent ;
-                                owl:someValuesFrom :LogEvent
-                              ] ;
-                   rdfs:comment "Relates a Log Event to another Log Event that occurs earlier in time within a temporal sequence."@en ;
-                   rdfs:label "follows"@en .
+                                 rdfs:label "executed in environment"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#generates
@@ -155,14 +93,14 @@ amiseconto:generates rdf:type owl:ObjectProperty ;
 ###  http://www.semanticweb.org/AMISecOnto#hasClass
 amiseconto:hasClass rdf:type owl:ObjectProperty ;
                     rdfs:domain amiseconto:PackageLibrary ;
-                    rdfs:range amiseconto:Class ;
+                    rdfs:range amiseconto:ClassSource ;
                     rdfs:comment "Relates a package or software entity to its classification category within the ontology."@en ;
                     rdfs:label "has class"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#hasLogger
 amiseconto:hasLogger rdf:type owl:ObjectProperty ;
-                     rdfs:domain amiseconto:Class ;
+                     rdfs:domain amiseconto:ClassSource ;
                      rdfs:range amiseconto:Logger ;
                      rdfs:comment "Relates a software/system entity to the logger it uses to generate or manage log records"@en ;
                      rdfs:label "has logger"@en .
@@ -178,12 +116,13 @@ amiseconto:hasOperatingSystem rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto#hasSource
 amiseconto:hasSource rdf:type owl:ObjectProperty ;
-                     rdfs:domain :ApplicationLogEvent ,
-                                 :SecurityLogEvent ,
-                                 :SystemLogEvent ;
-                     rdfs:range amiseconto:Class ,
-                                amiseconto:Process ,
-                                :Dependency ;
+                     rdfs:domain :LogEvent ;
+                     rdfs:range [ rdf:type owl:Class ;
+                                  owl:unionOf ( amiseconto:ClassSource
+                                                amiseconto:Process
+                                                :Dependency
+                                              )
+                                ] ;
                      rdfs:label "has source"@en .
 
 
@@ -200,7 +139,14 @@ amiseconto:mapsTo rdf:type owl:ObjectProperty ;
                   rdfs:domain :Dependency ;
                   rdfs:range :Product ;
                   rdfs:comment "Relates a dependency entity to the product it corresponds to or is resolved as, indicating that the dependency maps to a specific product representation."@en ;
-                  rdfs:label "mapsTo"@en .
+                  rdfs:label "maps to"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#observedIn
+amiseconto:observedIn rdf:type owl:ObjectProperty ;
+                      rdfs:domain :Vulnerability ;
+                      rdfs:range :LogEvent ;
+                      rdfs:label "observed in"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#performedByUSer
@@ -211,68 +157,10 @@ amiseconto:performedByUSer rdf:type owl:ObjectProperty ;
                            rdfs:label "performed by user"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto#precedes
-amiseconto:precedes rdf:type owl:ObjectProperty ;
-                    rdfs:domain :LogEvent ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :hasNextLogEvent ;
-                                  owl:someValuesFrom :LogEvent
-                                ] ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :hasPreviousLogEvent ;
-                                  owl:someValuesFrom :LogEvent
-                                ] ;
-                    rdfs:range :LogEvent ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasNextLogEvent ;
-                                 owl:someValuesFrom :LogEvent
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasPreviousLogEvent ;
-                                 owl:someValuesFrom :LogEvent
-                               ] ;
-                    rdfs:comment "Relates a Log Event to another Log Event that occurs later in time within a temporal sequence."@en ;
-                    rdfs:label "precedes"@en .
-
-
 ###  http://www.semanticweb.org/AMISecOnto#relatedToProduct
 amiseconto:relatedToProduct rdf:type owl:ObjectProperty ;
-                            rdfs:domain :Vulnerability ,
-                                        [ rdf:type owl:Restriction ;
-                                          owl:onProperty :affectsCPE ;
-                                          owl:someValuesFrom :CPE
-                                        ] ,
-                                        [ rdf:type owl:Restriction ;
-                                          owl:onProperty :hasDescription ;
-                                          owl:someValuesFrom xsd:string
-                                        ] ,
-                                        [ rdf:type owl:Restriction ;
-                                          owl:onProperty :hasPubDate ;
-                                          owl:someValuesFrom xsd:dateTime
-                                        ] ,
-                                        [ rdf:type owl:Restriction ;
-                                          owl:onProperty :hasReferenceURL ;
-                                          owl:someValuesFrom xsd:string
-                                        ] ,
-                                        [ rdf:type owl:Restriction ;
-                                          owl:onProperty :hasCVEId ;
-                                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                          owl:onDataRange xsd:string
-                                        ] ;
-                            rdfs:range :Product ,
-                                       [ rdf:type owl:Class ;
-                                         owl:unionOf ( :CPE
-                                                       :Product
-                                                     )
-                                       ] ,
-                                       [ rdf:type owl:Restriction ;
-                                         owl:onProperty :hasVendor ;
-                                         owl:someValuesFrom :Vendor
-                                       ] ,
-                                       [ rdf:type owl:Restriction ;
-                                         owl:onProperty :hasVersion ;
-                                         owl:someValuesFrom :Version
-                                       ] ;
+                            rdfs:domain :Vulnerability ;
+                            rdfs:range :Product ;
                             rdfs:comment "Associates a Vulnerability with a Product that it impacts, derived from CPE information that specifies the affected platforms, software, or configurations."@en ;
                             rdfs:label "related to product"@en .
 
@@ -280,75 +168,15 @@ amiseconto:relatedToProduct rdf:type owl:ObjectProperty ;
 ###  http://www.semanticweb.org/AMISecOnto#relatedToVulnerability
 amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
                                   rdfs:domain owl:Thing ;
-                                  rdfs:range :Vulnerability ,
-                                             [ rdf:type owl:Restriction ;
-                                               owl:onProperty :affectsCPE ;
-                                               owl:someValuesFrom :CPE
-                                             ] ,
-                                             [ rdf:type owl:Restriction ;
-                                               owl:onProperty :hasDescription ;
-                                               owl:someValuesFrom xsd:string
-                                             ] ,
-                                             [ rdf:type owl:Restriction ;
-                                               owl:onProperty :hasPubDate ;
-                                               owl:someValuesFrom xsd:dateTime
-                                             ] ,
-                                             [ rdf:type owl:Restriction ;
-                                               owl:onProperty :hasReferenceURL ;
-                                               owl:someValuesFrom xsd:string
-                                             ] ,
-                                             [ rdf:type owl:Restriction ;
-                                               owl:onProperty :hasCVEId ;
-                                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                               owl:onDataRange xsd:string
-                                             ] ;
+                                  rdfs:range :Vulnerability ;
                                   rdfs:comment "Relates an entity such as a Log Event, Package, Artifact, or Software System to a Vulnerability that it is associated with, affected by, or provides evidence for."@en ;
                                   rdfs:label "related to vulnerability"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/affectsCPE
 :affectsCPE rdf:type owl:ObjectProperty ;
-            rdfs:domain :Vulnerability ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :affectsCPE ;
-                          owl:someValuesFrom :CPE
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasDescription ;
-                          owl:someValuesFrom xsd:string
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasPubDate ;
-                          owl:someValuesFrom xsd:dateTime
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasReferenceURL ;
-                          owl:someValuesFrom xsd:string
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasCVEId ;
-                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                          owl:onDataRange xsd:string
-                        ] ;
-            rdfs:range :CPE ,
-                       [ rdf:type owl:Class ;
-                         owl:unionOf ( :CPE
-                                       :Product
-                                     )
-                       ] ,
-                       [ rdf:type owl:Class ;
-                         owl:unionOf ( :CPE
-                                       :Vendor
-                                     )
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasVendor ;
-                         owl:someValuesFrom :Vendor
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasVersionInterval ;
-                         owl:someValuesFrom :VersionInterval
-                       ] ;
+            rdfs:domain :Vulnerability ;
+            rdfs:range :CPE ;
             rdfs:comment "Links a vulnerability to a Common Platform Enumeration (CPE) entry that identifies an affected platform, including vendor, product, and applicable version scope." ;
             rdfs:label "affects CPE"@en .
 
@@ -356,8 +184,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 ###  http://www.semanticweb.org/AMISecOnto/belongsToPackage
 :belongsToPackage rdf:type owl:ObjectProperty ;
                   rdfs:domain :Artifact ;
-                  rdfs:range :SoftwareComponent ,
-                             :SystemPackage ;
+                  rdfs:range :SystemPackage ;
                   rdfs:comment "Associates an Artifact with a Package that groups or contains it, representing its packaging or distribution context."@en ;
                   rdfs:label "belongs to package"@en .
 
@@ -380,37 +207,30 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/containsPackage
 :containsPackage rdf:type owl:ObjectProperty ;
-                 rdfs:domain amiseconto:Module ,
-                             :SoftwareBillsOfMaterial ;
-                 rdfs:range :SoftwareComponent ,
-                            :SystemPackage ;
+                 rdfs:domain amiseconto:Module ;
+                 rdfs:range amiseconto:PackageLibrary ;
                  rdfs:comment "Relates a Software Bill of Material to a Package that it includes as part of its listed components."@en ;
                  rdfs:label "contains package"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/dependsOn
 :dependsOn rdf:type owl:ObjectProperty ;
-           rdfs:domain :SoftwareComponent ,
-                       :SystemPackage ;
+           rdfs:domain :SoftwareComponent ;
            rdfs:range :SoftwareComponent ;
            rdfs:comment "Associates a Package with a Library on which it relies, representing a dependency relationship necessary for its operation or implementation."@en ;
            rdfs:label "depends on"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto/describesComponent
-:describesComponent rdf:type owl:ObjectProperty ;
-                    rdfs:domain :SoftwareBillsOfMaterial ;
-                    rdfs:range :SoftwareComponent ;
-                    rdfs:comment "Relates a Software Bill of Material (SBOM) to a Software Component that it describes or enumerates as part of its structure."@en ;
-                    rdfs:label "describes compenent"@en .
-
-
-###  http://www.semanticweb.org/AMISecOnto/describesSystem
-:describesSystem rdf:type owl:ObjectProperty ;
-                 rdfs:domain :SoftwareBillsOfMaterial ;
-                 rdfs:range :SoftwareSystem ;
-                 rdfs:comment "Relates a Software Bill of Material to a Software System that it describes by enumerating its constituent software elements."@en ;
-                 rdfs:label "describes system"@en .
+###  http://www.semanticweb.org/AMISecOnto/describes
+:describes rdf:type owl:ObjectProperty ;
+           rdfs:domain :SoftwareBillsOfMaterial ;
+           rdfs:range [ rdf:type owl:Class ;
+                        owl:unionOf ( :Application
+                                      :SoftwareComponent
+                                    )
+                      ] ;
+           rdfs:comment "Relates a Software Bill of Material to a Software System that it describes by enumerating its constituent software elements."@en ;
+           rdfs:label "describes"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/executes
@@ -424,56 +244,14 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 ###  http://www.semanticweb.org/AMISecOnto/exposes
 :exposes rdf:type owl:ObjectProperty ;
          rdfs:domain :SoftwareComponent ;
-         rdfs:range :Vulnerability ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :affectsCPE ;
-                      owl:someValuesFrom :CPE
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasDescription ;
-                      owl:someValuesFrom xsd:string
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasPubDate ;
-                      owl:someValuesFrom xsd:dateTime
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasReferenceURL ;
-                      owl:someValuesFrom xsd:string
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasCVEId ;
-                      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                      owl:onDataRange xsd:string
-                    ] ;
+         rdfs:range :Vulnerability ;
          rdfs:comment "Associates a Software Component with a Vulnerability that is present in, affects, or can be exploited through the component."@en ;
          rdfs:label "exposes"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/hasCVSSMetric
 :hasCVSSMetric rdf:type owl:ObjectProperty ;
-               rdfs:domain :Vulnerability ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :affectsCPE ;
-                             owl:someValuesFrom :CPE
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :hasDescription ;
-                             owl:someValuesFrom xsd:string
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :hasPubDate ;
-                             owl:someValuesFrom xsd:dateTime
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :hasReferenceURL ;
-                             owl:someValuesFrom xsd:string
-                           ] ,
-                           [ rdf:type owl:Restriction ;
-                             owl:onProperty :hasCVEId ;
-                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                             owl:onDataRange xsd:string
-                           ] ;
+               rdfs:domain :Vulnerability ;
                rdfs:range :CVSSMetric ;
                rdfs:comment "Relates a vulnerability instance to its corresponding CVSS metric."@en ;
                rdfs:label "has CVSS metric"@en .
@@ -488,14 +266,6 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
                   rdfs:label "has configuration"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto/hasDependency
-:hasDependency rdf:type owl:ObjectProperty ;
-               rdfs:domain :SoftwareComponent ;
-               rdfs:range :SoftwareComponent ;
-               rdfs:comment "Relates a Software Component to another Software Component that it depends on for its functionality, execution, or operation."@en ;
-               rdfs:label "has dependency"@en .
-
-
 ###  http://www.semanticweb.org/AMISecOnto/hasDirectDependency
 :hasDirectDependency rdf:type owl:ObjectProperty ;
                      rdfs:domain :Artifact ;
@@ -506,15 +276,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasIndicator
 :hasIndicator rdf:type owl:ObjectProperty ;
-              rdfs:domain :LogEvent ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasNextLogEvent ;
-                            owl:someValuesFrom :LogEvent
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasPreviousLogEvent ;
-                            owl:someValuesFrom :LogEvent
-                          ] ;
+              rdfs:domain :LogEvent ;
               rdfs:range :Indicator ;
               rdfs:comment "Associates a Security Log Event with an Indicator, such as a pattern, signature, or observable attribute, that helps identify, describe, or detect the event."@en ;
               rdfs:label "has indicator"@en .
@@ -522,24 +284,8 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasNextLogEvent
 :hasNextLogEvent rdf:type owl:ObjectProperty ;
-                 rdfs:domain :LogEvent ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasNextLogEvent ;
-                               owl:someValuesFrom :LogEvent
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasPreviousLogEvent ;
-                               owl:someValuesFrom :LogEvent
-                             ] ;
-                 rdfs:range :LogEvent ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasNextLogEvent ;
-                              owl:someValuesFrom :LogEvent
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasPreviousLogEvent ;
-                              owl:someValuesFrom :LogEvent
-                            ] ;
+                 rdfs:domain :LogEvent ;
+                 rdfs:range :LogEvent ;
                  rdfs:comment "Relates a Log Event to the Log Event that occurs immediately after it in a sequence."@en ;
                  rdfs:label "has next log event"@en .
 
@@ -547,62 +293,23 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 ###  http://www.semanticweb.org/AMISecOnto/hasPackage
 :hasPackage rdf:type owl:ObjectProperty ;
             rdfs:domain :LogEvent ;
-            rdfs:range amiseconto:PackageLibrary ,
-                       :SystemPackage ;
+            rdfs:range :SoftwareComponent ;
             rdfs:comment "Relates a Security Log Event to a Package that is involved in, referenced by, or affected by the event."@en ;
             rdfs:label "has package"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/hasPreviousLogEvent
 :hasPreviousLogEvent rdf:type owl:ObjectProperty ;
-                     rdfs:domain :LogEvent ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty :hasNextLogEvent ;
-                                   owl:someValuesFrom :LogEvent
-                                 ] ,
-                                 [ rdf:type owl:Restriction ;
-                                   owl:onProperty :hasPreviousLogEvent ;
-                                   owl:someValuesFrom :LogEvent
-                                 ] ;
-                     rdfs:range :LogEvent ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :hasNextLogEvent ;
-                                  owl:someValuesFrom :LogEvent
-                                ] ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :hasPreviousLogEvent ;
-                                  owl:someValuesFrom :LogEvent
-                                ] ;
+                     rdfs:domain :LogEvent ;
+                     rdfs:range :LogEvent ;
                      rdfs:comment "Relates a Log Event to the Log Event that occurred immediately before it in a sequence."@en ;
                      rdfs:label "has previous log event"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/hasProduct
 :hasProduct rdf:type owl:ObjectProperty ;
-            rdfs:domain :Vendor ,
-                        [ rdf:type owl:Class ;
-                          owl:unionOf ( :CPE
-                                        :Vendor
-                                      )
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasProduct ;
-                          owl:someValuesFrom :Product
-                        ] ;
-            rdfs:range :Product ,
-                       [ rdf:type owl:Class ;
-                         owl:unionOf ( :CPE
-                                       :Product
-                                     )
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasVendor ;
-                         owl:someValuesFrom :Vendor
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasVersion ;
-                         owl:someValuesFrom :Version
-                       ] ;
+            rdfs:domain :CPE ;
+            rdfs:range :Product ;
             rdfs:comment "Associates a Vendor with a Product that it creates, maintains, or makes available as part of its offerings."@en ,
                          "Links a CPE entry or affected platform description to the product that is impacted by a vulnerability."@en ;
             rdfs:label "has product"@en .
@@ -610,28 +317,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasReference
 :hasReference rdf:type owl:ObjectProperty ;
-              rdfs:domain :Vulnerability ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :affectsCPE ;
-                            owl:someValuesFrom :CPE
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasDescription ;
-                            owl:someValuesFrom xsd:string
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasPubDate ;
-                            owl:someValuesFrom xsd:dateTime
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasReferenceURL ;
-                            owl:someValuesFrom xsd:string
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasCVEId ;
-                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                            owl:onDataRange xsd:string
-                          ] ;
+              rdfs:domain :Vulnerability ;
               rdfs:range :Reference ;
               rdfs:comment "Relates a Vulnerability to an external Reference that provides additional information, such as advisories, reports, or documentation."@en ;
               rdfs:label "has reference"@en .
@@ -639,15 +325,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasRootArtifact
 :hasRootArtifact rdf:type owl:ObjectProperty ;
-                 rdfs:domain :Application ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :managedBy ;
-                               owl:someValuesFrom :DependencyManagementTool
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :runsOn ;
-                               owl:someValuesFrom :System
-                             ] ;
+                 rdfs:domain :Project ;
                  rdfs:range :Artifact ;
                  rdfs:comment "Relates an Application to its primary Artifact that serves as the main or entry-point component of the application."@en ;
                  rdfs:label "has root artifact"@en .
@@ -663,15 +341,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasUser
 :hasUser rdf:type owl:ObjectProperty ;
-         rdfs:domain :LogEvent ,
-                     [ rdf:type owl:Restriction ;
-                       owl:onProperty :hasNextLogEvent ;
-                       owl:someValuesFrom :LogEvent
-                     ] ,
-                     [ rdf:type owl:Restriction ;
-                       owl:onProperty :hasPreviousLogEvent ;
-                       owl:someValuesFrom :LogEvent
-                     ] ;
+         rdfs:domain :LogEvent ;
          rdfs:range :User ;
          rdfs:comment "Relates a LogEvent to a User associated with or involved in that event."@en ;
          rdfs:label "has user"@en .
@@ -679,156 +349,32 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasVendor
 :hasVendor rdf:type owl:ObjectProperty ;
-           rdfs:domain [ rdf:type owl:Class ;
-                         owl:unionOf ( :CPE
-                                       :Product
-                                     )
-                       ] ;
-           rdfs:range :Vendor ,
-                      [ rdf:type owl:Class ;
-                        owl:unionOf ( :CPE
-                                      :Vendor
-                                    )
-                      ] ,
-                      [ rdf:type owl:Restriction ;
-                        owl:onProperty :hasProduct ;
-                        owl:someValuesFrom :Product
-                      ] ;
+           rdfs:domain :CPE ;
+           rdfs:range :Vendor ;
            rdfs:comment "Links a product or CPE entry to the vendor, organization, or project responsible for developing, maintaining, or distributing it."@en ;
            rdfs:label "has vendor"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto/hasVersion
-:hasVersion rdf:type owl:ObjectProperty ;
-            rdfs:domain :Product ,
-                        [ rdf:type owl:Class ;
-                          owl:unionOf ( :CPE
-                                        :Product
-                                      )
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasVendor ;
-                          owl:someValuesFrom :Vendor
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasVersion ;
-                          owl:someValuesFrom :Version
-                        ] ;
-            rdfs:range :Version ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasVersionName ;
-                         owl:someValuesFrom xsd:string
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasVersionValue ;
-                         owl:someValuesFrom xsd:string
-                       ] ;
-            rdfs:comment "Links a product or affected platform entry to a specific software or hardware version."@en ;
-            rdfs:label "has verison"@en .
-
-
 ###  http://www.semanticweb.org/AMISecOnto/hasVersionInterval
 :hasVersionInterval rdf:type owl:ObjectProperty ;
-                    rdfs:domain :CPE ,
-                                [ rdf:type owl:Class ;
-                                  owl:unionOf ( :CPE
-                                                :Product
-                                              )
-                                ] ,
-                                [ rdf:type owl:Class ;
-                                  owl:unionOf ( :CPE
-                                                :Vendor
-                                              )
-                                ] ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :hasVendor ;
-                                  owl:someValuesFrom :Vendor
-                                ] ,
-                                [ rdf:type owl:Restriction ;
-                                  owl:onProperty :hasVersionInterval ;
-                                  owl:someValuesFrom :VersionInterval
-                                ] ;
-                    rdfs:range :VersionInterval ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasVersionMaxIncluding ;
-                                 owl:someValuesFrom :Version
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasVersionMinIncluding ;
-                                 owl:someValuesFrom :Version
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasIntervalLabel ;
-                                 owl:someValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasTargetHardware ;
-                                 owl:someValuesFrom xsd:string
-                               ] ;
+                    rdfs:domain :CPE ;
+                    rdfs:range :VersionInterval ;
                     rdfs:comment "Links a CPE or affected platform entry to a version interval describing the bounded range of versions affected by a vulnerability."@en ;
                     rdfs:label "has version interval"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/hasVersionMaxIncluding
 :hasVersionMaxIncluding rdf:type owl:ObjectProperty ;
-                        rdfs:domain :VersionInterval ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty :hasVersionMaxIncluding ;
-                                      owl:someValuesFrom :Version
-                                    ] ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty :hasVersionMinIncluding ;
-                                      owl:someValuesFrom :Version
-                                    ] ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty :hasIntervalLabel ;
-                                      owl:someValuesFrom xsd:string
-                                    ] ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty :hasTargetHardware ;
-                                      owl:someValuesFrom xsd:string
-                                    ] ;
-                        rdfs:range :Version ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty :hasVersionName ;
-                                     owl:someValuesFrom xsd:string
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty :hasVersionValue ;
-                                     owl:someValuesFrom xsd:string
-                                   ] ;
+                        rdfs:domain :VersionInterval ;
+                        rdfs:range :Version ;
                         rdfs:comment "Relates a VersionInterval to the Version that represents the upper bound of the interval. The referenced version is included in the affected version range."@en ;
                         rdfs:label "has version max including"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/hasVersionMinIncluding
 :hasVersionMinIncluding rdf:type owl:ObjectProperty ;
-                        rdfs:domain :VersionInterval ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty :hasVersionMaxIncluding ;
-                                      owl:someValuesFrom :Version
-                                    ] ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty :hasVersionMinIncluding ;
-                                      owl:someValuesFrom :Version
-                                    ] ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty :hasIntervalLabel ;
-                                      owl:someValuesFrom xsd:string
-                                    ] ,
-                                    [ rdf:type owl:Restriction ;
-                                      owl:onProperty :hasTargetHardware ;
-                                      owl:someValuesFrom xsd:string
-                                    ] ;
-                        rdfs:range :Version ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty :hasVersionName ;
-                                     owl:someValuesFrom xsd:string
-                                   ] ,
-                                   [ rdf:type owl:Restriction ;
-                                     owl:onProperty :hasVersionValue ;
-                                     owl:someValuesFrom xsd:string
-                                   ] ;
+                        rdfs:domain :VersionInterval ;
+                        rdfs:range :Version ;
                         rdfs:comment "Relates a VersionInterval to the Version that represents the lower bound of the interval. The referenced version is included in the affected version range."@en ;
                         rdfs:label "has version min including"@en .
 
@@ -836,56 +382,14 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 ###  http://www.semanticweb.org/AMISecOnto/hasVulnerability
 :hasVulnerability rdf:type owl:ObjectProperty ;
                   rdfs:domain :Artifact ;
-                  rdfs:range :Vulnerability ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :affectsCPE ;
-                               owl:someValuesFrom :CPE
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasDescription ;
-                               owl:someValuesFrom xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasPubDate ;
-                               owl:someValuesFrom xsd:dateTime
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasReferenceURL ;
-                               owl:someValuesFrom xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasCVEId ;
-                               owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                               owl:onDataRange xsd:string
-                             ] ;
+                  rdfs:range :Vulnerability ;
                   rdfs:comment "Associates an Artifact with a Vulnerability that is identified in or impacts the artifact, representing known security issues affecting it."@en ;
                   rdfs:label "has vulnerability"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/hasWeakness
 :hasWeakness rdf:type owl:ObjectProperty ;
-             rdfs:domain :Vulnerability ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :affectsCPE ;
-                           owl:someValuesFrom :CPE
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasDescription ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasPubDate ;
-                           owl:someValuesFrom xsd:dateTime
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasReferenceURL ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasCVEId ;
-                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                           owl:onDataRange xsd:string
-                         ] ;
+             rdfs:domain :Vulnerability ;
              rdfs:range :Weakness ;
              rdfs:comment "Links a vulnerability to the underlying software or design weakness that caused it, typically represented using a taxonomy such as CWE."@en ;
              rdfs:label "has weakness"@en .
@@ -909,44 +413,15 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/isObservedIn
 :isObservedIn rdf:type owl:ObjectProperty ;
-              rdfs:domain :Vulnerability ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :affectsCPE ;
-                            owl:someValuesFrom :CPE
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasDescription ;
-                            owl:someValuesFrom xsd:string
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasPubDate ;
-                            owl:someValuesFrom xsd:dateTime
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasReferenceURL ;
-                            owl:someValuesFrom xsd:string
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasCVEId ;
-                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                            owl:onDataRange xsd:string
-                          ] ;
-              rdfs:range :LogEvent ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasNextLogEvent ;
-                           owl:someValuesFrom :LogEvent
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasPreviousLogEvent ;
-                           owl:someValuesFrom :LogEvent
-                         ] ;
+              rdfs:domain :Vulnerability ;
+              rdfs:range :LogEvent ;
               rdfs:comment "Associates a Vulnerability with a Log Event that provides evidence of its presence, exploitation, or detection within a system."@en ;
               rdfs:label "is observed in"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/isSpecifiedBy
 :isSpecifiedBy rdf:type owl:ObjectProperty ;
-               rdfs:domain :SoftwareSystem ;
+               rdfs:domain :Application ;
                rdfs:range :Project ;
                rdfs:comment "Relates a Software System with a Project that provides its specification, implementation, or structural definition."@en ;
                rdfs:label "is specified by"@en .
@@ -954,15 +429,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/managedBy
 :managedBy rdf:type owl:ObjectProperty ;
-           rdfs:domain :Application ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :managedBy ;
-                         owl:someValuesFrom :DependencyManagementTool
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :runsOn ;
-                         owl:someValuesFrom :System
-                       ] ;
+           rdfs:domain :Application ;
            rdfs:range :DependencyManagementTool ;
            rdfs:comment "Relates an application or software component to the dependency management tool that controls its dependencies, versions, and build configuration, influencing its exposure to vulnerable libraries."@en ;
            rdfs:label "managed by"@en .
@@ -979,15 +446,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 ###  http://www.semanticweb.org/AMISecOnto/registersLogEvent
 :registersLogEvent rdf:type owl:ObjectProperty ;
                    rdfs:domain :System ;
-                   rdfs:range :LogEvent ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :hasNextLogEvent ;
-                                owl:someValuesFrom :LogEvent
-                              ] ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :hasPreviousLogEvent ;
-                                owl:someValuesFrom :LogEvent
-                              ] ;
+                   rdfs:range :LogEvent ;
                    rdfs:comment "Associates a System with a Log Event that it produces, capturing events recorded during execution, monitoring, or auditing activities."@en ;
                    rdfs:label "registers log event"@en .
 
@@ -995,7 +454,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 ###  http://www.semanticweb.org/AMISecOnto/represents
 :represents rdf:type owl:ObjectProperty ;
             rdfs:domain :Artifact ;
-            rdfs:range :SoftwareSystem ;
+            rdfs:range :Application ;
             rdfs:comment "Relates an Artifact to a Software System that it represents as a concrete implementation or instance."@en ,
                          "Relates an artifact to the software system it implements, packages, or delivers. For example, a generated JAR artifact may represent a module or the whole software system."@en ;
             rdfs:label "represents"@en .
@@ -1003,15 +462,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/runsOn
 :runsOn rdf:type owl:ObjectProperty ;
-        rdfs:domain :Application ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :managedBy ;
-                      owl:someValuesFrom :DependencyManagementTool
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :runsOn ;
-                      owl:someValuesFrom :System
-                    ] ;
+        rdfs:domain :Application ;
         rdfs:range :System ;
         rdfs:comment "Relates an application to the system on which it runs."@en ;
         rdfs:label "runs on"@en .
@@ -1037,46 +488,225 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 #    Data properties
 #################################################################
 
+###  http://www.semanticweb.org/AMISecOnto#hasCategory
+amiseconto:hasCategory rdf:type owl:DatatypeProperty ;
+                       rdfs:domain :LogEvent ;
+                       rdfs:range xsd:string ;
+                       rdfs:label "has category"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasExceptionMessage
+amiseconto:hasExceptionMessage rdf:type owl:DatatypeProperty ;
+                               rdfs:domain amiseconto:ContainerLogEvent ;
+                               rdfs:range xsd:string ;
+                               rdfs:label "has exception message"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasExceptionType
+amiseconto:hasExceptionType rdf:type owl:DatatypeProperty ;
+                            rdfs:domain amiseconto:ContainerLogEvent ;
+                            rdfs:range xsd:string ;
+                            rdfs:label "has exception type"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasHttpSatusCode
+amiseconto:hasHttpSatusCode rdf:type owl:DatatypeProperty ;
+                            rdfs:domain amiseconto:AccessLogEvent ;
+                            rdfs:range xsd:integer ;
+                            rdfs:label "has http status code"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasHttpVersion
+amiseconto:hasHttpVersion rdf:type owl:DatatypeProperty ;
+                          rdfs:domain amiseconto:AccessLogEvent ;
+                          rdfs:range xsd:string ;
+                          rdfs:label "has http version"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasLogFileName
+amiseconto:hasLogFileName rdf:type owl:DatatypeProperty ;
+                          rdfs:domain amiseconto:ContainerLogEvent ;
+                          rdfs:range xsd:string ;
+                          rdfs:label "has OS log file name"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasLogFilePath
+amiseconto:hasLogFilePath rdf:type owl:DatatypeProperty ;
+                          rdfs:domain amiseconto:ContainerLogEvent ;
+                          rdfs:range xsd:string ;
+                          rdfs:label "has log file path"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasLoggerName
+amiseconto:hasLoggerName rdf:type owl:DatatypeProperty ;
+                         rdfs:domain amiseconto:ContainerLogEvent ;
+                         rdfs:range xsd:string ;
+                         rdfs:label "has logger name"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasMemberIP
+amiseconto:hasMemberIP rdf:type owl:DatatypeProperty ;
+                       rdfs:domain amiseconto:ContainerLogEvent ;
+                       rdfs:range xsd:string ;
+                       rdfs:label "has member IP"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasMemberId
+amiseconto:hasMemberId rdf:type owl:DatatypeProperty ;
+                       rdfs:domain amiseconto:ContainerLogEvent ;
+                       rdfs:range xsd:integer ;
+                       rdfs:label "has member ID"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasMemberPort
+amiseconto:hasMemberPort rdf:type owl:DatatypeProperty ;
+                         rdfs:domain :LogEvent ;
+                         rdfs:range xsd:integer ;
+                         rdfs:label "has member port"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasMembershipAction
+amiseconto:hasMembershipAction rdf:type owl:DatatypeProperty ;
+                               rdfs:domain amiseconto:ContainerLogEvent ;
+                               rdfs:range xsd:string ;
+                               rdfs:label "has menbership action"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasOSLogType
+amiseconto:hasOSLogType rdf:type owl:DatatypeProperty ;
+                        rdfs:domain amiseconto:ContainerLogEvent ;
+                        rdfs:range xsd:string ;
+                        rdfs:label "has OS log type"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasOriginClass
+amiseconto:hasOriginClass rdf:type owl:DatatypeProperty ;
+                          rdfs:domain amiseconto:ContainerLogEvent ;
+                          rdfs:range xsd:string ;
+                          rdfs:label "has origin class"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasOriginFile
+amiseconto:hasOriginFile rdf:type owl:DatatypeProperty ;
+                         rdfs:domain amiseconto:ContainerLogEvent ;
+                         rdfs:range xsd:string ;
+                         rdfs:label "has origin file"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasOriginLineNumber
+amiseconto:hasOriginLineNumber rdf:type owl:DatatypeProperty ;
+                               rdfs:domain amiseconto:ContainerLogEvent ;
+                               rdfs:range xsd:string ;
+                               rdfs:label "has origin line number"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasOriginMethod
+amiseconto:hasOriginMethod rdf:type owl:DatatypeProperty ;
+                           rdfs:domain amiseconto:ContainerLogEvent ;
+                           rdfs:range xsd:string ;
+                           rdfs:label "has origin method"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasRequestURI
+amiseconto:hasRequestURI rdf:type owl:DatatypeProperty ;
+                         rdfs:label "has request URI"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasResponseSizeBytes
+amiseconto:hasResponseSizeBytes rdf:type owl:DatatypeProperty ;
+                                rdfs:domain amiseconto:AccessLogEvent ;
+                                rdfs:range xsd:integer ;
+                                rdfs:label "has response size bytes"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasSecurePort
+amiseconto:hasSecurePort rdf:type owl:DatatypeProperty ;
+                         rdfs:domain amiseconto:ContainerLogEvent ;
+                         rdfs:range xsd:integer ;
+                         rdfs:label "has secure port"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasServlet
+amiseconto:hasServlet rdf:type owl:DatatypeProperty ;
+                      rdfs:domain amiseconto:ContainerLogEvent ;
+                      rdfs:range xsd:string ;
+                      rdfs:label "has servelet name"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasSeverityCode
+amiseconto:hasSeverityCode rdf:type owl:DatatypeProperty ;
+                           rdfs:domain amiseconto:ContainerLogEvent ;
+                           rdfs:range xsd:string ;
+                           rdfs:label "has severity code"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasStackTrace
+amiseconto:hasStackTrace rdf:type owl:DatatypeProperty ;
+                         rdfs:domain amiseconto:ContainerLogEvent ;
+                         rdfs:range xsd:string ;
+                         rdfs:label "has stack trace"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasTextMessage
+amiseconto:hasTextMessage rdf:type owl:DatatypeProperty ;
+                          rdfs:domain :LogEvent ;
+                          rdfs:range xsd:string ;
+                          rdfs:label "has text message"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasThreatName
+amiseconto:hasThreatName rdf:type owl:DatatypeProperty ;
+                         rdfs:domain :LogEvent ;
+                         rdfs:range xsd:string ;
+                         rdfs:label "has threat name"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasUdpPort
+amiseconto:hasUdpPort rdf:type owl:DatatypeProperty ;
+                      rdfs:domain amiseconto:ContainerLogEvent ;
+                      rdfs:range xsd:integer ;
+                      rdfs:label "has udp port"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasVerificationStatus
+amiseconto:hasVerificationStatus rdf:type owl:DatatypeProperty ;
+                                 rdfs:domain amiseconto:ContainerLogEvent ;
+                                 rdfs:range xsd:string ;
+                                 rdfs:label "has verification status"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#has_http_method
+amiseconto:has_http_method rdf:type owl:DatatypeProperty ;
+                           rdfs:domain amiseconto:AccessLogEvent ;
+                           rdfs:range xsd:string ;
+                           rdfs:label "has http method"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#has_http_status_code
+amiseconto:has_http_status_code rdf:type owl:DatatypeProperty ;
+                                rdfs:domain amiseconto:AccessLogEvent ;
+                                rdfs:range xsd:integer ;
+                                rdfs:label "has https status code"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#has_raw_entry
+amiseconto:has_raw_entry rdf:type owl:DatatypeProperty ;
+                         rdfs:label "has raw entry"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#has_referer
+amiseconto:has_referer rdf:type owl:DatatypeProperty ;
+                       rdfs:label "has referer"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#has_user_agent
+amiseconto:has_user_agent rdf:type owl:DatatypeProperty ;
+                          rdfs:label "has user agent"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto/hasAuthenticatedUser
 :hasAuthenticatedUser rdf:type owl:DatatypeProperty ;
-                      rdfs:domain :ApplicationLogEvent ,
-                                  :LogEvent ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :hasNextLogEvent ;
-                                    owl:someValuesFrom :LogEvent
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :hasPreviousLogEvent ;
-                                    owl:someValuesFrom :LogEvent
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :hasAuthenticatedUser ;
-                                    owl:someValuesFrom xsd:string
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :hasClientIp ;
-                                    owl:someValuesFrom xsd:string
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :hasEventTimestamp ;
-                                    owl:someValuesFrom xsd:string
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :hasIdentity ;
-                                    owl:someValuesFrom xsd:string
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :hasRequestLine ;
-                                    owl:someValuesFrom xsd:string
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :hasResponseSize ;
-                                    owl:someValuesFrom xsd:string
-                                  ] ,
-                                  [ rdf:type owl:Restriction ;
-                                    owl:onProperty :hasStatusCode ;
-                                    owl:someValuesFrom xsd:string
-                                  ] ;
+                      rdfs:domain :ApplicationLogEvent ;
                       rdfs:range xsd:string ;
                       rdfs:comment "Links a request or session to the identity of an authenticated user, if authentication has occurred."@en ;
                       rdfs:label "has authenticated user"@en .
@@ -1084,15 +714,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasBaseScore
 :hasBaseScore rdf:type owl:DatatypeProperty ;
-              rdfs:domain :Severity ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasBaseScore ;
-                            owl:someValuesFrom xsd:string
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasBaseSeverity ;
-                            owl:someValuesFrom xsd:string
-                          ] ;
+              rdfs:domain :Severity ;
               rdfs:range xsd:string ;
               rdfs:comment "Represents the numerical CVSS base score indicating the intrinsic severity of a vulnerability, typically ranging from 0.0 to 10.0."@en ;
               rdfs:label "has base score"@en .
@@ -1100,15 +722,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasBaseSeverity
 :hasBaseSeverity rdf:type owl:DatatypeProperty ;
-                 rdfs:domain :Severity ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasBaseScore ;
-                               owl:someValuesFrom xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasBaseSeverity ;
-                               owl:someValuesFrom xsd:string
-                             ] ;
+                 rdfs:domain :Severity ;
                  rdfs:range xsd:string ;
                  rdfs:comment "Indicates the qualitative severity level of a vulnerability derived from its CVSS Base Score. Typical values include None, Low, Medium, High, and Critical, representing the intrinsic impact of the vulnerability under standard conditions."@en ;
                  rdfs:label "has base severity"@en .
@@ -1116,28 +730,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasCVEId
 :hasCVEId rdf:type owl:DatatypeProperty ;
-          rdfs:domain :Vulnerability ,
-                      [ rdf:type owl:Restriction ;
-                        owl:onProperty :affectsCPE ;
-                        owl:someValuesFrom :CPE
-                      ] ,
-                      [ rdf:type owl:Restriction ;
-                        owl:onProperty :hasDescription ;
-                        owl:someValuesFrom xsd:string
-                      ] ,
-                      [ rdf:type owl:Restriction ;
-                        owl:onProperty :hasPubDate ;
-                        owl:someValuesFrom xsd:dateTime
-                      ] ,
-                      [ rdf:type owl:Restriction ;
-                        owl:onProperty :hasReferenceURL ;
-                        owl:someValuesFrom xsd:string
-                      ] ,
-                      [ rdf:type owl:Restriction ;
-                        owl:onProperty :hasCVEId ;
-                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                        owl:onDataRange xsd:string
-                      ] ;
+          rdfs:domain :Vulnerability ;
           rdfs:range xsd:string ;
           rdfs:comment "Identifies the unique Common Vulnerabilities and Exposures (CVE) identifier assigned to a vulnerability record. The identifier follows the standard CVE naming format (e.g., CVE-2025-12345) and is used to uniquely reference a vulnerability in public vulnerability databases."@en ;
           rdfs:label "has CVE identifier"@en .
@@ -1145,28 +738,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasCVSSVersion
 :hasCVSSVersion rdf:type owl:DatatypeProperty ;
-                rdfs:domain :Vulnerability ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :affectsCPE ;
-                              owl:someValuesFrom :CPE
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasDescription ;
-                              owl:someValuesFrom xsd:string
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasPubDate ;
-                              owl:someValuesFrom xsd:dateTime
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasReferenceURL ;
-                              owl:someValuesFrom xsd:string
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasCVEId ;
-                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                              owl:onDataRange xsd:string
-                            ] ;
+                rdfs:domain :Vulnerability ;
                 rdfs:range xsd:string ;
                 rdfs:comment "Specifies the version of the Common Vulnerability Scoring System (CVSS) used to calculate the vulnerability score (e.g., 2.0, 3.0, 3.1, 4.0)."@en ;
                 rdfs:label "has CVSS version"@en .
@@ -1174,51 +746,15 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasCVSScode
 :hasCVSScode rdf:type owl:DatatypeProperty ;
-             rdfs:subPropertyOf owl:topDataProperty ;
+             rdfs:domain :Vulnerability ;
+             rdfs:range xsd:string ;
              rdfs:comment "Stores the CVSS vector string representing the detailed metrics used to calculate the vulnerability score."@en ;
              rdfs:label "has CVSS code"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/hasClientIp
 :hasClientIp rdf:type owl:DatatypeProperty ;
-             rdfs:domain :ApplicationLogEvent ,
-                         :LogEvent ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasNextLogEvent ;
-                           owl:someValuesFrom :LogEvent
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasPreviousLogEvent ;
-                           owl:someValuesFrom :LogEvent
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasAuthenticatedUser ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasClientIp ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasEventTimestamp ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasIdentity ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasRequestLine ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasResponseSize ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasStatusCode ;
-                           owl:someValuesFrom xsd:string
-                         ] ;
+             rdfs:domain amiseconto:AccessLogEvent ;
              rdfs:range xsd:string ;
              rdfs:comment "Captures the source IP address from which the request originated, useful for tracking, auditing, and intrusion detection."@en ;
              rdfs:label "has client ip"@en .
@@ -1226,28 +762,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasDescription
 :hasDescription rdf:type owl:DatatypeProperty ;
-                rdfs:domain :Vulnerability ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :affectsCPE ;
-                              owl:someValuesFrom :CPE
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasDescription ;
-                              owl:someValuesFrom xsd:string
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasPubDate ;
-                              owl:someValuesFrom xsd:dateTime
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasReferenceURL ;
-                              owl:someValuesFrom xsd:string
-                            ] ,
-                            [ rdf:type owl:Restriction ;
-                              owl:onProperty :hasCVEId ;
-                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                              owl:onDataRange xsd:string
-                            ] ;
+                rdfs:domain :Vulnerability ;
                 rdfs:range xsd:string ;
                 rdfs:comment "Provides a textual description of the vulnerability, explaining the nature of the security issue, the affected components, and potential impacts such as unauthorized access, denial of service, or privilege escalation."@en ;
                 rdfs:label "has description"@en .
@@ -1255,44 +770,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasEventTimestamp
 :hasEventTimestamp rdf:type owl:DatatypeProperty ;
-                   rdfs:domain :ApplicationLogEvent ,
-                               :LogEvent ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasNextLogEvent ;
-                                 owl:someValuesFrom :LogEvent
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasPreviousLogEvent ;
-                                 owl:someValuesFrom :LogEvent
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasAuthenticatedUser ;
-                                 owl:someValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasClientIp ;
-                                 owl:someValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasEventTimestamp ;
-                                 owl:someValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasIdentity ;
-                                 owl:someValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasRequestLine ;
-                                 owl:someValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasResponseSize ;
-                                 owl:someValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasStatusCode ;
-                                 owl:someValuesFrom xsd:string
-                               ] ;
+                   rdfs:domain :LogEvent ;
                    rdfs:range xsd:string ;
                    rdfs:comment "Records the timestamp of the event, enabling temporal analysis, ordering of events, and correlation across logs."@en ;
                    rdfs:label "has event timestamp"@en .
@@ -1300,44 +778,6 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasIdentity
 :hasIdentity rdf:type owl:DatatypeProperty ;
-             rdfs:domain :ApplicationLogEvent ,
-                         :LogEvent ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasNextLogEvent ;
-                           owl:someValuesFrom :LogEvent
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasPreviousLogEvent ;
-                           owl:someValuesFrom :LogEvent
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasAuthenticatedUser ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasClientIp ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasEventTimestamp ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasIdentity ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasRequestLine ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasResponseSize ;
-                           owl:someValuesFrom xsd:string
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasStatusCode ;
-                           owl:someValuesFrom xsd:string
-                         ] ;
              rdfs:range xsd:string ;
              rdfs:comment "Associates the event with a specific identity, which may be authenticated or unauthenticated, depending on context."@en ;
              rdfs:label "has identity"@en .
@@ -1345,23 +785,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasIntervalLabel
 :hasIntervalLabel rdf:type owl:DatatypeProperty ;
-                  rdfs:domain :VersionInterval ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :hasVersionMaxIncluding ;
-                                owl:someValuesFrom :Version
-                              ] ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :hasVersionMinIncluding ;
-                                owl:someValuesFrom :Version
-                              ] ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :hasIntervalLabel ;
-                                owl:someValuesFrom xsd:string
-                              ] ,
-                              [ rdf:type owl:Restriction ;
-                                owl:onProperty :hasTargetHardware ;
-                                owl:someValuesFrom xsd:string
-                              ] ;
+                  rdfs:domain :VersionInterval ;
                   rdfs:range xsd:string ;
                   rdfs:comment "Indicates the qualitative severity category derived from the CVSS base score (e.g., Low, Medium, High, Critical)."@en ;
                   rdfs:label "has interval label"@en .
@@ -1369,28 +793,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasPubDate
 :hasPubDate rdf:type owl:DatatypeProperty ;
-            rdfs:domain :Vulnerability ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :affectsCPE ;
-                          owl:someValuesFrom :CPE
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasDescription ;
-                          owl:someValuesFrom xsd:string
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasPubDate ;
-                          owl:someValuesFrom xsd:dateTime
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasReferenceURL ;
-                          owl:someValuesFrom xsd:string
-                        ] ,
-                        [ rdf:type owl:Restriction ;
-                          owl:onProperty :hasCVEId ;
-                          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                          owl:onDataRange xsd:string
-                        ] ;
+            rdfs:domain :Vulnerability ;
             rdfs:range xsd:dateTime ;
             rdfs:comment "Specifies the date on which the vulnerability entry was officially published in a vulnerability database such as the National Vulnerability Database (NVD)."@en ;
             rdfs:label "has publication date"@en .
@@ -1411,44 +814,6 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasResponseSize
 :hasResponseSize rdf:type owl:DatatypeProperty ;
-                 rdfs:domain :ApplicationLogEvent ,
-                             :LogEvent ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasNextLogEvent ;
-                               owl:someValuesFrom :LogEvent
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasPreviousLogEvent ;
-                               owl:someValuesFrom :LogEvent
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasAuthenticatedUser ;
-                               owl:someValuesFrom xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasClientIp ;
-                               owl:someValuesFrom xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasEventTimestamp ;
-                               owl:someValuesFrom xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasIdentity ;
-                               owl:someValuesFrom xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasRequestLine ;
-                               owl:someValuesFrom xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasResponseSize ;
-                               owl:someValuesFrom xsd:string
-                             ] ,
-                             [ rdf:type owl:Restriction ;
-                               owl:onProperty :hasStatusCode ;
-                               owl:someValuesFrom xsd:string
-                             ] ;
                  rdfs:range xsd:string ;
                  rdfs:comment "Specifies the payload size of the server response, useful for performance monitoring and anomaly detection."@en ;
                  rdfs:label "has response size"@en .
@@ -1456,28 +821,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasSource
 :hasSource rdf:type owl:DatatypeProperty ;
-           rdfs:domain :Vulnerability ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :affectsCPE ;
-                         owl:someValuesFrom :CPE
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasDescription ;
-                         owl:someValuesFrom xsd:string
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasPubDate ;
-                         owl:someValuesFrom xsd:dateTime
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasReferenceURL ;
-                         owl:someValuesFrom xsd:string
-                       ] ,
-                       [ rdf:type owl:Restriction ;
-                         owl:onProperty :hasCVEId ;
-                         owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                         owl:onDataRange xsd:string
-                       ] ;
+           rdfs:domain :Vulnerability ;
            rdfs:range xsd:string ;
            rdfs:comment "Identifies the organization or entity that reported, published, or maintains the vulnerability information, such as NVD, MITRE, or a specific vendor."@en ;
            rdfs:label "has source"@en .
@@ -1491,28 +835,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasTag
 :hasTag rdf:type owl:DatatypeProperty ;
-        rdfs:domain :Vulnerability ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :affectsCPE ;
-                      owl:someValuesFrom :CPE
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasDescription ;
-                      owl:someValuesFrom xsd:string
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasPubDate ;
-                      owl:someValuesFrom xsd:dateTime
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasReferenceURL ;
-                      owl:someValuesFrom xsd:string
-                    ] ,
-                    [ rdf:type owl:Restriction ;
-                      owl:onProperty :hasCVEId ;
-                      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                      owl:onDataRange xsd:string
-                    ] ;
+        rdfs:domain :Vulnerability ;
         rdfs:range xsd:string ;
         rdfs:comment "Associates descriptive tags or keywords with the vulnerability to facilitate categorization, filtering, and analysis.  It serves as a shorthand method to provide contextual data regarding the CVE Record."@en ;
         rdfs:label "has tag"@en .
@@ -1520,23 +843,7 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasTargetHardware
 :hasTargetHardware rdf:type owl:DatatypeProperty ;
-                   rdfs:domain :VersionInterval ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasVersionMaxIncluding ;
-                                 owl:someValuesFrom :Version
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasVersionMinIncluding ;
-                                 owl:someValuesFrom :Version
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasIntervalLabel ;
-                                 owl:someValuesFrom xsd:string
-                               ] ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty :hasTargetHardware ;
-                                 owl:someValuesFrom xsd:string
-                               ] ;
+                   rdfs:domain :VersionInterval ;
                    rdfs:range xsd:string ;
                    rdfs:comment "Specifies the hardware platform, device type, or architecture affected by the vulnerability."@en ;
                    rdfs:label "has target hardware"@en .
@@ -1566,7 +873,47 @@ amiseconto:AccessLog rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto#AccessLogEvent
 amiseconto:AccessLogEvent rdf:type owl:Class ;
-                          rdfs:subClassOf :ApplicationLogEvent ;
+                          rdfs:subClassOf :ApplicationLogEvent ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:hasHttpSatusCode ;
+                                            owl:someValuesFrom xsd:integer
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:hasHttpVersion ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:hasRequestURI ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:hasResponseSizeBytes ;
+                                            owl:someValuesFrom xsd:integer
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:has_http_method ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:has_raw_entry ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:has_referer ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:has_user_agent ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty :hasClientIp ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty :hasRequestLine ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ;
                           rdfs:label "Acess Log Event"@en .
 
 
@@ -1600,10 +947,14 @@ amiseconto:AuthenticationLogEvent rdf:type owl:Class ;
                                   rdfs:label "Authentication Log Event"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto#Class
-amiseconto:Class rdf:type owl:Class ;
-                 rdfs:comment "An implementation unit within a package that encapsulates attributes and methods and can generate runtime events."@en ;
-                 rdfs:label "Class"@en .
+###  http://www.semanticweb.org/AMISecOnto#ClassSource
+amiseconto:ClassSource rdf:type owl:Class ;
+                       rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                         owl:onProperty amiseconto:hasLogger ;
+                                         owl:someValuesFrom amiseconto:Logger
+                                       ] ;
+                       rdfs:comment "An implementation unit within a package that encapsulates attributes and methods and can generate runtime events."@en ;
+                       rdfs:label "Class Source"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#ContainerLog
@@ -1614,7 +965,87 @@ amiseconto:ContainerLog rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto#ContainerLogEvent
 amiseconto:ContainerLogEvent rdf:type owl:Class ;
-                             rdfs:subClassOf :ApplicationLogEvent ;
+                             rdfs:subClassOf :ApplicationLogEvent ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasExceptionMessage ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasExceptionType ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasLogFileName ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasLogFilePath ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasLoggerName ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasMemberIP ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasMemberId ;
+                                               owl:someValuesFrom xsd:integer
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasMembershipAction ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasOSLogType ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasOriginClass ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasOriginFile ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasOriginLineNumber ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasOriginMethod ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasSecurePort ;
+                                               owl:someValuesFrom xsd:integer
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasServlet ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasSeverityCode ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasUdpPort ;
+                                               owl:someValuesFrom xsd:integer
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasVerificationStatus ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:has_raw_entry ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty :hasEventTimestamp ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ;
                              rdfs:label "Container Log Event"@en .
 
 
@@ -1656,12 +1087,20 @@ amiseconto:Log rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto#Logger
 amiseconto:Logger rdf:type owl:Class ;
+                  rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                    owl:onProperty amiseconto:generates ;
+                                    owl:someValuesFrom :LogEvent
+                                  ] ;
                   rdfs:comment "Represents a logging component responsible for recording events generated by classes during system execution."@en ;
                   rdfs:label "Logger"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#Module
 amiseconto:Module rdf:type owl:Class ;
+                  rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                    owl:onProperty :containsPackage ;
+                                    owl:someValuesFrom amiseconto:PackageLibrary
+                                  ] ;
                   rdfs:comment "An abstraction that organizes a collection of packages corresponding to a specific academic domain or functionality."@en ;
                   rdfs:label "Module"@en .
 
@@ -1698,6 +1137,10 @@ amiseconto:Process rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto#Request
 amiseconto:Request rdf:type owl:Class ;
+                   rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                     owl:onProperty amiseconto:performedByUSer ;
+                                     owl:someValuesFrom :User
+                                   ] ;
                    rdfs:comment "Describes a request issued by a user, application, or process to access or invoke a resource or service, capturing interactions that are relevant for monitoring, logging, and security analysis."@en ;
                    rdfs:label "Request"@en .
 
@@ -1728,6 +1171,18 @@ amiseconto:Trasnct rdf:type owl:Class ;
 ###  http://www.semanticweb.org/AMISecOnto/Application
 :Application rdf:type owl:Class ;
              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                               owl:onProperty amiseconto:declaresDependency ;
+                               owl:someValuesFrom :Dependency
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty :isObservedIn ;
+                               owl:someValuesFrom :Project
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty :isSpecifiedBy ;
+                               owl:someValuesFrom :Project
+                             ] ,
+                             [ rdf:type owl:Restriction ;
                                owl:onProperty :managedBy ;
                                owl:someValuesFrom :DependencyManagementTool
                              ] ,
@@ -1743,6 +1198,10 @@ amiseconto:Trasnct rdf:type owl:Class ;
 :ApplicationLogEvent rdf:type owl:Class ;
                      rdfs:subClassOf :LogEvent ,
                                      [ rdf:type owl:Restriction ;
+                                       owl:onProperty amiseconto:executedInEnvironment ;
+                                       owl:someValuesFrom amiseconto:Environment
+                                     ] ,
+                                     [ rdf:type owl:Restriction ;
                                        owl:onProperty :hasNextLogEvent ;
                                        owl:someValuesFrom :LogEvent
                                      ] ,
@@ -1756,6 +1215,30 @@ amiseconto:Trasnct rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto/Artifact
 :Artifact rdf:type owl:Class ;
+          rdfs:subClassOf [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasDirectDependency ;
+                            owl:someValuesFrom :Artifact
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasTransitiveDependency ;
+                            owl:someValuesFrom :Artifact
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasVersionMinIncluding ;
+                            owl:someValuesFrom :Vulnerability
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasVulnerability ;
+                            owl:someValuesFrom :Vulnerability
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :isGeneratedFrom ;
+                            owl:someValuesFrom :BuildProcess
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :represents ;
+                            owl:someValuesFrom :Application
+                          ] ;
           rdfs:comment "A generated or consumed build output identified by coordinates or file form, such as a JAR, WAR, POM, or source package. In Maven, artifacts may represent deployable software units or reusable dependency libraries."@en ;
           rdfs:label "Artifact"@en .
 
@@ -1768,27 +1251,33 @@ amiseconto:Trasnct rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto/BuildProcess
 :BuildProcess rdf:type owl:Class ;
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty :produces ;
+                                owl:someValuesFrom :Artifact
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :usesConfiguration ;
+                                owl:someValuesFrom :BuildConfiguration
+                              ] ;
               rdfs:comment "An execution instance of a build tool over a project and its configuration. It includes the sequence of phases and actions such as dependency resolution, compilation, testing, packaging, and installation."@en ;
               rdfs:label "Build Process"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/BuildStep
 :BuildStep rdf:type owl:Class ;
+           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                             owl:onProperty :uses ;
+                             owl:someValuesFrom :Dependency
+                           ] ;
            rdfs:comment "A distinct phase, goal, or action within a build process. In Maven, examples include validate, compile, test, package, install, deploy, and plugin goal executions."@en ;
            rdfs:label "Build Step"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/CPE
 :CPE rdf:type owl:Class ;
-     rdfs:subClassOf [ rdf:type owl:Class ;
-                       owl:unionOf ( :CPE
-                                     :Product
-                                   )
-                     ] ,
-                     [ rdf:type owl:Class ;
-                       owl:unionOf ( :CPE
-                                     :Vendor
-                                   )
+     rdfs:subClassOf [ rdf:type owl:Restriction ;
+                       owl:onProperty :hasProduct ;
+                       owl:someValuesFrom :Product
                      ] ,
                      [ rdf:type owl:Restriction ;
                        owl:onProperty :hasVendor ;
@@ -1810,19 +1299,20 @@ amiseconto:Trasnct rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto/Dependency
 :Dependency rdf:type owl:Class ;
+            rdfs:subClassOf [ rdf:type owl:Restriction ;
+                              owl:onProperty amiseconto:mapsTo ;
+                              owl:someValuesFrom :Product
+                            ] ;
             rdfs:comment "Represents an external or internal software component, library, or resource upon which another component, artifact, or build step relies to function, build, or execute correctly."@en ;
             rdfs:label "Dependency"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto/DependencyLibrary
-:DependencyLibrary rdf:type owl:Class ;
-                   rdfs:subClassOf :SoftwareComponent ;
-                   rdfs:comment "An external or internal reusable software library declared as a dependency in a Maven project and resolved during the build process."@en ;
-                   rdfs:label "Dependency Library"@en .
-
-
 ###  http://www.semanticweb.org/AMISecOnto/DependencyManagementTool
 :DependencyManagementTool rdf:type owl:Class ;
+                          rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                            owl:onProperty :executes ;
+                                            owl:someValuesFrom :BuildProcess
+                                          ] ;
                           rdfs:comment "A software tool that manages dependencies, versions, and build configurations for applications, ensuring correct integration of libraries."@en ;
                           rdfs:label "Dependency Management Tool"@en .
 
@@ -1836,12 +1326,41 @@ amiseconto:Trasnct rdf:type owl:Class ;
 ###  http://www.semanticweb.org/AMISecOnto/LogEvent
 :LogEvent rdf:type owl:Class ;
           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                            owl:onProperty amiseconto:correlatedWith ;
+                            owl:someValuesFrom :LogEvent
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty amiseconto:evidenceByLogEvent ;
+                            owl:someValuesFrom :Vulnerability
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty amiseconto:hasSource ;
+                            owl:someValuesFrom [ rdf:type owl:Class ;
+                                                 owl:unionOf ( amiseconto:ClassSource
+                                                               amiseconto:Process
+                                                               :Dependency
+                                                             )
+                                               ]
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasIndicator ;
+                            owl:someValuesFrom :Indicator
+                          ] ,
+                          [ rdf:type owl:Restriction ;
                             owl:onProperty :hasNextLogEvent ;
                             owl:someValuesFrom :LogEvent
                           ] ,
                           [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasPackage ;
+                            owl:someValuesFrom :SoftwareComponent
+                          ] ,
+                          [ rdf:type owl:Restriction ;
                             owl:onProperty :hasPreviousLogEvent ;
                             owl:someValuesFrom :LogEvent
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasEventTimestamp ;
+                            owl:someValuesFrom xsd:string
                           ] ;
           rdfs:comment "Represents a recorded event generated by a system, application, container platform, or security mechanism, describing operational activity, errors, access attempts, authentication, auditing, or package-management actions."@en ;
           rdfs:label "LogEvent"@en .
@@ -1855,12 +1374,16 @@ amiseconto:Trasnct rdf:type owl:Class ;
                                        )
                          ] ,
                          [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasUser ;
+                           owl:someValuesFrom :User
+                         ] ,
+                         [ rdf:type owl:Restriction ;
                            owl:onProperty :hasVendor ;
                            owl:someValuesFrom :Vendor
                          ] ,
                          [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasVersion ;
-                           owl:someValuesFrom :Version
+                           owl:onProperty :hasVersionInterval ;
+                           owl:someValuesFrom :VersionInterval
                          ] ;
          rdfs:comment "Represents a software or hardware product that may be affected by a vulnerability or may generate operational and security logs. Products are typically identified through CPE information and associated with a vendor and one or more versions."@en ;
          rdfs:label "Product"@en .
@@ -1868,6 +1391,18 @@ amiseconto:Trasnct rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto/Project
 :Project rdf:type owl:Class ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasConfiguration ;
+                           owl:someValuesFrom :BuildConfiguration
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasRootArtifact ;
+                           owl:someValuesFrom :Artifact
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :isSpecifiedBy ;
+                           owl:someValuesFrom :Project
+                         ] ;
          rdfs:comment "A buildable software project definition, typically corresponding to a Maven project described by a pom.xml file. It specifies dependencies, plugins, packaging, modules, and metadata required to produce artifacts."@en ;
          rdfs:label "Project"@en .
 
@@ -1915,24 +1450,46 @@ amiseconto:Trasnct rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto/SoftwareBillsOfMaterial
 :SoftwareBillsOfMaterial rdf:type owl:Class ;
+                         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                           owl:onProperty :describes ;
+                                           owl:someValuesFrom [ rdf:type owl:Class ;
+                                                                owl:unionOf ( :Application
+                                                                              :SoftwareComponent
+                                                                            )
+                                                              ]
+                                         ] ;
                          rdfs:comment "A structured inventory of components, libraries, and dependencies that make up a software system."@en ;
                          rdfs:label "Software Bills of Material"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/SoftwareComponent
 :SoftwareComponent rdf:type owl:Class ;
+                   rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                     owl:onProperty :dependsOn ;
+                                     owl:someValuesFrom :SoftwareComponent
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty :exposes ;
+                                     owl:someValuesFrom :Vulnerability
+                                   ] ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty :isDescribedBySBOM ;
+                                     owl:someValuesFrom :SoftwareBillsOfMaterial
+                                   ] ;
                    rdfs:comment "A modular and reusable unit of software that forms part of a larger system."@en ;
                    rdfs:label "Software Component"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto/SoftwareSystem
-:SoftwareSystem rdf:type owl:Class ;
-                rdfs:comment "A software application, service, or platform that is implemented and delivered through one or more build projects. In the Maven context, it is the final system represented by generated artifacts and composed of internal modules and external dependency libraries."@en ;
-                rdfs:label "Software System"@en .
-
-
 ###  http://www.semanticweb.org/AMISecOnto/System
 :System rdf:type owl:Class ;
+        rdfs:subClassOf [ rdf:type owl:Restriction ;
+                          owl:onProperty amiseconto:hasOperatingSystem ;
+                          owl:someValuesFrom amiseconto:OperatingSystem
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty :registersLogEvent ;
+                          owl:someValuesFrom :LogEvent
+                        ] ;
         rdfs:comment "The underlying computing environment or platform on which applications are executed."@en ;
         rdfs:label "System"@en .
 
@@ -1954,7 +1511,15 @@ amiseconto:Trasnct rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto/SystemPackage
 :SystemPackage rdf:type owl:Class ;
-               rdfs:subClassOf :SoftwareComponent ;
+               rdfs:subClassOf :SoftwareComponent ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:hasClass ;
+                                 owl:someValuesFrom amiseconto:ClassSource
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:installedOn ;
+                                 owl:someValuesFrom :System
+                               ] ;
                rdfs:comment "A System Package refers to a software package that is part of the core operating system environment or is installed and managed at the system level by the OS package manager (e.g., dpkg, apt, rpm, yum)."@en ;
                rdfs:label "Package System"@en .
 
@@ -2019,8 +1584,24 @@ amiseconto:Trasnct rdf:type owl:Class ;
 ###  http://www.semanticweb.org/AMISecOnto/Vulnerability
 :Vulnerability rdf:type owl:Class ;
                rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:relatedToProduct ;
+                                 owl:someValuesFrom :Product
+                               ] ,
+                               [ rdf:type owl:Restriction ;
                                  owl:onProperty :affectsCPE ;
                                  owl:someValuesFrom :CPE
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty :hasCVSSMetric ;
+                                 owl:someValuesFrom :CVSSMetric
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty :hasReference ;
+                                 owl:someValuesFrom :Reference
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty :hasWeakness ;
+                                 owl:someValuesFrom :Weakness
                                ] ,
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty :hasDescription ;
@@ -2047,6 +1628,13 @@ amiseconto:Trasnct rdf:type owl:Class ;
 :Weakness rdf:type owl:Class ;
           rdfs:comment "Represents the underlying software or design weakness that gives rise to a vulnerability, typically aligned with a controlled taxonomy such as CWE."@en ;
           rdfs:label "Weakness"@en .
+
+
+###  http://www.w3.org/2002/07/owl#Thing
+owl:Thing rdfs:subClassOf [ rdf:type owl:Restriction ;
+                            owl:onProperty amiseconto:relatedToVulnerability ;
+                            owl:someValuesFrom :Vulnerability
+                          ] .
 
 
 #################################################################
