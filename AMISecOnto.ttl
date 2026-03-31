@@ -142,13 +142,6 @@ amiseconto:mapsTo rdf:type owl:ObjectProperty ;
                   rdfs:label "maps to"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto#observedIn
-amiseconto:observedIn rdf:type owl:ObjectProperty ;
-                      rdfs:domain :Vulnerability ;
-                      rdfs:range :LogEvent ;
-                      rdfs:label "observed in"@en .
-
-
 ###  http://www.semanticweb.org/AMISecOnto#performedByUSer
 amiseconto:performedByUSer rdf:type owl:ObjectProperty ;
                            rdfs:domain amiseconto:Request ;
@@ -308,7 +301,11 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto/hasProduct
 :hasProduct rdf:type owl:ObjectProperty ;
-            rdfs:domain :CPE ;
+            rdfs:domain [ rdf:type owl:Class ;
+                          owl:unionOf ( :CPE
+                                        :Vendor
+                                      )
+                        ] ;
             rdfs:range :Product ;
             rdfs:comment "Associates a Vendor with a Product that it creates, maintains, or makes available as part of its offerings."@en ,
                          "Links a CPE entry or affected platform description to the product that is impacted by a vulnerability."@en ;
@@ -412,8 +409,9 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 
 
 ###  http://www.semanticweb.org/AMISecOnto/isObservedIn
-:isObservedIn rdf:type owl:ObjectProperty ;
-              rdfs:domain :Vulnerability ;
+:isObservedIn rdf:type owl:ObjectProperty ,
+                       owl:SymmetricProperty ;
+              rdfs:domain :Application ;
               rdfs:range :LogEvent ;
               rdfs:comment "Associates a Vulnerability with a Log Event that provides evidence of its presence, exploitation, or detection within a system."@en ;
               rdfs:label "is observed in"@en .
@@ -488,6 +486,20 @@ amiseconto:relatedToVulnerability rdf:type owl:ObjectProperty ;
 #    Data properties
 #################################################################
 
+###  http://www.semanticweb.org/AMISecOnto#hasAliveStatus
+amiseconto:hasAliveStatus rdf:type owl:DatatypeProperty ;
+                          rdfs:comment "interpreted liveness state of a cluster member referenced in a Catalina log event, indicating whether the member is alive, suspected, or has disappeared during cluster membership monitoring."@en ;
+                          rdfs:label "has alive status"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasAuthenticationMethod
+amiseconto:hasAuthenticationMethod rdf:type owl:DatatypeProperty ;
+                                   rdfs:domain amiseconto:SuLogEvent ;
+                                   rdfs:range xsd:string ;
+                                   rdfs:comment "The mechanism or module used to authenticate the su operation, such as \"su\", \"pam_unix\", or other PAM modules. Useful for cross-log correlation or detailed forensic analysis."@en ;
+                                   rdfs:label "has authentication method"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#hasCategory
 amiseconto:hasCategory rdf:type owl:DatatypeProperty ;
                        rdfs:domain :LogEvent ;
@@ -495,18 +507,101 @@ amiseconto:hasCategory rdf:type owl:DatatypeProperty ;
                        rdfs:label "has category"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#hasCommand
+amiseconto:hasCommand rdf:type owl:DatatypeProperty ;
+                      rdfs:domain amiseconto:SudoLogEvent ;
+                      rdfs:range xsd:string ;
+                      rdfs:comment "The full command invoked using sudo, including arguments if present."@en ;
+                      rdfs:label "has command"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasCreationDate
+amiseconto:hasCreationDate rdf:type owl:DatatypeProperty ;
+                           rdfs:domain amiseconto:Log ;
+                           rdfs:range xsd:string ;
+                           rdfs:comment "When log file was created."@en ;
+                           rdfs:label "has creation date"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasEncoding
+amiseconto:hasEncoding rdf:type owl:DatatypeProperty ;
+                       rdfs:domain amiseconto:Log ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "Character encoding format used in the log file."@en ;
+                       rdfs:label "has encoding"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasEventType
+amiseconto:hasEventType rdf:type owl:DatatypeProperty ;
+                        rdfs:domain :LogEvent ;
+                        rdfs:range xsd:string ;
+                        rdfs:comment "Normalized or inferred category describing the nature of the Catalina log event, such as lifecycle, cluster, or exception-related activity."@en ;
+                        rdfs:label "has event type"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#hasExceptionMessage
 amiseconto:hasExceptionMessage rdf:type owl:DatatypeProperty ;
-                               rdfs:domain amiseconto:ContainerLogEvent ;
                                rdfs:range xsd:string ;
                                rdfs:label "has exception message"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#hasExceptionType
 amiseconto:hasExceptionType rdf:type owl:DatatypeProperty ;
-                            rdfs:domain amiseconto:ContainerLogEvent ;
+                            rdfs:domain :ApplicationLogEvent ;
                             rdfs:range xsd:string ;
                             rdfs:label "has exception type"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasExecutable
+amiseconto:hasExecutable rdf:type owl:DatatypeProperty ;
+                         rdfs:domain amiseconto:Audit_Log_Event ;
+                         rdfs:range xsd:string ;
+                         rdfs:comment "Path or name of the executable file responsible for generating the audited event."@en ;
+                         rdfs:label "has executable"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasFaiulureReason
+amiseconto:hasFaiulureReason rdf:type owl:DatatypeProperty ;
+                             rdfs:domain amiseconto:SuLogEvent ;
+                             rdfs:range xsd:string ;
+                             rdfs:comment "The result state of the su operation, such as \"success\", \"failure\", \"session opened\", or \"session closed\". Essential for interpreting whether the identity switch was attempted, granted, or terminated."@en ;
+                             rdfs:label "has failure reason"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasFileName
+amiseconto:hasFileName rdf:type owl:DatatypeProperty ;
+                       rdfs:domain amiseconto:Log ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "Specifies the name of the log file."@en ;
+                       rdfs:label "has file name"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasFilePath
+amiseconto:hasFilePath rdf:type owl:DatatypeProperty ;
+                       rdfs:domain [ rdf:type owl:Class ;
+                                     owl:unionOf ( amiseconto:Audit_Log_Event
+                                                   amiseconto:Log
+                                                 )
+                                   ] ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "Indicates the full path location of the log file in the file system."@en ;
+                       rdfs:label "has file path"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasFileSize
+amiseconto:hasFileSize rdf:type owl:DatatypeProperty ;
+                       rdfs:domain amiseconto:Log ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "File size in bytes."@en ;
+                       rdfs:label "has file size"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasHostname
+amiseconto:hasHostname rdf:type owl:DatatypeProperty ;
+                       rdfs:domain :LogEvent ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "Identifies the system that produces the log entry."@en ;
+                       rdfs:label "has host name"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#hasHttpSatusCode
@@ -523,6 +618,20 @@ amiseconto:hasHttpVersion rdf:type owl:DatatypeProperty ;
                           rdfs:label "has http version"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#hasLastModified
+amiseconto:hasLastModified rdf:type owl:DatatypeProperty ;
+                           rdfs:domain amiseconto:Log ;
+                           rdfs:range xsd:string ;
+                           rdfs:comment "Last update timestamp"@en ;
+                           rdfs:label "has last modified"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasLineNumber
+amiseconto:hasLineNumber rdf:type owl:DatatypeProperty ;
+                         rdfs:comment "Line number in source code."@en ;
+                         rdfs:label "has line number"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#hasLogFileName
 amiseconto:hasLogFileName rdf:type owl:DatatypeProperty ;
                           rdfs:domain amiseconto:ContainerLogEvent ;
@@ -537,11 +646,23 @@ amiseconto:hasLogFilePath rdf:type owl:DatatypeProperty ;
                           rdfs:label "has log file path"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#hasLogLevel
+amiseconto:hasLogLevel rdf:type owl:DatatypeProperty ;
+                       rdfs:comment "Represents the severity level of the log entry (e.g., DEBUG, INFO, WARN, ERROR)."@en ;
+                       rdfs:label "has log level"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#hasLoggerName
 amiseconto:hasLoggerName rdf:type owl:DatatypeProperty ;
                          rdfs:domain amiseconto:ContainerLogEvent ;
                          rdfs:range xsd:string ;
                          rdfs:label "has logger name"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasMemberAddress
+amiseconto:hasMemberAddress rdf:type owl:DatatypeProperty ;
+                            rdfs:comment "Stores the cluster member network address referenced in the event."@en ;
+                            rdfs:label "has member address"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#hasMemberIP
@@ -560,16 +681,29 @@ amiseconto:hasMemberId rdf:type owl:DatatypeProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto#hasMemberPort
 amiseconto:hasMemberPort rdf:type owl:DatatypeProperty ;
-                         rdfs:domain :LogEvent ;
+                         rdfs:domain amiseconto:CatalinaLogEvent ;
                          rdfs:range xsd:integer ;
                          rdfs:label "has member port"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto#hasMembershipAction
-amiseconto:hasMembershipAction rdf:type owl:DatatypeProperty ;
+###  http://www.semanticweb.org/AMISecOnto#hasMembershipStatus
+amiseconto:hasMembershipStatus rdf:type owl:DatatypeProperty ;
                                rdfs:domain amiseconto:ContainerLogEvent ;
                                rdfs:range xsd:string ;
-                               rdfs:label "has menbership action"@en .
+                               rdfs:comment "Interpreted membership status of the cluster member, such as disappeared, alive, or verifiedAlive."@en ;
+                               rdfs:label "has menbership status"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasMessage
+amiseconto:hasMessage rdf:type owl:DatatypeProperty ;
+                      rdfs:domain [ rdf:type owl:Class ;
+                                    owl:unionOf ( amiseconto:CatalinaLogEvent
+                                                  amiseconto:Fenix_Error_Log_Event
+                                                )
+                                  ] ;
+                      rdfs:range xsd:string ;
+                      rdfs:comment "Main textual content of a Catalina log event, describing the runtime action, status, or issue reported by the Tomcat container."@en ;
+                      rdfs:label "has message"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#hasOSLogType
@@ -607,6 +741,35 @@ amiseconto:hasOriginMethod rdf:type owl:DatatypeProperty ;
                            rdfs:label "has origin method"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#hasPort
+amiseconto:hasPort rdf:type owl:DatatypeProperty ;
+                   rdfs:domain amiseconto:SshLogEvent ;
+                   rdfs:range xsd:integer ;
+                   rdfs:comment "A network port number referenced in the log message."@en ;
+                   rdfs:label "has port"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasProcessID
+amiseconto:hasProcessID rdf:type owl:DatatypeProperty ;
+                        rdfs:domain :LogEvent ;
+                        rdfs:range xsd:integer ;
+                        rdfs:comment "The operating system identifier of the process that generated the audit event."@en ;
+                        rdfs:label "has process ID"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasProcessName
+amiseconto:hasProcessName rdf:type owl:DatatypeProperty ;
+                          rdfs:domain :LogEvent ;
+                          rdfs:range xsd:string ;
+                          rdfs:comment "The textual name of the process that emitted the log message."@en ;
+                          rdfs:label "has process name"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasRawMessage
+amiseconto:hasRawMessage rdf:type owl:DatatypeProperty ;
+                         rdfs:label "has raw message"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#hasRequestURI
 amiseconto:hasRequestURI rdf:type owl:DatatypeProperty ;
                          rdfs:label "has request URI"@en .
@@ -619,11 +782,27 @@ amiseconto:hasResponseSizeBytes rdf:type owl:DatatypeProperty ;
                                 rdfs:label "has response size bytes"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#hasRunAsUser
+amiseconto:hasRunAsUser rdf:type owl:DatatypeProperty ;
+                        rdfs:domain amiseconto:SudoLogEvent ;
+                        rdfs:range xsd:string ;
+                        rdfs:comment "Indicates the user identity under which the command was executed after privilege."@en ;
+                        rdfs:label "has run has user"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#hasSecurePort
 amiseconto:hasSecurePort rdf:type owl:DatatypeProperty ;
                          rdfs:domain amiseconto:ContainerLogEvent ;
                          rdfs:range xsd:integer ;
                          rdfs:label "has secure port"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasServeletName
+amiseconto:hasServeletName rdf:type owl:DatatypeProperty ;
+                           rdfs:domain amiseconto:CatalinaLogEvent ;
+                           rdfs:range xsd:string ;
+                           rdfs:comment "Name of the servlet involved in the Catalina log event, particularly in HTTP request handling or servlet execution failures."@en ;
+                           rdfs:label "has servelet name"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#hasServlet
@@ -633,11 +812,39 @@ amiseconto:hasServlet rdf:type owl:DatatypeProperty ;
                       rdfs:label "has servelet name"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#hasSessionID
+amiseconto:hasSessionID rdf:type owl:DatatypeProperty ;
+                        rdfs:comment "The identifier of the user session associated with the audit event. This value links multiple audit events generated during the same login session."@en ;
+                        rdfs:label "has session ID"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasSessionStatus
+amiseconto:hasSessionStatus rdf:type owl:DatatypeProperty ;
+                            rdfs:domain amiseconto:AuthenticationLogEvent ;
+                            rdfs:range xsd:string ;
+                            rdfs:comment "The current state or outcome of a user session inferred from the log message (e.g., \"opened\", \"closed\", \"failed\", \"expired\")."@en ;
+                            rdfs:label "has session status"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#hasSeverityCode
 amiseconto:hasSeverityCode rdf:type owl:DatatypeProperty ;
-                           rdfs:domain amiseconto:ContainerLogEvent ;
+                           rdfs:domain amiseconto:Fenix_Error_Log_Event ;
                            rdfs:range xsd:string ;
-                           rdfs:label "has severity code"@en .
+                           rdfs:label "has severity level"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasSourceClass
+amiseconto:hasSourceClass rdf:type owl:DatatypeProperty ;
+                          rdfs:domain amiseconto:CatalinaLogEvent ;
+                          rdfs:range xsd:string ;
+                          rdfs:comment "Java class generating the log"@en ;
+                          rdfs:label "has source class"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasSourceFile
+amiseconto:hasSourceFile rdf:type owl:DatatypeProperty ;
+                         rdfs:comment "Source file name identified from a stack frame."@en ;
+                         rdfs:label "has source file"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#hasStackTrace
@@ -645,6 +852,62 @@ amiseconto:hasStackTrace rdf:type owl:DatatypeProperty ;
                          rdfs:domain amiseconto:ContainerLogEvent ;
                          rdfs:range xsd:string ;
                          rdfs:label "has stack trace"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasSuStatus
+amiseconto:hasSuStatus rdf:type owl:DatatypeProperty ;
+                       rdfs:domain amiseconto:SuLogEvent ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "Indicates the result state of the su operation, such as \"success\", \"failure\", \"session opened\", or \"session closed\"."@en ;
+                       rdfs:label "has su status"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasSuccessStatus
+amiseconto:hasSuccessStatus rdf:type owl:DatatypeProperty ;
+                            rdfs:domain amiseconto:Audit_Log_Event ;
+                            rdfs:range xsd:boolean ;
+                            rdfs:comment "Indicates whether the audited system call executed successfully (true) or failed."@en ;
+                            rdfs:label "has success status"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasSudoStatus
+amiseconto:hasSudoStatus rdf:type owl:DatatypeProperty ;
+                         rdfs:domain amiseconto:SudoLogEvent ;
+                         rdfs:range xsd:string ;
+                         rdfs:comment "The result of the sudo attempt (e.g., accepted, rejected, success, failure)."@en ;
+                         rdfs:label "has sudo status"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasSyscallNumber
+amiseconto:hasSyscallNumber rdf:type owl:DatatypeProperty ;
+                            rdfs:domain amiseconto:Audit_Log_Event ;
+                            rdfs:range xsd:integer ;
+                            rdfs:comment "Numeric identifier of the system call invoked by the process, corresponding to the system call table of the operating system architecture."@en ;
+                            rdfs:label "has syscall number"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasTTY
+amiseconto:hasTTY rdf:type owl:DatatypeProperty ;
+                  rdfs:domain [ rdf:type owl:Class ;
+                                owl:unionOf ( amiseconto:SuLogEvent
+                                              amiseconto:SudoLogEvent
+                                            )
+                              ] ;
+                  rdfs:range xsd:string ;
+                  rdfs:comment "The terminal or pseudo-terminal (TTY/PTS) associated with the session during the su operation (e.g., \"pts/0\"). Useful for identifying interactive vs. non-interactive sessions and correlating with session logs."@en ;
+                  rdfs:label "has TTY"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasTargetUser
+amiseconto:hasTargetUser rdf:type owl:DatatypeProperty ;
+                         rdfs:domain [ rdf:type owl:Class ;
+                                       owl:unionOf ( amiseconto:SshLogEvent
+                                                     amiseconto:SuLog
+                                                   )
+                                     ] ;
+                         rdfs:range xsd:string ;
+                         rdfs:comment "User account that is the target or subject of the action recorded in the log message." ;
+                         rdfs:label "has target user"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#hasTextMessage
@@ -656,9 +919,26 @@ amiseconto:hasTextMessage rdf:type owl:DatatypeProperty ;
 
 ###  http://www.semanticweb.org/AMISecOnto#hasThreatName
 amiseconto:hasThreatName rdf:type owl:DatatypeProperty ;
-                         rdfs:domain :LogEvent ;
+                         rdfs:domain [ rdf:type owl:Class ;
+                                       owl:unionOf ( amiseconto:CatalinaLogEvent
+                                                     amiseconto:Fenix_Error_Log_Event
+                                                   )
+                                     ] ;
                          rdfs:range xsd:string ;
                          rdfs:label "has threat name"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasTimestamp
+amiseconto:hasTimestamp rdf:type owl:DatatypeProperty ;
+                        rdfs:domain :LogEvent ;
+                        rdfs:range xsd:string ;
+                        rdfs:label "has timestamp"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasTopStackFrame
+amiseconto:hasTopStackFrame rdf:type owl:DatatypeProperty ;
+                            rdfs:comment "First stack frame in the trace, which often identifies the immediate failure point."@en ;
+                            rdfs:label "has top stack frame"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#hasUdpPort
@@ -668,11 +948,36 @@ amiseconto:hasUdpPort rdf:type owl:DatatypeProperty ;
                       rdfs:label "has udp port"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#hasUserID
+amiseconto:hasUserID rdf:type owl:DatatypeProperty ;
+                     rdfs:domain amiseconto:Audit_Log_Event ;
+                     rdfs:range xsd:integer ;
+                     rdfs:comment "Numeric identifier of the user account associated with the event, indicating which system user performed or initiated the action."@en ;
+                     rdfs:label "has user ID"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#hasUserName
+amiseconto:hasUserName rdf:type owl:DatatypeProperty ;
+                       rdfs:domain amiseconto:AuthenticationLogEvent ;
+                       rdfs:range xsd:string ;
+                       rdfs:comment "Login username."@en ;
+                       rdfs:label "has user name"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#hasVerificationStatus
 amiseconto:hasVerificationStatus rdf:type owl:DatatypeProperty ;
                                  rdfs:domain amiseconto:ContainerLogEvent ;
                                  rdfs:range xsd:string ;
                                  rdfs:label "has verification status"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#has_class_method
+amiseconto:has_class_method rdf:type owl:DatatypeProperty ;
+                            rdfs:subPropertyOf owl:topDataProperty ;
+                            rdfs:domain amiseconto:CatalinaLogEvent ;
+                            rdfs:range xsd:string ;
+                            rdfs:comment "Method name (if available)."@en ;
+                            rdfs:label "has source method"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#has_http_method
@@ -689,11 +994,6 @@ amiseconto:has_http_status_code rdf:type owl:DatatypeProperty ;
                                 rdfs:label "has https status code"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto#has_raw_entry
-amiseconto:has_raw_entry rdf:type owl:DatatypeProperty ;
-                         rdfs:label "has raw entry"@en .
-
-
 ###  http://www.semanticweb.org/AMISecOnto#has_referer
 amiseconto:has_referer rdf:type owl:DatatypeProperty ;
                        rdfs:label "has referer"@en .
@@ -702,6 +1002,13 @@ amiseconto:has_referer rdf:type owl:DatatypeProperty ;
 ###  http://www.semanticweb.org/AMISecOnto#has_user_agent
 amiseconto:has_user_agent rdf:type owl:DatatypeProperty ;
                           rdfs:label "has user agent"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#haslogger
+amiseconto:haslogger rdf:type owl:DatatypeProperty ;
+                     rdfs:range xsd:string ;
+                     rdfs:comment "Stores the fully qualified logger, class, or source identifier that emitted the event."@en ;
+                     rdfs:label "has logger"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/hasAuthenticatedUser
@@ -875,11 +1182,19 @@ amiseconto:AccessLog rdf:type owl:Class ;
 amiseconto:AccessLogEvent rdf:type owl:Class ;
                           rdfs:subClassOf :ApplicationLogEvent ,
                                           [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:hasExceptionType ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
                                             owl:onProperty amiseconto:hasHttpSatusCode ;
                                             owl:someValuesFrom xsd:integer
                                           ] ,
                                           [ rdf:type owl:Restriction ;
                                             owl:onProperty amiseconto:hasHttpVersion ;
+                                            owl:someValuesFrom xsd:string
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:hasRawMessage ;
                                             owl:someValuesFrom xsd:string
                                           ] ,
                                           [ rdf:type owl:Restriction ;
@@ -892,10 +1207,6 @@ amiseconto:AccessLogEvent rdf:type owl:Class ;
                                           ] ,
                                           [ rdf:type owl:Restriction ;
                                             owl:onProperty amiseconto:has_http_method ;
-                                            owl:someValuesFrom xsd:string
-                                          ] ,
-                                          [ rdf:type owl:Restriction ;
-                                            owl:onProperty amiseconto:has_raw_entry ;
                                             owl:someValuesFrom xsd:string
                                           ] ,
                                           [ rdf:type owl:Restriction ;
@@ -931,7 +1242,31 @@ amiseconto:AuditLog rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto#Audit_Log_Event
 amiseconto:Audit_Log_Event rdf:type owl:Class ;
-                           rdfs:subClassOf :SecurityLogEvent ;
+                           rdfs:subClassOf :SecurityLogEvent ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty amiseconto:hasExecutable ;
+                                             owl:someValuesFrom xsd:string
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty amiseconto:hasFilePath ;
+                                             owl:someValuesFrom xsd:string
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty amiseconto:hasSessionID ;
+                                             owl:someValuesFrom xsd:string
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty amiseconto:hasSuccessStatus ;
+                                             owl:someValuesFrom xsd:boolean
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty amiseconto:hasSyscallNumber ;
+                                             owl:someValuesFrom xsd:integer
+                                           ] ,
+                                           [ rdf:type owl:Restriction ;
+                                             owl:onProperty amiseconto:hasUserID ;
+                                             owl:someValuesFrom xsd:integer
+                                           ] ;
                            rdfs:label "Audit Log Event"@en .
 
 
@@ -943,8 +1278,58 @@ amiseconto:AuthenticationLog rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto#AuthenticationLogEvent
 amiseconto:AuthenticationLogEvent rdf:type owl:Class ;
-                                  rdfs:subClassOf :SecurityLogEvent ;
+                                  rdfs:subClassOf :SecurityLogEvent ,
+                                                  [ rdf:type owl:Restriction ;
+                                                    owl:onProperty amiseconto:hasSessionStatus ;
+                                                    owl:someValuesFrom xsd:string
+                                                  ] ,
+                                                  [ rdf:type owl:Restriction ;
+                                                    owl:onProperty amiseconto:hasUserName ;
+                                                    owl:someValuesFrom xsd:string
+                                                  ] ;
                                   rdfs:label "Authentication Log Event"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#CatalinaLog
+amiseconto:CatalinaLog rdf:type owl:Class ;
+                       rdfs:subClassOf amiseconto:ContainerLog ;
+                       rdfs:comment "Represents container-level logging information produced by Tomcat's Catalina engine."@en ;
+                       rdfs:label "Catalina Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#CatalinaLogEvent
+amiseconto:CatalinaLogEvent rdf:type owl:Class ;
+                            rdfs:subClassOf amiseconto:ContainerLogEvent ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty amiseconto:hasEventType ;
+                                              owl:someValuesFrom xsd:string
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty amiseconto:hasMembershipStatus ;
+                                              owl:someValuesFrom xsd:string
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty amiseconto:hasMessage ;
+                                              owl:someValuesFrom xsd:string
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty amiseconto:hasServeletName ;
+                                              owl:someValuesFrom xsd:string
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty amiseconto:hasSourceClass ;
+                                              owl:someValuesFrom xsd:string
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty amiseconto:hasThreatName ;
+                                              owl:someValuesFrom xsd:string
+                                            ] ,
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty amiseconto:has_class_method ;
+                                              owl:someValuesFrom xsd:string
+                                            ] ;
+                            rdfs:comment "An event generated by the Apache Tomcat Catalina engine, capturing runtime information, warnings, or errors during servlet container execution."@en ;
+                            rdfs:label "Calalina Log Event"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto#ClassSource
@@ -975,6 +1360,10 @@ amiseconto:ContainerLogEvent rdf:type owl:Class ;
                                                owl:someValuesFrom xsd:string
                                              ] ,
                                              [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasLineNumber ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
                                                owl:onProperty amiseconto:hasLogFileName ;
                                                owl:someValuesFrom xsd:string
                                              ] ,
@@ -995,7 +1384,7 @@ amiseconto:ContainerLogEvent rdf:type owl:Class ;
                                                owl:someValuesFrom xsd:integer
                                              ] ,
                                              [ rdf:type owl:Restriction ;
-                                               owl:onProperty amiseconto:hasMembershipAction ;
+                                               owl:onProperty amiseconto:hasMembershipStatus ;
                                                owl:someValuesFrom xsd:string
                                              ] ,
                                              [ rdf:type owl:Restriction ;
@@ -1019,6 +1408,10 @@ amiseconto:ContainerLogEvent rdf:type owl:Class ;
                                                owl:someValuesFrom xsd:string
                                              ] ,
                                              [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasRawMessage ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
                                                owl:onProperty amiseconto:hasSecurePort ;
                                                owl:someValuesFrom xsd:integer
                                              ] ,
@@ -1031,15 +1424,19 @@ amiseconto:ContainerLogEvent rdf:type owl:Class ;
                                                owl:someValuesFrom xsd:string
                                              ] ,
                                              [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasSourceFile ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty amiseconto:hasTopStackFrame ;
+                                               owl:someValuesFrom xsd:string
+                                             ] ,
+                                             [ rdf:type owl:Restriction ;
                                                owl:onProperty amiseconto:hasUdpPort ;
                                                owl:someValuesFrom xsd:integer
                                              ] ,
                                              [ rdf:type owl:Restriction ;
                                                owl:onProperty amiseconto:hasVerificationStatus ;
-                                               owl:someValuesFrom xsd:string
-                                             ] ,
-                                             [ rdf:type owl:Restriction ;
-                                               owl:onProperty amiseconto:has_raw_entry ;
                                                owl:someValuesFrom xsd:string
                                              ] ,
                                              [ rdf:type owl:Restriction ;
@@ -1067,6 +1464,24 @@ amiseconto:Error_Log rdf:type owl:Class ;
                      rdfs:label "Error Log"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#FenixErrorLog
+amiseconto:FenixErrorLog rdf:type owl:Class ;
+                         rdfs:subClassOf amiseconto:Error_Log ;
+                         rdfs:comment "Log source containing records of errors and exceptions generated by the Fenix system, used for debugging, monitoring, and incident analysis."@en ;
+                         rdfs:label "Fenix Error Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#Fenix_Error_Log_Event
+amiseconto:Fenix_Error_Log_Event rdf:type owl:Class ;
+                                 rdfs:subClassOf amiseconto:ErrorLogEvent ,
+                                                 [ rdf:type owl:Restriction ;
+                                                   owl:onProperty amiseconto:hasThreatName ;
+                                                   owl:someValuesFrom xsd:string
+                                                 ] ;
+                                 rdfs:comment "Event representing an error occurrence recorded by the Fenix system, capturing failures, exceptions, or abnormal behaviors during system operation."@en ;
+                                 rdfs:label "Fenix Error Log Event"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#FirewallLog
 amiseconto:FirewallLog rdf:type owl:Class ;
                        rdfs:subClassOf amiseconto:SecurityLog ;
@@ -1081,6 +1496,34 @@ amiseconto:Firewall_Log rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto#Log
 amiseconto:Log rdf:type owl:Class ;
+               rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:containsEvent ;
+                                 owl:someValuesFrom :LogEvent
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:hasCreationDate ;
+                                 owl:someValuesFrom xsd:string
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:hasEncoding ;
+                                 owl:someValuesFrom xsd:string
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:hasFileName ;
+                                 owl:someValuesFrom xsd:string
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:hasFilePath ;
+                                 owl:someValuesFrom xsd:string
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:hasFileSize ;
+                                 owl:someValuesFrom xsd:string
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty amiseconto:hasLastModified ;
+                                 owl:someValuesFrom xsd:string
+                               ] ;
                rdfs:comment "A Log is a structured or unstructured record generated by systems, applications, or devices that captures events, activities, or states over time."@en ;
                rdfs:label "Log"@en .
 
@@ -1112,7 +1555,11 @@ amiseconto:OperatingSystem rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto#PackageLibrary
 amiseconto:PackageLibrary rdf:type owl:Class ;
-                          rdfs:subClassOf :SoftwareComponent ;
+                          rdfs:subClassOf :SoftwareComponent ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty amiseconto:hasClass ;
+                                            owl:someValuesFrom amiseconto:ClassSource
+                                          ] ;
                           rdfs:comment "Represents a container within a module that groups related classes based on functionality or purpose."@en ;
                           rdfs:label "Package Library"@en .
 
@@ -1151,6 +1598,92 @@ amiseconto:SecurityLog rdf:type owl:Class ;
                        rdfs:label "Securtiy Log"@en .
 
 
+###  http://www.semanticweb.org/AMISecOnto#SshLog
+amiseconto:SshLog rdf:type owl:Class ;
+                  rdfs:subClassOf amiseconto:AuthenticationLog ;
+                  rdfs:comment "Log source that stores records of SSH-related activities, including authentication attempts, session details, and remote connections to the system."@en ;
+                  rdfs:label "Ssh Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#SshLogEvent
+amiseconto:SshLogEvent rdf:type owl:Class ;
+                       rdfs:subClassOf amiseconto:AuthenticationLogEvent ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty amiseconto:hasPort ;
+                                         owl:someValuesFrom xsd:integer
+                                       ] ,
+                                       [ rdf:type owl:Restriction ;
+                                         owl:onProperty amiseconto:hasTargetUser ;
+                                         owl:someValuesFrom xsd:string
+                                       ] ;
+                       rdfs:comment "Event corresponding to an activity recorded in SSH logs, including login attempts, session establishment, authentication outcomes, and remote access interactions."@en ;
+                       rdfs:label "Ssh Log Event"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#SuLog
+amiseconto:SuLog rdf:type owl:Class ;
+                 rdfs:subClassOf amiseconto:AuthenticationLog ;
+                 rdfs:comment "Log source capturing events related to the use of the su command, documenting user switching activities and authentication outcomes."@en ;
+                 rdfs:label "Su Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#SuLogEvent
+amiseconto:SuLogEvent rdf:type owl:Class ;
+                      rdfs:subClassOf amiseconto:AuthenticationLogEvent ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty amiseconto:hasAuthenticationMethod ;
+                                        owl:someValuesFrom xsd:string
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty amiseconto:hasFaiulureReason ;
+                                        owl:someValuesFrom xsd:string
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty amiseconto:hasSuStatus ;
+                                        owl:someValuesFrom xsd:string
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty amiseconto:hasTTY ;
+                                        owl:someValuesFrom xsd:string
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty amiseconto:hasTargetUser ;
+                                        owl:someValuesFrom xsd:string
+                                      ] ;
+                      rdfs:comment "Event describing user identity switching activities recorded via the su command, including successful and failed attempts to assume another user identity."@en ;
+                      rdfs:label "Su Log Event"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#SudoLog
+amiseconto:SudoLog rdf:type owl:Class ;
+                   rdfs:subClassOf amiseconto:AuthenticationLog ;
+                   rdfs:comment "Log source containing records of commands executed with elevated privileges via sudo, including user identity, executed commands, and timestamps."@en ;
+                   rdfs:label "Sudo Log"@en .
+
+
+###  http://www.semanticweb.org/AMISecOnto#SudoLogEvent
+amiseconto:SudoLogEvent rdf:type owl:Class ;
+                        rdfs:subClassOf amiseconto:AuthenticationLogEvent ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty amiseconto:hasCommand ;
+                                          owl:someValuesFrom xsd:string
+                                        ] ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty amiseconto:hasRunAsUser ;
+                                          owl:someValuesFrom xsd:string
+                                        ] ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty amiseconto:hasSudoStatus ;
+                                          owl:someValuesFrom xsd:string
+                                        ] ,
+                                        [ rdf:type owl:Restriction ;
+                                          owl:onProperty amiseconto:hasTTY ;
+                                          owl:someValuesFrom xsd:string
+                                        ] ;
+                        rdfs:comment "Event representing privilege escalation actions executed via the sudo command, including command execution with elevated permissions and associated authentication results."@en ;
+                        rdfs:label "Sudo Log Event"@en .
+
+
 ###  http://www.semanticweb.org/AMISecOnto#SuspiciousEvent
 amiseconto:SuspiciousEvent rdf:type owl:Class ;
                            rdfs:comment "Represents a Log Event that is considered suspicious due to its association with a known vulnerability, indicator, or anomalous behavior."@en ;
@@ -1163,9 +1696,9 @@ amiseconto:SystemLog rdf:type owl:Class ;
                      rdfs:label "System Log"@en .
 
 
-###  http://www.semanticweb.org/AMISecOnto#Trasnct
-amiseconto:Trasnct rdf:type owl:Class ;
-                   rdfs:label "Transanct"@en .
+###  http://www.semanticweb.org/AMISecOnto#Transanction
+amiseconto:Transanction rdf:type owl:Class ;
+                        rdfs:label "Transaction"@en .
 
 
 ###  http://www.semanticweb.org/AMISecOnto/Application
@@ -1198,6 +1731,10 @@ amiseconto:Trasnct rdf:type owl:Class ;
 :ApplicationLogEvent rdf:type owl:Class ;
                      rdfs:subClassOf :LogEvent ,
                                      [ rdf:type owl:Restriction ;
+                                       owl:onProperty amiseconto:belongsToRequest ;
+                                       owl:someValuesFrom amiseconto:Request
+                                     ] ,
+                                     [ rdf:type owl:Restriction ;
                                        owl:onProperty amiseconto:executedInEnvironment ;
                                        owl:someValuesFrom amiseconto:Environment
                                      ] ,
@@ -1208,6 +1745,14 @@ amiseconto:Trasnct rdf:type owl:Class ;
                                      [ rdf:type owl:Restriction ;
                                        owl:onProperty :hasPreviousLogEvent ;
                                        owl:someValuesFrom :LogEvent
+                                     ] ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty amiseconto:hasProcessID ;
+                                       owl:someValuesFrom xsd:integer
+                                     ] ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty amiseconto:hasProcessName ;
+                                       owl:someValuesFrom xsd:string
                                      ] ;
                      rdfs:comment "Represents a log event generated by an application during runtime, including access operations, execution errors, and container-related messages."@en ;
                      rdfs:label "Application Log Event"@en .
@@ -1216,16 +1761,16 @@ amiseconto:Trasnct rdf:type owl:Class ;
 ###  http://www.semanticweb.org/AMISecOnto/Artifact
 :Artifact rdf:type owl:Class ;
           rdfs:subClassOf [ rdf:type owl:Restriction ;
+                            owl:onProperty :belongsToPackage ;
+                            owl:someValuesFrom :SystemPackage
+                          ] ,
+                          [ rdf:type owl:Restriction ;
                             owl:onProperty :hasDirectDependency ;
                             owl:someValuesFrom :Artifact
                           ] ,
                           [ rdf:type owl:Restriction ;
                             owl:onProperty :hasTransitiveDependency ;
                             owl:someValuesFrom :Artifact
-                          ] ,
-                          [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasVersionMinIncluding ;
-                            owl:someValuesFrom :Vulnerability
                           ] ,
                           [ rdf:type owl:Restriction ;
                             owl:onProperty :hasVulnerability ;
@@ -1252,6 +1797,14 @@ amiseconto:Trasnct rdf:type owl:Class ;
 ###  http://www.semanticweb.org/AMISecOnto/BuildProcess
 :BuildProcess rdf:type owl:Class ;
               rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty :builds ;
+                                owl:someValuesFrom :Project
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :consistsOf ;
+                                owl:someValuesFrom :BuildStep
+                              ] ,
+                              [ rdf:type owl:Restriction ;
                                 owl:onProperty :produces ;
                                 owl:someValuesFrom :Artifact
                               ] ,
@@ -1300,6 +1853,10 @@ amiseconto:Trasnct rdf:type owl:Class ;
 ###  http://www.semanticweb.org/AMISecOnto/Dependency
 :Dependency rdf:type owl:Class ;
             rdfs:subClassOf [ rdf:type owl:Restriction ;
+                              owl:onProperty amiseconto:belongsToModule ;
+                              owl:someValuesFrom amiseconto:Module
+                            ] ,
+                            [ rdf:type owl:Restriction ;
                               owl:onProperty amiseconto:mapsTo ;
                               owl:someValuesFrom :Product
                             ] ;
@@ -1359,6 +1916,22 @@ amiseconto:Trasnct rdf:type owl:Class ;
                             owl:someValuesFrom :LogEvent
                           ] ,
                           [ rdf:type owl:Restriction ;
+                            owl:onProperty amiseconto:hasEventType ;
+                            owl:someValuesFrom xsd:string
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty amiseconto:hasHostname ;
+                            owl:someValuesFrom xsd:string
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty amiseconto:hasLogLevel ;
+                            owl:someValuesFrom xsd:string
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty amiseconto:hasRawMessage ;
+                            owl:someValuesFrom xsd:string
+                          ] ,
+                          [ rdf:type owl:Restriction ;
                             owl:onProperty :hasEventTimestamp ;
                             owl:someValuesFrom xsd:string
                           ] ;
@@ -1368,23 +1941,6 @@ amiseconto:Trasnct rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto/Product
 :Product rdf:type owl:Class ;
-         rdfs:subClassOf [ rdf:type owl:Class ;
-                           owl:unionOf ( :CPE
-                                         :Product
-                                       )
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasUser ;
-                           owl:someValuesFrom :User
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasVendor ;
-                           owl:someValuesFrom :Vendor
-                         ] ,
-                         [ rdf:type owl:Restriction ;
-                           owl:onProperty :hasVersionInterval ;
-                           owl:someValuesFrom :VersionInterval
-                         ] ;
          rdfs:comment "Represents a software or hardware product that may be affected by a vulnerability or may generate operational and security logs. Products are typically identified through CPE information and associated with a vendor and one or more versions."@en ;
          rdfs:label "Product"@en .
 
@@ -1513,10 +2069,6 @@ amiseconto:Trasnct rdf:type owl:Class ;
 :SystemPackage rdf:type owl:Class ;
                rdfs:subClassOf :SoftwareComponent ,
                                [ rdf:type owl:Restriction ;
-                                 owl:onProperty amiseconto:hasClass ;
-                                 owl:someValuesFrom amiseconto:ClassSource
-                               ] ,
-                               [ rdf:type owl:Restriction ;
                                  owl:onProperty amiseconto:installedOn ;
                                  owl:someValuesFrom :System
                                ] ;
@@ -1532,12 +2084,7 @@ amiseconto:Trasnct rdf:type owl:Class ;
 
 ###  http://www.semanticweb.org/AMISecOnto/Vendor
 :Vendor rdf:type owl:Class ;
-        rdfs:subClassOf [ rdf:type owl:Class ;
-                          owl:unionOf ( :CPE
-                                        :Vendor
-                                      )
-                        ] ,
-                        [ rdf:type owl:Restriction ;
+        rdfs:subClassOf [ rdf:type owl:Restriction ;
                           owl:onProperty :hasProduct ;
                           owl:someValuesFrom :Product
                         ] ;
@@ -1602,6 +2149,10 @@ amiseconto:Trasnct rdf:type owl:Class ;
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty :hasWeakness ;
                                  owl:someValuesFrom :Weakness
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty :isObservedIn ;
+                                 owl:someValuesFrom :LogEvent
                                ] ,
                                [ rdf:type owl:Restriction ;
                                  owl:onProperty :hasDescription ;
