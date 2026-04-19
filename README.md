@@ -124,6 +124,7 @@ You can load the ontology in:
 ---
 
 ## Competency Question–Driven SPARQL Queries
+SPARQL queries in AMISSecOnto are designed to retrieve relevant cybersecurity information from the knowledge graph, supporting tasks such as event discovery, filtering, and analysis. This approach ensures that the ontology effectively addresses practical requirements, enabling the extraction of insights related to vulnerabilities, threats, assets, and security events in real-world scenarios.
 
 ## Event Discovery and Filtering
 ### CQ1: When searching for events within a specific time range, which filters do you typically apply?
