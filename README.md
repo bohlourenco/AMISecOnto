@@ -1,6 +1,6 @@
 # AMISecOnto: An Ontology for Cybersecurity Log and Vulnerability Analysis
 
-## 📌 Overview
+## Overview
 **AMISecOnto** is a modular ontology designed to support cybersecurity analysis by integrating system entities, vulnerabilities, and log-based observations into a unified semantic framework.  
 
 The ontology follows established ontology engineering best practices, emphasizing:
@@ -11,7 +11,7 @@ The ontology follows established ontology engineering best practices, emphasizin
 
 ---
 
-## 🧩 Ontology Scope
+## Ontology Scope
 AMISecOnto models key cybersecurity concepts, including:
 
 - **System Entities** (e.g., Application, Vendor, Product)
@@ -26,7 +26,7 @@ It enables linking:
 
 ---
 
-## 🏗️ Ontology Architecture
+## Ontology Architecture
 The ontology is structured into interconnected modules:
 
 - **Entity & Vulnerability Module**
@@ -41,54 +41,54 @@ These modules support:
 
 ---
 
-## ❓ Competency Questions (CQs)
+## Competency Questions (CQs)
 
 The ontology is designed to answer the following competency questions:
 
-### 🔍 Event Discovery and Filtering
+### Event Discovery and Filtering
 - CQ1: How are events filtered within a time range?
 - CQ2: How to identify events belonging to a specific system or application?
 - CQ3: How to group events within the same execution flow?
 - CQ4: Which identifiers support event grouping?
 
-### 🔗 Event Lineage Tracing
+### Event Lineage Tracing
 - CQ5: What sequence of events led to an error?
 - CQ6: How useful is pre/post-event log context?
 - CQ7: How to correlate security and system events?
 - CQ8: How to link security events with application logs?
 
-### 🔐 Authentication and Access Tracing
+### Authentication and Access Tracing
 - CQ9: How to analyze authentication attempts?
 - CQ10: How to reconstruct user sessions?
 - CQ11: How to group SSH events into sessions?
 - CQ12: Which identifiers are used for session correlation?
 
-### 📦 Application and Container Tracing
+### Application and Container Tracing
 - CQ13: How to link container lifecycle events with application errors?
 - CQ14: How to correlate database and application events?
 
-### ⚙️ System-Level Tracing
+### System-Level Tracing
 - CQ15: Which events precede system instability?
 - CQ16: How to track package installation/update events?
 - CQ17: What evidence is used when updates cause failures?
 
-### 🛡️ Security Tracing
+### Security Tracing
 - CQ18: What audit data is needed for sensitive operations?
 - CQ19: How to correlate access control events?
 - CQ20: What challenges exist in trace reconstruction?
 
-### 🔄 Cross-Source Log Correlation
+### Cross-Source Log Correlation
 - CQ21: How to correlate Syslog/Journalctl with application logs?
 - CQ22: What multi-source patterns are relevant?
 - CQ23: What makes cross-system correlation difficult?
 
-### 🚨 Anomaly and Incident Reconstruction
+### Anomaly and Incident Reconstruction
 - CQ24: What data is required for anomaly reconstruction?
 - CQ25: What are common blockers in incident analysis?
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 AMISecOnto/  
 ├── ontology/  
@@ -105,7 +105,7 @@ AMISecOnto/
 
 ---
 
-## 🛠️ Tools and Technologies
+## Tools and Technologies
 - **Protégé** for ontology development
 - **OWL / RDF / Turtle**
 - **SPARQL** for querying
