@@ -88,4 +88,44 @@ The ontology is designed to answer the following competency questions:
 
 ---
 
-## 📂 Repository Structure
+## 📁 Repository Structure
+
+AMISecOnto/  
+├── ontology/  
+│   └── AMISecOnto.ttl  
+├── figures/  
+│   ├── entity-model.png  
+│   └── log-model.png  
+├── docs/  
+│   └── paper.pdf  
+├── examples/  
+│   └── sample-queries.sparql  
+└── README.md
+
+
+---
+
+## 🛠️ Tools and Technologies
+- **Protégé** for ontology development
+- **OWL / RDF / Turtle**
+- **SPARQL** for querying
+- Reused vocabularies:
+  - PROV-O
+  - FOAF
+
+---
+
+## 🚀 Usage
+
+### Load Ontology
+You can load the ontology in:
+- Protégé
+- RDF triple stores (e.g., GraphDB, Fuseki)
+
+### Example Query (SPARQL)
+```sparql
+SELECT ?event ?vulnerability
+WHERE {
+  ?event a :LogEvent .
+  ?event :hasEvidenceByLogEvent ?vulnerability .
+}
