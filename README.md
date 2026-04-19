@@ -115,17 +115,53 @@ AMISecOnto/
 
 ---
 
-## 🚀 Usage
+## Usage
 
 ### Load Ontology
 You can load the ontology in:
 - Protégé
-- RDF triple stores (e.g., GraphDB, Fuseki)
+- RDF triple stores (e.g., OpenLink Virtuoso)
+---
 
-### Example Query (SPARQL)
+## Competency Question–Driven SPARQL Queries
+
+### CQ1: When searching for events within a specific time range, which filters do you typically apply?
+
 ```sparql
-SELECT ?event ?vulnerability
+PREFIX amiseconto: <http://www.semanticweb.org/AMISecOnto#>
+SELECT ?eventRef ?ts ?cat ?msg
+FROM <http://localhost:8890/AMISecOnto>
 WHERE {
-  ?event a :LogEvent .
-  ?event :hasEvidenceByLogEvent ?vulnerability .
+  ?event a amiseconto:LogEvent ;
+         amiseconto:hasTimestamp ?ts ;
+         amiseconto:hasCategory ?cat ;
+         amiseconto:hasRawMessage ?msg .
+  BIND(REPLACE(STR(?event), "^http://www.semanticweb.org/AMISecOnto/event/", "") AS ?eventRef)
+  FILTER(STR(?ts) >= "2025-02-21T00:00:00" && STR(?ts) < "2025-02-22T00:00:00")
 }
+ORDER BY ?ts
+LIMIT 500
+```
+This query returns a time-ordered list of log events with key information extracted for each event.
+
+### CQ2: How do you identify which events belong to a specific application, service, or host?
+
+```sparql
+PREFIX amiseconto: <http://www.semanticweb.org/AMISecOnto#>
+SELECT ?logRef ?logName ?cat ?eventRef ?line ?ts
+FROM <http://localhost:8890/AMISecOnto>
+WHERE {
+  ?log a amiseconto:Log ;
+       amiseconto:hasLogFileName ?logName ;
+       amiseconto:hasCategory ?cat ;
+       amiseconto:containsEvent ?event .
+  ?event amiseconto:hasLineNumber ?line .
+  BIND(REPLACE(STR(?log), "^http://www.semanticweb.org/AMISecOnto/log/", "") AS ?logRef)
+  BIND(REPLACE(STR(?event), "^http://www.semanticweb.org/AMISecOnto/event/", "") AS ?eventRef)
+  OPTIONAL { ?event amiseconto:hasTimestamp ?ts }
+}
+ORDER BY ?cat ?line
+LIMIT 200
+```
+
+
