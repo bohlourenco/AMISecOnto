@@ -46,45 +46,41 @@ These modules support:
 The ontology is designed to answer the following competency questions:
 
 ### Event Discovery and Filtering
-- CQ1: How are events filtered within a time range?
-- CQ2: How to identify events belonging to a specific system or application?
-- CQ3: How to group events within the same execution flow?
-- CQ4: Which identifiers support event grouping?
+- **CQ1**: Which events occurred within a specific time range and satisfy selected filters?
+- **CQ2**: Which events belong to a specific application, service, host, or component?
+- **CQ3**: Which events belong to the same request or execution flow?
+- **CQ4**: Which identifiers support grouping events into the same flow?
 
 ### Event Lineage Tracing
-- CQ5: What sequence of events led to an error?
-- CQ6: How useful is pre/post-event log context?
-- CQ7: How to correlate security and system events?
-- CQ8: How to link security events with application logs?
+- **CQ5**: Which sequence of log events led to a specific error event?
+- **CQ6**: Which events occurred before and after a given incident?
+- **CQ7**: How security events correlate with system or application events?
+- **CQ8**: Which entities or events represent the current analysis workflow?
 
 ### Authentication and Access Tracing
-- CQ9: How to analyze authentication attempts?
-- CQ10: How to reconstruct user sessions?
-- CQ11: How to group SSH events into sessions?
-- CQ12: Which identifiers are used for session correlation?
+- **CQ9**: Which authentication attempts preceded access or privilege-escalation events?
+- **CQ10**: Which information is required to reconstruct a user session timeline?
+- **CQ11**: Which SSH events belong to the same session?
+- **CQ12**: Which identifiers are consistently used for event correlation?
 
-### Application and Container Tracing
-- CQ13: How to link container lifecycle events with application errors?
-- CQ14: How to correlate database and application events?
+### Application, System, and Security Tracing
+- **CQ13**: Which container lifecycle events are linked to application errors?
+- **CQ14**: Which database events correlate with application requests?
+- **CQ15**: Which system-level events preceded instability?
+- **CQ16**: Which package installation or update events affect analysis?
+- **CQ17**: Which evidence indicates that a package update caused an issue?
+- **CQ18**: Which audit information is required for sensitive operations?
+- **CQ19**: Which secret-management events correlate with authentication events?
+- **CQ20**: Which factors complicate security trace reconstruction?
 
-### System-Level Tracing
-- CQ15: Which events precede system instability?
-- CQ16: How to track package installation/update events?
-- CQ17: What evidence is used when updates cause failures?
+### Vulnerability Analysis and Exposure
+- **CQ21**: Which installed or observed software components are affected by known vulnerabilities (CVEs)?
+- **CQ22**: Which vulnerabilities are associated with specific packages, versions, or system components?
+- **CQ23**: Which log events indicate the presence or activation of vulnerable components?
 
-### Security Tracing
-- CQ18: What audit data is needed for sensitive operations?
-- CQ19: How to correlate access control events?
-- CQ20: What challenges exist in trace reconstruction?
-
-### Cross-Source Log Correlation
-- CQ21: How to correlate Syslog/Journalctl with application logs?
-- CQ22: What multi-source patterns are relevant?
-- CQ23: What makes cross-system correlation difficult?
-
-### Anomaly and Incident Reconstruction
-- CQ24: What data is required for anomaly reconstruction?
-- CQ25: What are common blockers in incident analysis?
+### Risk Assessment and Incident Reconstruction (NIS2-aligned)
+- **CQ24**: Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
+- **CQ25**: How can risk exposure be derived from log evidence, vulnerability severity (e.g., CVSS), and observed behavior?
 
 ---
 
@@ -123,26 +119,107 @@ You can load the ontology in:
 - RDF triple stores (e.g., OpenLink Virtuoso)
 ---
 
-## Competency Question–Driven SPARQL Queries
+# Competency Questions – SHACL Shapes and SPARQL Queries
+
+This document provides SHACL validation shapes and SPARQL query templates aligned with the defined competency questions (CQs) for the AMISecOnto ontology.
+
+---
+
+## SHACL Shapes
+
+SHACL Shapes in AMISSecOnto are used to validate the structure and quality of data in the knowledge graph. They enforce constraints on entities like events, vulnerabilities, and assets, ensuring consistency and reliability for querying and analysis.
+
+```turtle
+@prefix : <http://www.semanticweb.org/AMISecOnto#> .
+@prefix amisec: <http://www.semanticweb.org/AMISecOnto/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:LogEventShape
+    a sh:NodeShape ;
+    sh:targetClass amisec:LogEvent ;
+    sh:property [
+        sh:path amisec:hasEventTimestamp ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path :hasHostname ;
+    ] ;
+    sh:property [
+        sh:path :correlatedWith ;
+        sh:class amisec:LogEvent ;
+    ] .
+
+:ApplicationLogEventShape
+    a sh:NodeShape ;
+    sh:targetClass amisec:ApplicationLogEvent ;
+    sh:property [
+        sh:path :belongsToRequest ;
+        sh:class :Request ;
+    ] .
+
+:AuthenticationEventShape
+    a sh:NodeShape ;
+    sh:targetClass :AuthenticationLogEvent ;
+    sh:property [
+        sh:path :hasSessionID ;
+    ] .
+
+:SshEventShape
+    a sh:NodeShape ;
+    sh:targetClass :SshLogEvent ;
+    sh:property [
+        sh:path :hasSessionID ;
+        sh:minCount 1 ;
+    ] .
+
+:PackageEventShape
+    a sh:NodeShape ;
+    sh:targetClass :InstalledPackageLogEvent ;
+    sh:property [
+        sh:path :hasPackageName ;
+        sh:minCount 1 ;
+    ] .
+
+:VulnerabilityShape
+    a sh:NodeShape ;
+    sh:targetClass amisec:Vulnerability ;
+    sh:property [
+        sh:path :hasCVSSScore ;
+        sh:datatype xsd:decimal ;
+    ] .
+
+:RiskAssessmentShape
+    a sh:NodeShape ;
+    sh:targetClass :RiskAssessment ;
+    sh:property [
+        sh:path :usesEvidence ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path :considers ;
+        sh:minCount 1 ;
+    ] .
+```
+
+
+## SPARQL Queries
 SPARQL queries in AMISSecOnto are designed to retrieve relevant cybersecurity information from the knowledge graph, supporting tasks such as event discovery, filtering, and analysis. This approach ensures that the ontology effectively addresses practical requirements, enabling the extraction of insights related to vulnerabilities, threats, assets, and security events in real-world scenarios.
 
 ## Event Discovery and Filtering
-### CQ1: When searching for events within a specific time range, which filters do you typically apply?
+### CQ1 – Events within a time range
 
 ```sparql
 PREFIX amiseconto: <http://www.semanticweb.org/AMISecOnto#>
-SELECT ?eventRef ?ts ?cat ?msg
-FROM <http://localhost:8890/AMISecOnto>
+SELECT ?event ?timestamp
 WHERE {
-  ?event a amiseconto:LogEvent ;
-         amiseconto:hasTimestamp ?ts ;
-         amiseconto:hasCategory ?cat ;
-         amiseconto:hasRawMessage ?msg .
-  BIND(REPLACE(STR(?event), "^http://www.semanticweb.org/AMISecOnto/event/", "") AS ?eventRef)
-  FILTER(STR(?ts) >= "2025-02-21T00:00:00" && STR(?ts) < "2025-02-22T00:00:00")
+  ?event a amisec:LogEvent ;
+         amisec:hasEventTimestamp ?timestamp .
+  FILTER (?timestamp >= "2025-01-01T00:00:00"^^xsd:dateTime &&
+          ?timestamp <= "2025-01-31T23:59:59"^^xsd:dateTime)
 }
-ORDER BY ?ts
-LIMIT 500
+ORDER BY ?timestamp
 ```
 This query returns a time-ordered list of log events with key information extracted for each event.
 
