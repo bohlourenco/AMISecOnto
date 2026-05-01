@@ -1,5 +1,7 @@
 # AMISecOnto: An Ontology for Cybersecurity Log and Vulnerability Analysis
 
+Table of contents
+
 ## Overview
 **AMISecOnto** is a modular ontology designed to support cybersecurity analysis by integrating system entities, vulnerabilities, and log-based observations into a unified semantic framework.  
 
