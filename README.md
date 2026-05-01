@@ -211,17 +211,65 @@ SPARQL queries in AMISSecOnto are designed to retrieve relevant cybersecurity in
 ### CQ1 – Events within a time range
 
 ```sparql
-PREFIX amiseconto: <http://www.semanticweb.org/AMISecOnto#>
-SELECT ?event ?timestamp
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?event ?timestamp ?host ?eventType ?message
 WHERE {
-  ?event a amisec:LogEvent ;
-         amisec:hasEventTimestamp ?timestamp .
-  FILTER (?timestamp >= "2025-01-01T00:00:00"^^xsd:dateTime &&
-          ?timestamp <= "2025-01-31T23:59:59"^^xsd:dateTime)
+  GRAPH <http://localhost:8890/AMISecOnto-v27> {
+    ?event a amis:LogEvent ;
+           amis:hasTimestamp ?timestamp ;
+           amis:hasRawMessage ?message .
+    OPTIONAL { ?event amis:hasHostname ?host . }
+    OPTIONAL { ?event amis:hasEventType ?eventType . }
+
+    FILTER (
+      ?timestamp >= "2025-02-21T10:00:00Z"^^xsd:dateTime &&
+      ?timestamp <= "2025-02-21T10:10:00Z"^^xsd:dateTime
+    )
+  }
 }
 ORDER BY ?timestamp
+LIMIT 200
 ```
 This query returns a time-ordered list of log events with key information extracted for each event.
+
+## CQ5 - Event lineage before and after error
+```sparql
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+
+SELECT ?event ?prev ?next ?timestamp ?message
+WHERE {
+  GRAPH <http://localhost:8890/AMISecOnto-v27> {
+    ?event a amis:LogEvent ;
+           amis:hasRawMessage ?message .
+    OPTIONAL { ?event amis:hasTimestamp ?timestamp . }
+    OPTIONAL { ?event amis:hasPreviousLogEvent ?prev . }
+    OPTIONAL { ?event amis:hasNextLogEvent ?next . }
+
+    FILTER (
+      CONTAINS(LCASE(?message), "error") ||
+      CONTAINS(LCASE(?message), "exception") ||
+      CONTAINS(LCASE(?message), "failed")
+    )
+  }
+}
+ORDER BY ?timestamp
+LIMIT 100
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### CQ2: How do you identify which events belong to a specific application, service, or host?
 
