@@ -89,6 +89,7 @@ AMISecOnto is organized into interconnected modules:
 <p align="center">
   <img src="figures/amiseconto-core-architecture.png" alt="AMISecOnto Architecture" width="900"/>
 </p>
+
 ---
 
 ## Competency Questions (CQs)
