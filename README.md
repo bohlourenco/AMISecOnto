@@ -38,6 +38,11 @@ The ontology follows established ontology engineering best practices, emphasizin
 - Semantic interoperability
 - Support for log analysis, event correlation, and vulnerability assessment
 
+<p align="center">
+  <img src="figures/amiseconto-logo.png" alt="AMISecOnto Architecture" width="200"/>
+</p>
+
+
 ---
 
 ## Ontology Scope
