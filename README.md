@@ -115,17 +115,39 @@ The ontology is designed to answer the following competency questions:
 
 ## Repository Structure
 
-AMISecOnto/  
-├── ontology/  
-│   └── AMISecOnto.ttl  
-├── figures/  
-│   ├── entity-model.png  
-│   └── log-model.png  
-├── docs/  
-│   └── paper.pdf  
-├── examples/  
-│   └── sample-queries.sparql  
-└── README.md
+- **data/**: Demo RDF data, statistics, and logs  
+- **queries/**: SPARQL competency questions for evaluation  
+- **scripts/**: Data ingestion, querying, validation, and CVE fetching  
+- **AMISecOnto-v27.ttl**: Core ontology  
+
+amiseconto/
+├── data/
+│   ├── amiseconto_demo_data.nt
+│   ├── amiseconto_demo_stats.json
+│   └── log_20k_AMISecOnto/
+│
+├── queries/
+│   └── competency_questions/
+│       ├── cq01_time_range_filtering.rq
+│       ├── cq05_event_lineage_before_after_error.rq
+│       ├── cq09_auth_before_privilege_escalation.rq
+│       ├── cq16_package_updates_and_related_vulnerabilities.rq
+│       ├── cq18_sensitive_operations.rq
+│       ├── cq21_cross_source_correlation.rq
+│       ├── cq22_multi_source_attack_patterns.rq
+│       ├── cq23_multi_source_attack_patterns.rq
+│       ├── cq24_incident_reconstruction.rq
+│       └── linux_nvd_vulnerabilities_overview.rq
+│
+├── scripts/
+│   ├── build_amiseconto_demo_graph.py
+│   ├── fetch_nvd_linux_cves.py
+│   ├── load_to_virtuoso.py
+│   ├── query_virtuoso.py
+│   └── validate_shacl_with_pyshacl.py
+│
+├── AMISecOnto-v27.ttl
+├── README.md
 
 
 ---
