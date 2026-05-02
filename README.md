@@ -210,8 +210,7 @@ SHACL Shapes in AMISSecOnto are used to validate the structure and quality of da
 SPARQL queries in AMISSecOnto are designed to retrieve relevant cybersecurity information from the knowledge graph, supporting tasks such as event discovery, filtering, and analysis. This approach ensures that the ontology effectively addresses practical requirements, enabling the extraction of insights related to vulnerabilities, threats, assets, and security events in real-world scenarios.
 
 ## Event Discovery and Filtering
-### CQ1 – Events within a time range
-
+### CQ1 – Which events occurred within a specific time range and satisfy selected filters?
 ```sparql
 PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -236,7 +235,8 @@ LIMIT 200
 ```
 This query returns a time-ordered list of log events with key information extracted for each event.
 
-## CQ5 - Event lineage before and after error
+### Event Lineage Tracing
+## CQ5 -  Which sequence of log events led to a specific error event?
 ```sparql
 PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
 
@@ -260,95 +260,187 @@ ORDER BY ?timestamp
 LIMIT 100
 ```
 
+This query identifies error-related log events and reconstructs their temporal context by retrieving preceding and succeeding events, along with timestamps and raw messages, enabling the analysis of event sequences leading to failures.
 
-
-
-
-
-
-
-
-
-
-
-
-
-### CQ2: How do you identify which events belong to a specific application, service, or host?
-
+### Authentication and Access Tracing
+## CQ9 - Which authentication attempts preceded access or privilege-escalation events?
 ```sparql
-PREFIX amiseconto: <http://www.semanticweb.org/AMISecOnto#>
-SELECT ?logRef ?logName ?cat ?eventRef ?line ?ts
-FROM <http://localhost:8890/AMISecOnto>
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+
+SELECT ?user ?sudoEvent ?sudoTime ?command
 WHERE {
-  ?log a amiseconto:Log ;
-       amiseconto:hasLogFileName ?logName ;
-       amiseconto:hasCategory ?cat ;
-       amiseconto:containsEvent ?event .
-  ?event amiseconto:hasLineNumber ?line .
-  BIND(REPLACE(STR(?log), "^http://www.semanticweb.org/AMISecOnto/log/", "") AS ?logRef)
-  BIND(REPLACE(STR(?event), "^http://www.semanticweb.org/AMISecOnto/event/", "") AS ?eventRef)
-  OPTIONAL { ?event amiseconto:hasTimestamp ?ts }
+  {
+    SELECT ?sudoEvent ?sudoTime ?user ?command
+    WHERE {
+      GRAPH <http://localhost:8890/AMISecOnto-v27> {
+        ?sudoEvent a amis:SudoLogEvent ;
+          amis:hasTimestamp ?sudoTime ;
+          amis:hasUser ?user ;
+          amis:hasRawMessage ?sudoMessage .
+        OPTIONAL { ?sudoEvent amis:hasCommand ?cmdDirect . }
+        OPTIONAL {
+          ?h1 amo:hasNextLogEvent ?sudoEvent .
+          ?h1 amis:hasCommand ?cmdHop1 .
+        }
+        OPTIONAL {
+          ?h2 amo:hasNextLogEvent ?h1b .
+          ?h1b amo:hasNextLogEvent ?sudoEvent .
+          ?h2 amis:hasCommand ?cmdHop2 .
+        }
+        OPTIONAL {
+          ?h3 amo:hasNextLogEvent ?h2b .
+          ?h2b amo:hasNextLogEvent ?h1c .
+          ?h1c amo:hasNextLogEvent ?sudoEvent .
+          ?h3 amis:hasCommand ?cmdHop3 .
+        }
+        OPTIONAL {
+          ?h4 amo:hasNextLogEvent ?h3b .
+          ?h3b amo:hasNextLogEvent ?h2c .
+          ?h2c amo:hasNextLogEvent ?h1d .
+          ?h1d amo:hasNextLogEvent ?sudoEvent .
+          ?h4 amis:hasCommand ?cmdHop4 .
+        }
+        OPTIONAL {
+          ?h5 amo:hasNextLogEvent ?h4b .
+          ?h4b amo:hasNextLogEvent ?h3c .
+          ?h3c amo:hasNextLogEvent ?h2d .
+          ?h2d amo:hasNextLogEvent ?h1e .
+          ?h1e amo:hasNextLogEvent ?sudoEvent .
+          ?h5 amis:hasCommand ?cmdHop5 .
+        }
+        OPTIONAL { ?sudoEvent amis:hasMessage ?sudoMsgShort . }
+        FILTER (
+          CONTAINS(LCASE(STR(?sudoMessage)), "session opened") ||
+          CONTAINS(LCASE(STR(?sudoMessage)), "suspicious") ||
+          CONTAINS(LCASE(STR(?sudoMessage)), "sudoers")
+        )
+        BIND(
+          COALESCE(
+            ?cmdDirect,
+            ?cmdHop1,
+            ?cmdHop2,
+            ?cmdHop3,
+            ?cmdHop4,
+            ?cmdHop5,
+            IF(
+              CONTAINS(STR(?sudoMessage), "COMMAND="),
+              REPLACE(STR(?sudoMessage), "^.*COMMAND=", ""),
+              COALESCE(?sudoMsgShort, STR(?sudoMessage))
+            )
+          ) AS ?command
+        )
+      }
+    }
+    ORDER BY DESC(?sudoTime)
+    LIMIT 250
+  }
+
+  FILTER EXISTS {
+    GRAPH <http://localhost:8890/AMISecOnto-v27> {
+      ?authEvent a amis:AuthenticationLogEvent ;
+        amis:hasTimestamp ?authTime ;
+        amis:hasUser ?user ;
+        amis:hasRawMessage ?authMessage .
+      FILTER (?authTime <= ?sudoTime)
+      FILTER (
+        CONTAINS(LCASE(STR(?authMessage)), "accepted") ||
+        CONTAINS(LCASE(STR(?authMessage)), "session opened") ||
+        CONTAINS(LCASE(STR(?authMessage)), "authentication")
+      )
+    }
+  }
 }
-ORDER BY ?cat ?line
+ORDER BY ?sudoTime
+LIMIT 100
+```
+This query correlates authentication events with subsequent access or privilege-escalation activities by identifying prior successful or relevant authentication attempts and linking them to sudo-related log events, reconstructing the command execution context across sequential log entries.
+
+
+### 
+## CQ16 - Which package installation or update events affect analysis?
+```sparql
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+
+SELECT ?packageEvent ?timestamp ?packageName ?version ?vulnLabel
+WHERE {
+  {
+    SELECT ?packageEvent ?timestamp ?packageName ?version ?vulnLabel
+    WHERE {
+      GRAPH <http://localhost:8890/AMISecOnto-v27> {
+        ?packageEvent a amis:InstalledPackageLogEvent ;
+          amis:hasTimestamp ?timestamp ;
+          amis:hasPackageName ?packageName ;
+          amis:hasPackage ?package .
+        OPTIONAL { ?packageEvent amis:hasPackageVersion ?version . }
+
+        OPTIONAL { ?packageEvent amis:relatedToVulnerability ?v1 . }
+        OPTIONAL { ?packageEvent amis:evidenceByLogEvent ?v2 . }
+        OPTIONAL {
+          ?component a amis:Dependency ;
+            amis:hasPackageName ?packageName ;
+            amis:relatedToVulnerability ?v3 .
+        }
+        BIND(COALESCE(?v1, ?v2, ?v3) AS ?vuln)
+        BIND(IF(BOUND(?vuln), REPLACE(STR(?vuln), "^.*/", ""), "") AS ?vulnLabel)
+      }
+    }
+  }
+}
+ORDER BY DESC(STRLEN(?vulnLabel)) DESC(?timestamp)
+LIMIT 100
+```
+
+This query identifies package installation or update events relevant to security analysis by linking them to associated vulnerabilities (e.g., CVEs) through multiple relationship paths, enabling the detection of potentially affected components and their versions.
+
+### 
+## CQ18 -  Which audit information is required for sensitive operations?
+```sparql
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# Demo RDF links indicators with amo:hasIndicator (<.../AMISecOnto/hasIndicator>), not amis:hasIndicator (#…).
+# Optional # form covers reasoning stores that align OWL to instance predicates.
+# BIND yields a string for ?indicatorLabel (empty when no indicator) so UIs always show the column.
+SELECT ?event ?timestamp ?host ?userName ?indicatorLabel ?message
+WHERE {
+  GRAPH <http://localhost:8890/AMISecOnto-v27> {
+    ?event a amis:SecurityLogEvent ;
+      amis:hasTimestamp ?timestamp ;
+      amis:hasHostname ?host ;
+      amis:hasRawMessage ?message .
+
+    FILTER (
+      CONTAINS(LCASE(STR(?message)), "sudo") ||
+      CONTAINS(LCASE(STR(?message)), "su:") ||
+      CONTAINS(LCASE(STR(?message)), "sensitive_read") ||
+      CONTAINS(LCASE(STR(?message)), "backdoor") ||
+      CONTAINS(LCASE(STR(?message)), "audit")
+    )
+
+    OPTIONAL { ?event amis:hasUserName ?userName . }
+    OPTIONAL { ?event amo:hasIndicator ?i1 . }
+    OPTIONAL { ?event amis:hasIndicator ?i2 . }
+    BIND(COALESCE(?i1, ?i2) AS ?indicator)
+    OPTIONAL { ?indicator rdfs:label ?il }
+    BIND(
+      IF(
+        BOUND(?indicator),
+        COALESCE(?il, REPLACE(STR(?indicator), "^.*/", "")),
+        ""
+      ) AS ?indicatorLabel
+    )
+  }
+}
+ORDER BY DESC(STRLEN(?indicatorLabel)) ?timestamp
 LIMIT 200
 ```
-This query returns a structured view of log files and the events they contain.
 
-## Event Lineage Tracing
-### CQ5: What sequence of log events led to a specific error event?
-```sparql
-PREFIX amiseconto: <http://www.semanticweb.org/AMISecOnto#>
-SELECT ?line ?msg
-FROM <http://localhost:8890/AMISecOnto>
-WHERE {
-  ?log amiseconto:hasCategory "error_20k" ;
-       amiseconto:containsEvent ?ev .
-  ?ev amiseconto:hasLineNumber ?line ;
-      amiseconto:hasRawMessage ?msg .
-  FILTER(?line >= 130 && ?line <= 150)
-}
-ORDER BY ?line
-```
 
-This query returns a specific slice of log messages from an error log.
 
-### CQ8: How to correlate security events with system or application events in your current analysis workflow?
-```sparql
-PREFIX amiseconto: <http://www.semanticweb.org/AMISecOnto#>
-SELECT ?netRef ?hostRef ?netMsg ?hostMsg
-FROM <http://localhost:8890/AMISecOnto>
-WHERE {
-  ?ne a amiseconto:SecurityLogEvent ;
-      amiseconto:hasCategory "netfilter_20k" ;
-      amiseconto:hasRawMessage ?netMsg ;
-      amiseconto:correlatedWith ?he .
-  ?he a amiseconto:SystemLogEvent ;
-      amiseconto:hasCategory "host_20k" ;
-      amiseconto:hasRawMessage ?hostMsg .
-  BIND(REPLACE(STR(?ne), "^http://www.semanticweb.org/AMISecOnto/event/", "") AS ?netRef)
-  BIND(REPLACE(STR(?he), "^http://www.semanticweb.org/AMISecOnto/event/", "") AS ?hostRef)
-}
-LIMIT 200
-```
-This query shows correlated pairs of security (network) events and system/application (host) events.
 
-## Authentication and Access Tracing
-### CQ9: How do you analyze authentication attempts preceding access or privilege escalation events?
-```sparql
-PREFIX amiseconto: <http://www.semanticweb.org/AMISecOnto#>
-SELECT ?eventRef ?line ?ts ?msg
-FROM <http://localhost:8890/AMISecOnto>
-WHERE {
-  ?event a amiseconto:SshLogEvent ;
-         amiseconto:hasLineNumber ?line ;
-         amiseconto:hasRawMessage ?msg .
-  BIND(REPLACE(STR(?event), "^http://www.semanticweb.org/AMISecOnto/event/", "") AS ?eventRef)
-  OPTIONAL { ?event amiseconto:hasTimestamp ?ts }
-  FILTER(STRSTARTS(STR(?ts), "2025-02-21"))
-}
-ORDER BY ?line
-LIMIT 200
-```
-This query helps you trace authentication activity (SSH) over a specific day, which is useful for identifying attempts that may precede unauthorized access or privilege escalation.
+
+
 
 
