@@ -1,7 +1,55 @@
 # AMISecOnto: An Ontology for Cybersecurity Log and Vulnerability Analysis
 
-Table of contents
+## Table of Contents
 
+- [Overview](#overview)
+- [Ontology Scope](#ontology-scope)
+- [Ontology Architecture](#ontology-architecture)
+- [Repository Structure](#repository-structure)
+- [Tools and Technologies](#tools-and-technologies)
+- [Usage](#usage)
+  - [Load Ontology](#load-ontology)
+  - [Query the Knowledge Graph](#query-the-knowledge-graph)
+  - [Validate Data with SHACL](#validate-data-with-shacl)
+- [Competency Questions (CQs)](#competency-questions-cqs)
+  - [Event Discovery and Filtering](#event-discovery-and-filtering)
+    - CQ1 – Time-based Event Retrieval
+    - CQ2 – Event Attribution
+    - CQ3 – Execution Flow Tracing
+    - CQ4 – Flow Correlation Identifiers
+  - [Event Lineage Tracing](#event-lineage-tracing)
+    - CQ5 – Error Event Sequences
+    - CQ6 – Pre/Post Incident Events
+    - CQ7 – Security–System Correlation
+    - CQ8 – Analysis Workflow Representation
+  - [Authentication and Access Tracing](#authentication-and-access-tracing)
+    - CQ9 – Authentication → Privilege Escalation
+    - CQ10 – Session Reconstruction
+    - CQ11 – SSH Session Correlation
+    - CQ12 – Event Correlation Identifiers
+  - [Application, System, and Security Tracing](#application-system-and-security-tracing)
+    - CQ13 – Container Lifecycle vs Errors
+    - CQ14 – Database–Application Correlation
+    - CQ15 – System Instability Precursors
+    - CQ16 – Package Events Affecting Analysis
+    - CQ17 – Package Update Impact Evidence
+    - CQ18 – Audit Data for Sensitive Operations
+    - CQ19 – Secret Management Correlation
+    - CQ20 – Challenges in Trace Reconstruction
+  - [Vulnerability Analysis and Exposure](#vulnerability-analysis-and-exposure)
+    - CQ21 – Vulnerable Installed/Observed Components
+    - CQ22 – Vulnerability–Component Associations
+    - CQ23 – Vulnerability Presence or Activation in Logs
+  - [Risk Assessment and Incident Reconstruction (NIS2-aligned)](#risk-assessment-and-incident-reconstruction-nis2-aligned)
+    - CQ24 – High-Risk Event Combinations
+    - CQ25 – Risk Exposure Derivation
+- [SHACL Validation Shapes](#shacl-validation-shapes)
+- [SPARQL Query Templates](#sparql-query-templates)
+- [Examples](#examples)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
+  
 ## Overview
 **AMISecOnto** is a modular ontology designed to support cybersecurity analysis by integrating system entities, vulnerabilities, and log-based observations into a unified semantic framework.  
 
