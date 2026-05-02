@@ -256,13 +256,13 @@ queries/competency_questions/
 
 ---
 
-# Competency Questions – SHACL Shapes and SPARQL Queries
+## Competency Questions – SHACL Shapes and SPARQL Queries
 
 This document provides SHACL validation shapes and SPARQL query templates aligned with the defined competency questions (CQs) for the AMISecOnto ontology.
 
 ---
 
-## SHACL Shapes
+### SHACL Shapes
 
 SHACL Shapes in AMISecOnto are used to validate the structure and quality of data in the knowledge graph. They enforce constraints on entities like events, vulnerabilities, and assets, ensuring consistency and reliability for querying and analysis.
 
@@ -275,8 +275,8 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
 @prefix amis: <http://www.semanticweb.org/AMISecOnto#> .
 @prefix amo: <http://www.semanticweb.org/AMISecOnto/> .
 ```
-# CQ-aligned SHACL for AMISecOnto demo instance data (build_amiseconto_demo_graph.py).
-# Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, hasCVSS*, hasStatusCode use amo: (/).
+## CQ-aligned SHACL for AMISecOnto demo instance data (build_amiseconto_demo_graph.py).
+## Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, hasCVSS*, hasStatusCode use amo: (/).
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes/cq>
     a owl:Ontology ;
@@ -284,7 +284,7 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     rdfs:comment "Validates patterns needed by queries under queries/competency_questions/. Severity: Violation = data bug; Warning = recommended for correlation/CQ coverage."@en .
 ```
 
-## LogEvent — core columns used across CQs
+### LogEvent — core columns used across CQs
 ```turtle
 
 <http://www.semanticweb.org/AMISecOnto/shapes#LogEventCoreShape>
@@ -329,7 +329,7 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-## Doubly-linked per-log sequences (CQ lineage)
+### Doubly-linked per-log sequences (CQ lineage)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#EventLineageShape>
     a sh:NodeShape ;
@@ -359,8 +359,8 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-## SSH / authentication logs — session hooks for CQ09-style traces
-# Demo NT always sets hasSessionID from syslog PID; user identity is often absent.
+### SSH / authentication logs — session hooks for CQ09-style traces
+## Demo NT always sets hasSessionID from syslog PID; user identity is often absent.
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#AuthenticationEventShape>
     a sh:NodeShape ;
@@ -398,7 +398,7 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-## Audit / sudo / su — pattern indicators use amo:hasIndicator in instance data
+### Audit / sudo / su — pattern indicators use amo:hasIndicator in instance data
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#SecurityEventShape>
     a sh:NodeShape ;
@@ -429,7 +429,7 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-## Dpkg / package events — CQ16, CQ23 presence rows
+### Dpkg / package events — CQ16, CQ23 presence rows
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#PackageEventShape>
     a sh:NodeShape ;
@@ -455,7 +455,7 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-## HTTP access — CQ21 / request correlation (not all ApplicationLogEvent rows are HTTP)
+### HTTP access — CQ21 / request correlation (not all ApplicationLogEvent rows are HTTP)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#AccessLogCorrelationShape>
     a sh:NodeShape ;
@@ -476,7 +476,7 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-## Vulnerability individuals — NVD + curated seed
+### Vulnerability individuals — NVD + curated seed
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#VulnerabilityShape>
     a sh:NodeShape ;
@@ -517,7 +517,7 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-## Indicator resources referenced by events
+### Indicator resources referenced by events
 ```turtle
 
 
