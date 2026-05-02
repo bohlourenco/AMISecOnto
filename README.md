@@ -184,16 +184,19 @@ Run all commands from the repository root:
 
 ```bash
 python3 scripts/fetch_nvd_linux_cves.py --api-key "$NVD_API_KEY" --max-records 1000
+```
 
 ### 2. Build Instance RDF
 
 ```bash
 python3 scripts/build_amiseconto_demo_graph.py
+```
 
 Outputs:
 ```bash
 build/amiseconto_demo_data.nt
 build/amiseconto_demo_stats.json
+```
 
 ---
 
