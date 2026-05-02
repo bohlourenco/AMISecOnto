@@ -397,7 +397,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     ] .
 ```
 
-### Audit / sudo / su — pattern indicators use amo:hasindicator in instance data (CQ18, CQ119, CQ20)
+### Audit, sudo, and su event constraints for indicator linking and user attribution (CQ18, CQ19, CQ20)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#SecurityEventShape>
     a sh:NodeShape ;
