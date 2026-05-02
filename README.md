@@ -1,3 +1,4 @@
+![AMISecOnto Logo](figures/logo.png)
 # AMISecOnto: An Ontology for Cybersecurity Log and Vulnerability Analysis
 
 ## Table of Contents
