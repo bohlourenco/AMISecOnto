@@ -120,6 +120,7 @@ The ontology is designed to answer the following competency questions:
 - **scripts/**: Data ingestion, querying, validation, and CVE fetching  
 - **AMISecOnto-v27.ttl**: Core ontology  
 
+```bash
 amiseconto/
 ├── data/
 │   ├── amiseconto_demo_data.nt
@@ -148,6 +149,7 @@ amiseconto/
 │
 ├── AMISecOnto-v27.ttl
 ├── README.md
+```
 
 
 ---
