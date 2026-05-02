@@ -213,6 +213,21 @@ Default graph:
 http://localhost:8890/AMISecOnto-v27
 ```
 
+To append instead of replacing:
+```bash
+python3 scripts/load_to_virtuoso.py --keep-existing
+```
+
+### 4. Run (Use) the Demo
+
+Execute competency queries:
+```bash
+python3 scripts/query_virtuoso.py queries/competency_questions/cq24_incident_reconstruction.rq
+```
+Replace the .rq file with any query under:
+```bash
+queries/competency_questions/
+```
 
 ---
 
