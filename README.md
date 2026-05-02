@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="figures/amiseconto-logo.png" alt="AMISecOnto Logo" width="300"/>
+  <img src="figures/amiseconto-logo.png" alt="AMISecOnto Logo" width="200"/>
 </p>
+
 # AMISecOnto: An Ontology for Cybersecurity Log and Vulnerability Analysis
 
 ## Table of Contents
