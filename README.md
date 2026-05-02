@@ -30,7 +30,6 @@
 - [License](#license)
   
 ## Overview
-## Overview
 
 **AMISecOnto** is a modular cybersecurity ontology that transforms heterogeneous data—such as AMIS system logs and vulnerability intelligence (e.g., NVD)—into a unified semantic knowledge graph for advanced security analysis.
 
@@ -51,9 +50,7 @@
 
 ---
 
-
-
-### Architecture and Processing Pipeline
+## Architecture and Processing Pipeline
 AMISecOnto follows a structured pipeline:
 
 1. **Data Ingestion**  
