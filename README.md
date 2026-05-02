@@ -48,23 +48,6 @@
 </p>
 
 
----
-
-## Ontology Scope
-AMISecOnto models key cybersecurity concepts, including:
-
-- **System Entities** (e.g., Application, Vendor, Product)
-- **Vulnerabilities** (aligned with NVD structures)
-- **Log Data and Events**
-- **User Activities and System Behavior**
-- **Indicators and Security Evidence**
-
-It enables linking:
-- Static knowledge (e.g., vulnerabilities, configurations)
-- Dynamic evidence (e.g., logs, events)
-
----
-
 ## Ontology Architecture
 The ontology is structured into interconnected modules:
 
