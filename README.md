@@ -197,6 +197,22 @@ Outputs:
 build/amiseconto_demo_data.nt
 build/amiseconto_demo_stats.json
 ```
+### 3. Load into Virtuoso
+```bash
+python3 scripts/load_to_virtuoso.py
+```
+
+Loads:
+AMISecOnto-v27.ttl
+```bash
+build/amiseconto_demo_data.nt
+```
+
+Default graph:
+```bash
+http://localhost:8890/AMISecOnto-v27
+```
+
 
 ---
 
