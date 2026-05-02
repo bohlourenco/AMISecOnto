@@ -256,13 +256,13 @@ queries/competency_questions/
 
 ---
 
-## Competency Questions – SHACL Shapes and SPARQL Queries
+## Competency Questions – SHACL shapes and SPARQL queries
 
 This document provides SHACL validation shapes and SPARQL query templates aligned with the defined competency questions (CQs) for the AMISecOnto ontology.
 
 ---
 
-### SHACL Shapes
+### SHACL shapes
 
 SHACL Shapes in AMISecOnto are used to validate the structure and quality of data in the knowledge graph. They enforce constraints on entities like events, vulnerabilities, and assets, ensuring consistency and reliability for querying and analysis.
 
@@ -284,7 +284,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     rdfs:comment "Validates patterns needed by queries under queries/competency_questions/. Severity: Violation = data bug; Warning = recommended for correlation/CQ coverage."@en .
 ```
 
-### logevent core shape constraints
+### Logevent core shape constraints (CQ1, CQ2)
 ```turtle
 
 <http://www.semanticweb.org/AMISecOnto/shapes#LogEventCoreShape>
@@ -329,7 +329,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     ] .
 ```
 
-### Constraints for ensuring bidirectional consistency in logevent lineage
+### Constraints for ensuring bidirectional consistency in logevent lineage (CQ5, CQ6)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#EventLineageShape>
     a sh:NodeShape ;
@@ -359,7 +359,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     ] .
 ```
 
-### Constraints for session reconstruction and user attribution in authentication events
+### Constraints for session reconstruction and user attribution in authentication events (CQ9, CQ10, CQ11, CQ12)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#AuthenticationEventShape>
     a sh:NodeShape ;
@@ -397,7 +397,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     ] .
 ```
 
-### Audit / sudo / su — pattern indicators use amo:hasindicator in instance data
+### Audit / sudo / su — pattern indicators use amo:hasindicator in instance data (CQ18, CQ119, CQ20)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#SecurityEventShape>
     a sh:NodeShape ;
@@ -428,7 +428,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     ] .
 ```
 
-### Validation of package event semantics and system package associations
+### Validation of package event semantics and system package associations (CQ16, CQ17)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#PackageEventShape>
     a sh:NodeShape ;
@@ -454,7 +454,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     ] .
 ```
 
-### Constraints for http access log correlation and request association
+### Constraints for http access log correlation and request association (CQ14)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#AccessLogCorrelationShape>
     a sh:NodeShape ;
@@ -475,7 +475,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     ] .
 ```
 
-### Validation of vulnerability entities with nvd-derived severity and cvss metadata
+### Validation of vulnerability entities with nvd-derived severity and cvss metadata (CQ16, CQ17, CQ21, CQ22 (CVE-centric joins), CQ23)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#VulnerabilityShape>
     a sh:NodeShape ;
@@ -516,7 +516,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     ] .
 ```
 
-### Validation of indicator entities for consistent identification and labeling”
+### Validation of indicator entities for consistent identification and labeling (CQ23, CQ24)
 ```turtle
 
 
