@@ -30,13 +30,18 @@
 - [License](#license)
   
 ## Overview
-**AMISecOnto** is a modular ontology designed to support cybersecurity analysis by integrating system entities, vulnerabilities, and log-based observations into a unified semantic framework.  
+**AMISecOnto** is a modular cybersecurity ontology that integrates system logs (AMIS) and vulnerability data (e.g., NVD) into a unified semantic knowledge graph.
 
-The ontology follows established ontology engineering best practices, emphasizing:
-- Modular design
-- Transparent vocabulary reuse (e.g., PROV-O, FOAF)
-- Semantic interoperability
-- Support for log analysis, event correlation, and vulnerability assessment
+### Key Features
+- **Modular design** (Entities, Vulnerabilities, Standards)
+- **Semantic enrichment** of logs with CVE/CPE/CVSS context
+- **Standards-based**: RDF, OWL, SHACL, PROV-O, FOAF
+- **Interoperability & provenance** support
+- **Analytics-ready**:
+  - Event correlation  
+  - Risk assessment  
+  - Incident reconstruction  
+  - Evidence tracing
 
 <p align="center">
   <img src="figures/amiseconto-core-architecture.png" alt="AMISecOnto Architecture" width="900"/>
