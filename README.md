@@ -1,4 +1,6 @@
-![AMISecOnto Logo](figures/logo.png)
+<p align="center">
+  <img src="figures/amiseconto-logo.png" alt="AMISecOnto Logo" width="300"/>
+</p>
 # AMISecOnto: An Ontology for Cybersecurity Log and Vulnerability Analysis
 
 ## Table of Contents
