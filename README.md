@@ -264,7 +264,7 @@ This document provides SHACL validation shapes and SPARQL query templates aligne
 
 ## SHACL Shapes
 
-SHACL Shapes in AMISSecOnto are used to validate the structure and quality of data in the knowledge graph. They enforce constraints on entities like events, vulnerabilities, and assets, ensuring consistency and reliability for querying and analysis.
+SHACL Shapes in AMISecOnto are used to validate the structure and quality of data in the knowledge graph. They enforce constraints on entities like events, vulnerabilities, and assets, ensuring consistency and reliability for querying and analysis.
 
 ```turtle
 @prefix sh: <http://www.w3.org/ns/shacl#> .
@@ -282,10 +282,10 @@ SHACL Shapes in AMISSecOnto are used to validate the structure and quality of da
     a owl:Ontology ;
     rdfs:label "AMISecOnto competency-question SHACL"@en ;
     rdfs:comment "Validates patterns needed by queries under queries/competency_questions/. Severity: Violation = data bug; Warning = recommended for correlation/CQ coverage."@en .
+```
 
-#################################################################
-# LogEvent — core columns used across CQs
-#################################################################
+```turtle
+## LogEvent — core columns used across CQs
 
 <http://www.semanticweb.org/AMISecOnto/shapes#LogEventCoreShape>
     a sh:NodeShape ;
@@ -327,10 +327,10 @@ SHACL Shapes in AMISSecOnto are used to validate the structure and quality of da
         sh:severity sh:Warning ;
         sh:message "LogEvent should include hostname for cross-source correlation."@en
     ] .
+```
 
-#################################################################
-# Doubly-linked per-log sequences (CQ lineage)
-#################################################################
+```turtle
+## Doubly-linked per-log sequences (CQ lineage)
 
 <http://www.semanticweb.org/AMISecOnto/shapes#EventLineageShape>
     a sh:NodeShape ;
@@ -358,11 +358,11 @@ SHACL Shapes in AMISSecOnto are used to validate the structure and quality of da
             }
         """
     ] .
+```
 
-#################################################################
-# SSH / authentication logs — session hooks for CQ09-style traces
+```turtle
+## SSH / authentication logs — session hooks for CQ09-style traces
 # Demo NT always sets hasSessionID from syslog PID; user identity is often absent.
-#################################################################
 
 <http://www.semanticweb.org/AMISecOnto/shapes#AuthenticationEventShape>
     a sh:NodeShape ;
@@ -398,10 +398,10 @@ SHACL Shapes in AMISSecOnto are used to validate the structure and quality of da
             }
         """
     ] .
+```
 
-#################################################################
-# Audit / sudo / su — pattern indicators use amo:hasIndicator in instance data
-#################################################################
+```turtle
+## Audit / sudo / su — pattern indicators use amo:hasIndicator in instance data
 
 <http://www.semanticweb.org/AMISecOnto/shapes#SecurityEventShape>
     a sh:NodeShape ;
@@ -430,10 +430,10 @@ SHACL Shapes in AMISSecOnto are used to validate the structure and quality of da
             }
         """
     ] .
+```
 
-#################################################################
-# Dpkg / package events — CQ16, CQ23 presence rows
-#################################################################
+```turtle
+## Dpkg / package events — CQ16, CQ23 presence rows
 
 <http://www.semanticweb.org/AMISecOnto/shapes#PackageEventShape>
     a sh:NodeShape ;
@@ -457,10 +457,10 @@ SHACL Shapes in AMISSecOnto are used to validate the structure and quality of da
         sh:minCount 1 ;
         sh:message "InstalledPackageLogEvent must link to a SystemPackage via hasPackage."@en
     ] .
+```
 
-#################################################################
-# HTTP access — CQ21 / request correlation (not all ApplicationLogEvent rows are HTTP)
-#################################################################
+```turtle
+## HTTP access — CQ21 / request correlation (not all ApplicationLogEvent rows are HTTP)
 
 <http://www.semanticweb.org/AMISecOnto/shapes#AccessLogCorrelationShape>
     a sh:NodeShape ;
@@ -479,10 +479,10 @@ SHACL Shapes in AMISSecOnto are used to validate the structure and quality of da
         sh:severity sh:Warning ;
         sh:message "AccessLogEvent should link belongsToRequest for request grouping."@en
     ] .
+```
 
-#################################################################
-# Vulnerability individuals — NVD + curated seed
-#################################################################
+```turtle
+## Vulnerability individuals — NVD + curated seed
 
 <http://www.semanticweb.org/AMISecOnto/shapes#VulnerabilityShape>
     a sh:NodeShape ;
@@ -521,10 +521,10 @@ SHACL Shapes in AMISSecOnto are used to validate the structure and quality of da
         sh:minCount 1 ;
         sh:message "Demo graph links vulnerabilities to at least one System via affectsSystem when ingested."@en
     ] .
+```
 
-#################################################################
-# Indicator resources referenced by events
-#################################################################
+```turtle
+## Indicator resources referenced by events
 
 <http://www.semanticweb.org/AMISecOnto/shapes#IndicatorShape>
     a sh:NodeShape ;
