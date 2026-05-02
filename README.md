@@ -30,37 +30,68 @@
 - [License](#license)
   
 ## Overview
-**AMISecOnto** is a modular cybersecurity ontology that integrates system logs (AMIS) and vulnerability data (e.g., NVD) into a unified semantic knowledge graph.
+## Overview
 
-### Key Features
-- **Modular design** (Entities, Vulnerabilities, Standards)
-- **Semantic enrichment** of logs with CVE/CPE/CVSS context
-- **Standards-based**: RDF, OWL, SHACL, PROV-O, FOAF
-- **Interoperability & provenance** support
+**AMISecOnto** is a modular cybersecurity ontology that transforms heterogeneous data—such as AMIS system logs and vulnerability intelligence (e.g., NVD)—into a unified semantic knowledge graph for advanced security analysis.
+
+---
+
+## Key Features
+
+- **Integrated data ingestion**: Combines raw logs with vulnerability data for contextual enrichment  
+- **Modular design**: Core modules for Entities, Vulnerabilities, and Standards  
+- **Semantic enrichment**: Links events to CVE, CPE, and CVSS information  
+- **Standards-based**: RDF, OWL, SHACL, PROV-O, FOAF  
+- **Interoperability & provenance**: Ensures traceability and cross-system integration  
 - **Analytics-ready**:
   - Event correlation  
   - Risk assessment  
   - Incident reconstruction  
-  - Evidence tracing
+  - Evidence tracing  
+
+---
+
+
+
+### Architecture and Processing Pipeline
+AMISecOnto follows a structured pipeline:
+
+1. **Data Ingestion**  
+   Integrates AMIS logs with NVD vulnerability data  
+
+2. **Semantic Knowledge Graph Construction**  
+   Transforms raw data into a structured, queryable graph  
+
+3. **Core Ontology Modules**  
+   - **Entities**: Users, systems, software  
+   - **Vulnerabilities**: CVE, CPE, CVSS  
+   - **Standards**: RDF, OWL, SHACL, PROV-O, FOAF  
+
+4. **Security Outputs**  
+   - Incident reconstruction  
+   - Risk assessment  
+   - Evidence tracing  
+
+---
+
+## Ontology Modules
+
+AMISecOnto is organized into interconnected modules:
+
+- **Entity & Vulnerability Module**  
+- **Log & Event Module**  
+- **System & Activity Module**  
+- **Security & Indicator Module**  
+
+### Design Principles
+
+- Separation of concerns  
+- Reusability  
+- Scalable knowledge graph construction  
 
 <p align="center">
   <img src="figures/amiseconto-core-architecture.png" alt="AMISecOnto Architecture" width="900"/>
 </p>
-
-
-## Ontology Architecture
-The ontology is structured into interconnected modules:
-
-- **Entity & Vulnerability Module**
-- **Log & Event Module**
-- **System & Activity Module**
-- **Security & Indicator Module**
-
-These modules support:
-- Separation of concerns
-- Reusability
-- Scalable knowledge graph construction
-
 ---
 
 ## Competency Questions (CQs)
