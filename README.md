@@ -276,7 +276,7 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
 @prefix amo: <http://www.semanticweb.org/AMISecOnto/> .
 ```
 ## CQ-aligned SHACL for AMISecOnto demo instance data (build_amiseconto_demo_graph.py).
-## Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, hasCVSS*, hasStatusCode use amo: (/).
+Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, hasCVSS*, hasStatusCode use amo: (/).
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes/cq>
     a owl:Ontology ;
