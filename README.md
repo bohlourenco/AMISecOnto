@@ -161,12 +161,40 @@ AMISecOnto/
 
 ---
 
-## Usage
+## Prerequisites
 
-### Load Ontology
-You can load the ontology in:
-- Protégé
-- RDF triple stores (e.g., OpenLink Virtuoso)
+- **Python 3** (stdlib only for the main scripts)  
+  - Optional: `pip install pyshacl` for SHACL validation
+- **Virtuoso Open Source** running at:
+  - `http://localhost:8890`
+  - Endpoints:
+    - `/sparql`
+    - `/sparql-graph-crud`
+- **Log dataset**:
+  - Directory: `log_20k_AMISecOnto` under the project root  
+  - Or specify a custom path using `--dataset-dir`
+
+---
+
+## Load Data (Full Pipeline)
+
+Run all commands from the repository root:
+
+### 1. Fetch NVD CVEs for Linux
+
+```bash
+python3 scripts/fetch_nvd_linux_cves.py --api-key "$NVD_API_KEY" --max-records 1000
+
+### 2. Build Instance RDF
+
+```bash
+python3 scripts/build_amiseconto_demo_graph.py
+
+Outputs:
+```bash
+build/amiseconto_demo_data.nt
+build/amiseconto_demo_stats.json
+
 ---
 
 # Competency Questions – SHACL Shapes and SPARQL Queries
