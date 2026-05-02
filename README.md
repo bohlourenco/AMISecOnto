@@ -274,18 +274,18 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix amis: <http://www.semanticweb.org/AMISecOnto#> .
 @prefix amo: <http://www.semanticweb.org/AMISecOnto/> .
-
+```
 # CQ-aligned SHACL for AMISecOnto demo instance data (build_amiseconto_demo_graph.py).
 # Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, hasCVSS*, hasStatusCode use amo: (/).
-
+```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes/cq>
     a owl:Ontology ;
     rdfs:label "AMISecOnto competency-question SHACL"@en ;
     rdfs:comment "Validates patterns needed by queries under queries/competency_questions/. Severity: Violation = data bug; Warning = recommended for correlation/CQ coverage."@en .
 ```
 
-```turtle
 ## LogEvent — core columns used across CQs
+```turtle
 
 <http://www.semanticweb.org/AMISecOnto/shapes#LogEventCoreShape>
     a sh:NodeShape ;
@@ -329,9 +329,8 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-```turtle
 ## Doubly-linked per-log sequences (CQ lineage)
-
+```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#EventLineageShape>
     a sh:NodeShape ;
     sh:targetClass amis:LogEvent ;
@@ -360,10 +359,9 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-```turtle
 ## SSH / authentication logs — session hooks for CQ09-style traces
 # Demo NT always sets hasSessionID from syslog PID; user identity is often absent.
-
+```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#AuthenticationEventShape>
     a sh:NodeShape ;
     sh:targetClass amis:AuthenticationLogEvent ;
@@ -400,9 +398,8 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-```turtle
 ## Audit / sudo / su — pattern indicators use amo:hasIndicator in instance data
-
+```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#SecurityEventShape>
     a sh:NodeShape ;
     sh:targetClass amis:SecurityLogEvent ;
@@ -432,9 +429,8 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-```turtle
 ## Dpkg / package events — CQ16, CQ23 presence rows
-
+```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#PackageEventShape>
     a sh:NodeShape ;
     sh:targetClass amis:InstalledPackageLogEvent ;
@@ -459,9 +455,8 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-```turtle
 ## HTTP access — CQ21 / request correlation (not all ApplicationLogEvent rows are HTTP)
-
+```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#AccessLogCorrelationShape>
     a sh:NodeShape ;
     sh:targetClass amis:AccessLogEvent ;
@@ -481,9 +476,8 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-```turtle
 ## Vulnerability individuals — NVD + curated seed
-
+```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#VulnerabilityShape>
     a sh:NodeShape ;
     sh:targetClass amis:Vulnerability ;
@@ -523,8 +517,9 @@ SHACL Shapes in AMISecOnto are used to validate the structure and quality of dat
     ] .
 ```
 
-```turtle
 ## Indicator resources referenced by events
+```turtle
+
 
 <http://www.semanticweb.org/AMISecOnto/shapes#IndicatorShape>
     a sh:NodeShape ;
