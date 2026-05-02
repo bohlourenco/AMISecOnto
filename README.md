@@ -39,7 +39,7 @@ The ontology follows established ontology engineering best practices, emphasizin
 - Support for log analysis, event correlation, and vulnerability assessment
 
 <p align="center">
-  <img src="figures/amiseconto-core-architecture.png" alt="AMISecOnto Architecture" width="400"/>
+  <img src="figures/amiseconto-core-architecture.png" alt="AMISecOnto Architecture" width="800"/>
 </p>
 
 
