@@ -169,7 +169,9 @@ amiseconto/
 │   ├── query_virtuoso.py
 │   └── validate_shacl_with_pyshacl.py
 │
-├── AMISecOnto-v27.ttl
+├── amiseconto/
+│   ├── AMISecOnto.ttl
+│   ├── AMISecOnto-.ttl
 ├── README.md
 ```
 
