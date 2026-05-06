@@ -569,15 +569,17 @@ This query returns a time-ordered list of log events with key information extrac
 ## CQ5 - Which sequence of log events led to a specific error event?
 ```sparql
 PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 SELECT ?event ?prev ?next ?timestamp ?message
 WHERE {
-  GRAPH <http://localhost:8890/AMISecOnto-v27> {
-    ?event a amis:LogEvent ;
+  GRAPH <http://localhost:8890/AMISecOnto> {
+    ?event a amo:LogEvent ;
            amis:hasRawMessage ?message .
     OPTIONAL { ?event amis:hasTimestamp ?timestamp . }
-    OPTIONAL { ?event amis:hasPreviousLogEvent ?prev . }
-    OPTIONAL { ?event amis:hasNextLogEvent ?next . }
+    OPTIONAL { ?event amo:hasPreviousLogEvent ?prev . }
+    OPTIONAL { ?event amo:hasNextLogEvent ?next . }
 
     FILTER (
       CONTAINS(LCASE(?message), "error") ||
@@ -586,7 +588,7 @@ WHERE {
     )
   }
 }
-ORDER BY ?timestamp
+ORDER BY xsd:dateTime(?timestamp)
 LIMIT 100
 ```
 
