@@ -140,7 +140,7 @@ The ontology is designed to answer the following competency questions:
 - **data/**: Demo RDF data, statistics, and logs  
 - **queries/**: SPARQL competency questions for evaluation  
 - **scripts/**: Data ingestion, querying, validation, and CVE fetching  
-- **AMISecOnto-v27.ttl**: Core ontology  
+- **AMISecOnto.ttl**: Core ontology  
 
 ```bash
 amiseconto/
