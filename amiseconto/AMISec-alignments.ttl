@@ -1,0 +1,35 @@
+@prefix : <http://www.semanticweb.org/AMISecOnto/interop#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+<http://www.semanticweb.org/AMISecOnto/interop> rdf:type owl:Ontology ;
+    dct:title "AMISec Interoperability Alignment Module"@en ;
+    dct:description "Minimal OWL 2 DL-safe module providing class declarations for PROV-O and FOAF without requiring full imports. This allows AMISecOnto classes to align with external ontologies while maintaining DL compliance."@en ;
+    dct:license <https://creativecommons.org/licenses/by/4.0/> .
+#################################################################
+#    Asserted Signatures (No huge imports required)
+#################################################################
+
+#<http://xmlns.com/foaf/0.1/Person> rdf:type owl:Class .
+#<http://www.w3.org/ns/prov#Agent> rdf:type owl:Class .
+#<http://www.w3.org/ns/prov#Activity> rdf:type owl:Class .
+#<http://www.w3.org/ns/prov#Entity> rdf:type owl:Class .
+
+<http://xmlns.com/foaf/0.1/Person> rdf:type owl:Class ;
+    rdfs:label "FOAF Person"@en ;
+    rdfs:comment "External reference to FOAF Person class for interoperability."@en .
+
+<http://www.w3.org/ns/prov#Agent> rdf:type owl:Class ;
+    rdfs:label "PROV Agent"@en ;
+    rdfs:comment "External reference to PROV Agent class for interoperability."@en .
+
+<http://www.w3.org/ns/prov#Activity> rdf:type owl:Class ;
+    rdfs:label "PROV Activity"@en ;
+    rdfs:comment "External reference to PROV Activity class for provenance tracking."@en .
+
+<http://www.w3.org/ns/prov#Entity> rdf:type owl:Class ;
+    rdfs:label "PROV Entity"@en ;
+    rdfs:comment "External reference to PROV Entity class for supply chain provenance."@en .
