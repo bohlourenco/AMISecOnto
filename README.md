@@ -600,66 +600,31 @@ This query identifies error-related log events and reconstructs their temporal c
 PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
 PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
 
-SELECT ?user ?sudoEvent ?sudoTime ?command
+# CQ09 optimized for Virtuoso cost limits:
+# 1) preselect candidate sudo events from sudo log only
+# 2) parse command directly from sudo message (cheap, no multi-hop lineage joins)
+# 3) check existence of prior auth events from ssh log only
+SELECT DISTINCT ?user ?sudoEvent ?sudoTime ?command
 WHERE {
   {
     SELECT ?sudoEvent ?sudoTime ?user ?command
     WHERE {
-      GRAPH <http://localhost:8890/AMISecOnto-v27> {
+      GRAPH <http://localhost:8890/AMISecOnto> {
         ?sudoEvent a amis:SudoLogEvent ;
+          amis:hasLogFileName "sudo_20k.log" ;
           amis:hasTimestamp ?sudoTime ;
-          amis:hasUser ?user ;
+          amo:hasUser ?user ;
           amis:hasRawMessage ?sudoMessage .
-        OPTIONAL { ?sudoEvent amis:hasCommand ?cmdDirect . }
-        OPTIONAL {
-          ?h1 amo:hasNextLogEvent ?sudoEvent .
-          ?h1 amis:hasCommand ?cmdHop1 .
-        }
-        OPTIONAL {
-          ?h2 amo:hasNextLogEvent ?h1b .
-          ?h1b amo:hasNextLogEvent ?sudoEvent .
-          ?h2 amis:hasCommand ?cmdHop2 .
-        }
-        OPTIONAL {
-          ?h3 amo:hasNextLogEvent ?h2b .
-          ?h2b amo:hasNextLogEvent ?h1c .
-          ?h1c amo:hasNextLogEvent ?sudoEvent .
-          ?h3 amis:hasCommand ?cmdHop3 .
-        }
-        OPTIONAL {
-          ?h4 amo:hasNextLogEvent ?h3b .
-          ?h3b amo:hasNextLogEvent ?h2c .
-          ?h2c amo:hasNextLogEvent ?h1d .
-          ?h1d amo:hasNextLogEvent ?sudoEvent .
-          ?h4 amis:hasCommand ?cmdHop4 .
-        }
-        OPTIONAL {
-          ?h5 amo:hasNextLogEvent ?h4b .
-          ?h4b amo:hasNextLogEvent ?h3c .
-          ?h3c amo:hasNextLogEvent ?h2d .
-          ?h2d amo:hasNextLogEvent ?h1e .
-          ?h1e amo:hasNextLogEvent ?sudoEvent .
-          ?h5 amis:hasCommand ?cmdHop5 .
-        }
-        OPTIONAL { ?sudoEvent amis:hasMessage ?sudoMsgShort . }
         FILTER (
           CONTAINS(LCASE(STR(?sudoMessage)), "session opened") ||
           CONTAINS(LCASE(STR(?sudoMessage)), "suspicious") ||
           CONTAINS(LCASE(STR(?sudoMessage)), "sudoers")
         )
         BIND(
-          COALESCE(
-            ?cmdDirect,
-            ?cmdHop1,
-            ?cmdHop2,
-            ?cmdHop3,
-            ?cmdHop4,
-            ?cmdHop5,
-            IF(
-              CONTAINS(STR(?sudoMessage), "COMMAND="),
-              REPLACE(STR(?sudoMessage), "^.*COMMAND=", ""),
-              COALESCE(?sudoMsgShort, STR(?sudoMessage))
-            )
+          IF(
+            CONTAINS(STR(?sudoMessage), "COMMAND="),
+            REPLACE(STR(?sudoMessage), "^.*COMMAND=", ""),
+            STR(?sudoMessage)
           ) AS ?command
         )
       }
@@ -669,10 +634,11 @@ WHERE {
   }
 
   FILTER EXISTS {
-    GRAPH <http://localhost:8890/AMISecOnto-v27> {
+    GRAPH <http://localhost:8890/AMISecOnto> {
       ?authEvent a amis:AuthenticationLogEvent ;
+        amis:hasLogFileName "ssh_20k.log" ;
         amis:hasTimestamp ?authTime ;
-        amis:hasUser ?user ;
+        amo:hasUser ?user ;
         amis:hasRawMessage ?authMessage .
       FILTER (?authTime <= ?sudoTime)
       FILTER (
@@ -683,7 +649,7 @@ WHERE {
     }
   }
 }
-ORDER BY ?sudoTime
+ORDER BY DESC(?sudoTime)
 LIMIT 100
 ```
 This query correlates authentication events with subsequent access or privilege-escalation activities by identifying prior successful or relevant authentication attempts and linking them to sudo-related log events, reconstructing the command execution context across sequential log entries.
