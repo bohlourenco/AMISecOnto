@@ -331,7 +331,6 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
 ```
 
 ### Doubly-linked per-log sequences (CQ lineage) - CQ coverage: CQ5, CQ6
-# CQ coverage: CQ5, CQ6
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#EventLineageShape>
     a sh:NodeShape ;
