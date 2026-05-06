@@ -286,7 +286,7 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     rdfs:comment "Validates patterns needed by queries under queries/competency_questions/. Severity: Violation = data bug; Warning = recommended for correlation/CQ coverage."@en .
 ```
 
-### LogEvent — core columns used across CQs - Coverage: CQ1, CQ2, CQ24, CQ25 (and foundational support for most CQs)
+### LogEvent — Core columns used across CQs - Coverage: CQ1, CQ2, CQ24, CQ25 (and foundational support for most CQs)
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#LogEventCoreShape>
     a sh:NodeShape ;
@@ -330,18 +330,26 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     ] .
 ```
 
-### Constraints for ensuring bidirectional consistency in logevent lineage (CQ5, CQ6)
+### Doubly-linked per-log sequences (CQ lineage) - CQ coverage: CQ5, CQ6
+# CQ coverage: CQ5, CQ6
 ```turtle
 <http://www.semanticweb.org/AMISecOnto/shapes#EventLineageShape>
     a sh:NodeShape ;
-    sh:targetClass amis:LogEvent ;
+    sh:targetClass amo:LogEvent ;
     sh:sparql [
         a sh:SPARQLConstraint ;
-        sh:message "If a LogEvent has a previous event, that previous event should link back with hasNextLogEvent."@en ;
+        sh:message "If a LogEvent has a previous event, that previous event should link back with hasNextLogEvent (slash or legacy hash predicate)."@en ;
         sh:select """
             SELECT $this
             WHERE {
-              $this amis:hasPreviousLogEvent ?prev .
+              {
+                $this amo:hasPreviousLogEvent ?prev .
+              }
+              UNION
+              {
+                $this amis:hasPreviousLogEvent ?prev .
+              }
+              FILTER NOT EXISTS { ?prev amo:hasNextLogEvent $this . }
               FILTER NOT EXISTS { ?prev amis:hasNextLogEvent $this . }
             }
         """
@@ -349,11 +357,18 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     sh:sparql [
         a sh:SPARQLConstraint ;
         sh:severity sh:Warning ;
-        sh:message "If a LogEvent has a next event, that next event should link back with hasPreviousLogEvent."@en ;
+        sh:message "If a LogEvent has a next event, that next event should link back with hasPreviousLogEvent (slash or legacy hash predicate)."@en ;
         sh:select """
             SELECT $this
             WHERE {
-              $this amis:hasNextLogEvent ?next .
+              {
+                $this amo:hasNextLogEvent ?next .
+              }
+              UNION
+              {
+                $this amis:hasNextLogEvent ?next .
+              }
+              FILTER NOT EXISTS { ?next amo:hasPreviousLogEvent $this . }
               FILTER NOT EXISTS { ?next amis:hasPreviousLogEvent $this . }
             }
         """
