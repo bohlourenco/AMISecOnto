@@ -1045,6 +1045,21 @@ LIMIT 300
 ```
 This query retrieves potentially suspicious log events by combining semantic indicators and keyword-based detection, linking events to known indicators and associated vulnerabilities while providing contextual information such as timestamps, hosts, users, and raw messages for security analysis.
 
+## Citation
+
+If you use AMISecOnto in your research, please cite:
+
+```bibtex
+@software{lourenco_amiseconto_2025,
+  author = {Bruno Lourenço and Cátia Vaz and Alexandre P. Francisco and Pedro Adão and Antonio Goncalves and Mario Marques and João F. Ferreira},
+  title = {AMISecOnto: Ontology-Driven Knowledge Graph Framework for Semantic Log, Vulnerability, and Threat Analysis},
+  year = {2025},
+  publisher = {Zenodo},
+  doi = {10.5281/zenodo.20044615},
+  url = {https://doi.org/10.5281/zenodo.20044615}
+}
+```
+
 
 
 
