@@ -230,14 +230,14 @@ python3 scripts/load_to_virtuoso.py
 ```
 
 Loads:
-AMISecOnto-v27.ttl
+AMISecOnto.ttl
 ```bash
 build/amiseconto_demo_data.nt
 ```
 
 Default graph:
 ```bash
-http://localhost:8890/AMISecOnto-v27
+http://localhost:8890/AMISecOnto
 ```
 
 To append instead of replacing:
