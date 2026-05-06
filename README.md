@@ -171,7 +171,7 @@ amiseconto/
 │
 ├── amiseconto/
 │   ├── AMISecOnto.ttl
-│   ├── AMISecOnto-.ttl
+│   ├── AMISecOnto-alignments.ttl
 ├── README.md
 ```
 
