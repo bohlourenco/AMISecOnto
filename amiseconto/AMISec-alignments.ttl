@@ -1,11 +1,11 @@
-@prefix : <http://www.semanticweb.org/AMISecOnto/interop#> .
+@prefix : <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 
-<http://www.semanticweb.org/AMISecOnto/interop> rdf:type owl:Ontology ;
+<https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> rdf:type owl:Ontology ;
     dct:title "AMISec Interoperability Alignment Module"@en ;
     dct:description "Minimal OWL 2 DL-safe module providing class declarations for PROV-O and FOAF without requiring full imports. This allows AMISecOnto classes to align with external ontologies while maintaining DL compliance."@en ;
     dct:license <https://creativecommons.org/licenses/by/4.0/> .
