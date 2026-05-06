@@ -286,12 +286,11 @@ Predicate split: most event fields use amis: (#); hasIndicator, hasBaseScore, ha
     rdfs:comment "Validates patterns needed by queries under queries/competency_questions/. Severity: Violation = data bug; Warning = recommended for correlation/CQ coverage."@en .
 ```
 
-### Logevent core shape constraints (CQ1, CQ2)
+### LogEvent — core columns used across CQs - Coverage: CQ1, CQ2, CQ24, CQ25 (and foundational support for most CQs)
 ```turtle
-
 <http://www.semanticweb.org/AMISecOnto/shapes#LogEventCoreShape>
     a sh:NodeShape ;
-    sh:targetClass amis:LogEvent ;
+    sh:targetClass amo:LogEvent ;
     sh:property [
         sh:path amis:belongsToLog ;
         sh:minCount 1 ;
