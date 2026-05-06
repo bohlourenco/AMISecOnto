@@ -1,0 +1,91 @@
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# CQ22 - Which vulnerabilities are associated with specific packages, versions, or system components?
+# Vulnerability-centric view: JAR dependencies, dpkg install events, and system-level (NVD-scoped) systems.
+# Per-chunk LIMITs keep manifest, dpkg, and platform rows in one result set; raise LIMITs or drop FILTER for full data.
+SELECT DISTINCT ?vulnerability ?cveId ?severity ?associationKind ?packageName ?packageVersion ?hostingSystemLabel ?componentUri
+WHERE {
+  {
+    SELECT ?vulnerability ?cveId ?severity ?associationKind ?packageName ?packageVersion ?hostingSystemLabel ?componentUri ?sortKey
+    WHERE {
+      GRAPH <http://localhost:8890/AMISecOnto> {
+        {
+          ?componentUri a amo:Dependency ;
+            amis:hasPackageName ?packageName ;
+            amis:relatedToVulnerability ?vulnerability .
+          BIND("manifest dependency (JAR)" AS ?associationKind)
+          BIND(1 AS ?sortKey)
+          OPTIONAL { ?componentUri amis:hasPackageVersion ?packageVersion }
+          OPTIONAL {
+            ?stack a amo:System ;
+                   amis:containsPackage ?componentUri ;
+                   rdfs:label ?hostingSystemLabel .
+          }
+          ?vulnerability a amo:Vulnerability .
+          BIND(REPLACE(STR(?vulnerability), "^.*/", "") AS ?cveId)
+          OPTIONAL { ?vulnerability amis:hasSeverityCode ?severity }
+        }
+        UNION
+        {
+          ?componentUri a amo:Dependency ;
+            amis:hasPackageName ?packageName .
+          ?componentUri amo:exposes ?vulnerability .
+          BIND("manifest dependency (JAR)" AS ?associationKind)
+          BIND(1 AS ?sortKey)
+          OPTIONAL { ?componentUri amis:hasPackageVersion ?packageVersion }
+          OPTIONAL {
+            ?stack a amo:System ;
+                   amis:containsPackage ?componentUri ;
+                   rdfs:label ?hostingSystemLabel .
+          }
+          ?vulnerability a amo:Vulnerability .
+          BIND(REPLACE(STR(?vulnerability), "^.*/", "") AS ?cveId)
+          OPTIONAL { ?vulnerability amis:hasSeverityCode ?severity }
+        }
+      }
+    }
+    LIMIT 50
+  }
+  UNION
+  {
+    SELECT ?vulnerability ?cveId ?severity ?associationKind ?packageName ?packageVersion ?hostingSystemLabel ?componentUri ?sortKey
+    WHERE {
+      GRAPH <http://localhost:8890/AMISecOnto> {
+        ?componentUri a amis:InstalledPackageLogEvent ;
+          amis:hasPackageName ?packageName ;
+          amis:relatedToVulnerability ?vulnerability .
+        BIND("installed package (dpkg log)" AS ?associationKind)
+        BIND(2 AS ?sortKey)
+        OPTIONAL { ?componentUri amis:hasPackageVersion ?packageVersion }
+        ?vulnerability a amo:Vulnerability .
+        BIND(REPLACE(STR(?vulnerability), "^.*/", "") AS ?cveId)
+        OPTIONAL { ?vulnerability amis:hasSeverityCode ?severity }
+        OPTIONAL { ?componentUri amis:hasHostname ?hostingSystemLabel }
+      }
+    }
+    LIMIT 400
+  }
+  UNION
+  {
+    SELECT ?vulnerability ?cveId ?severity ?associationKind ?packageName ?packageVersion ?hostingSystemLabel ?componentUri ?sortKey
+    WHERE {
+      GRAPH <http://localhost:8890/AMISecOnto> {
+        ?componentUri a amo:System ;
+          rdfs:label ?hostingSystemLabel ;
+          amo:hasVulnerability ?vulnerability .
+        BIND("platform / infrastructure (system-level)" AS ?associationKind)
+        BIND(3 AS ?sortKey)
+        BIND("" AS ?packageName)
+        BIND("" AS ?packageVersion)
+        ?vulnerability a amo:Vulnerability .
+        BIND(REPLACE(STR(?vulnerability), "^.*/", "") AS ?cveId)
+        OPTIONAL { ?vulnerability amis:hasSeverityCode ?severity }
+        FILTER(CONTAINS(LCASE(?hostingSystemLabel), "linux"))
+      }
+    }
+    LIMIT 200
+  }
+}
+ORDER BY ?sortKey ?packageName ?cveId

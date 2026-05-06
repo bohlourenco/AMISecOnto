@@ -1,0 +1,54 @@
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+
+# CQ09 optimized for Virtuoso cost limits:
+# 1) preselect candidate sudo events from sudo log only
+# 2) parse command directly from sudo message (cheap, no multi-hop lineage joins)
+# 3) check existence of prior auth events from ssh log only
+SELECT DISTINCT ?user ?sudoEvent ?sudoTime ?command
+WHERE {
+  {
+    SELECT ?sudoEvent ?sudoTime ?user ?command
+    WHERE {
+      GRAPH <http://localhost:8890/AMISecOnto> {
+        ?sudoEvent a amis:SudoLogEvent ;
+          amis:hasLogFileName "sudo_20k.log" ;
+          amis:hasTimestamp ?sudoTime ;
+          amo:hasUser ?user ;
+          amis:hasRawMessage ?sudoMessage .
+        FILTER (
+          CONTAINS(LCASE(STR(?sudoMessage)), "session opened") ||
+          CONTAINS(LCASE(STR(?sudoMessage)), "suspicious") ||
+          CONTAINS(LCASE(STR(?sudoMessage)), "sudoers")
+        )
+        BIND(
+          IF(
+            CONTAINS(STR(?sudoMessage), "COMMAND="),
+            REPLACE(STR(?sudoMessage), "^.*COMMAND=", ""),
+            STR(?sudoMessage)
+          ) AS ?command
+        )
+      }
+    }
+    ORDER BY DESC(?sudoTime)
+    LIMIT 250
+  }
+
+  FILTER EXISTS {
+    GRAPH <http://localhost:8890/AMISecOnto> {
+      ?authEvent a amis:AuthenticationLogEvent ;
+        amis:hasLogFileName "ssh_20k.log" ;
+        amis:hasTimestamp ?authTime ;
+        amo:hasUser ?user ;
+        amis:hasRawMessage ?authMessage .
+      FILTER (?authTime <= ?sudoTime)
+      FILTER (
+        CONTAINS(LCASE(STR(?authMessage)), "accepted") ||
+        CONTAINS(LCASE(STR(?authMessage)), "session opened") ||
+        CONTAINS(LCASE(STR(?authMessage)), "authentication")
+      )
+    }
+  }
+}
+ORDER BY DESC(?sudoTime)
+LIMIT 100

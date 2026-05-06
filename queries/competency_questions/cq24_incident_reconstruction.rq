@@ -1,0 +1,34 @@
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# Instance NT uses slash IRI http://.../AMISecOnto/hasIndicator (amo:), not amis:#hasIndicator.
+SELECT ?event ?timestamp ?host ?userName ?indicatorLabel ?message ?vulnLabel
+WHERE {
+  GRAPH <http://localhost:8890/AMISecOnto> {
+    ?event a amo:LogEvent ;
+           amis:hasTimestamp ?timestamp ;
+           amis:hasHostname ?host ;
+           amis:hasRawMessage ?message .
+    OPTIONAL { ?event amis:hasUserName ?userName . }
+    OPTIONAL {
+      ?event amo:hasIndicator ?indicator .
+      ?indicator rdfs:label ?indicatorLabel .
+    }
+    OPTIONAL {
+      ?event amis:evidenceByLogEvent ?vuln .
+      ?vuln rdfs:label ?vulnLabel .
+    }
+
+    FILTER (
+      BOUND(?indicatorLabel) ||
+      CONTAINS(LCASE(?message), "exploit") ||
+      CONTAINS(LCASE(?message), "suspicious") ||
+      CONTAINS(LCASE(?message), "authentication failure") ||
+      CONTAINS(LCASE(?message), "path traversal")
+    )
+  }
+}
+ORDER BY xsd:dateTime(?timestamp)
+LIMIT 300

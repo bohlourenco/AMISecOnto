@@ -1,0 +1,369 @@
+[INFO] pt.ist:fenix-webapp:war:DEV-SNAPSHOT
+[INFO] +- com.google.code.gson:gson:jar:2.10:compile
+[INFO] +- com.konghq:unirest-java:jar:3.13.13:compile
+[INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO] |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.13:compile
+[INFO] |  +- org.apache.httpcomponents:httpmime:jar:4.5.13:compile
+[INFO] |  +- org.apache.httpcomponents:httpcore-nio:jar:4.4.13:compile
+[INFO] |  +- org.apache.httpcomponents:httpasyncclient:jar:4.1.5:compile
+[INFO] |  \- commons-codec:commons-codec:jar:1.15:compile
+[INFO] +- commons-dbcp:commons-dbcp:jar:1.4:compile
+[INFO] |  \- commons-pool:commons-pool:jar:1.5.4:compile
+[INFO] +- org.json:json:jar:20220924:compile
+[INFO] +- org.fenixedu:fenixedu-commons:jar:6.1.0:compile
+[INFO] |  +- com.google.guava:guava:jar:27.0-jre:compile
+[INFO] |  |  +- com.google.guava:failureaccess:jar:1.0:compile
+[INFO] |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] |  |  +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.2.0:compile
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:compile
+[INFO] |  \- joda-time:joda-time:jar:2.3:compile
+[INFO] +- org.bouncycastle:bcprov-jdk15on:jar:1.70:compile
+[INFO] +- pt.ist:standards:jar:4.0.3:compile
+[INFO] |  \- org.fenixedu:utf8-resources:jar:1.0.0:compile
+[INFO] +- org.fenixedu:fenixedu-academic:jar:36.45.0:compile
+[INFO] |  +- com.github.axet:kaptcha:jar:0.0.9:compile
+[INFO] |  |  \- com.jhlabs:filters:jar:2.0.235:compile
+[INFO] |  +- com.googlecode.libphonenumber:libphonenumber:jar:8.10.0:compile
+[INFO] |  +- com.itextpdf:kernel:jar:7.2.5:compile
+[INFO] |  |  \- org.bouncycastle:bcpkix-jdk15on:jar:1.70:compile
+[INFO] |  |     \- org.bouncycastle:bcutil-jdk15on:jar:1.70:compile
+[INFO] |  +- com.twilio.sdk:twilio:jar:7.31.0:compile
+[INFO] |  +- commons-beanutils:commons-beanutils:jar:1.9.3:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2.2:compile
+[INFO] |  +- commons-httpclient:commons-httpclient:jar:3.1:compile
+[INFO] |  +- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-validator:commons-validator:jar:1.6:compile
+[INFO] |  |  \- commons-digester:commons-digester:jar:1.8.1:compile
+[INFO] |  +- javax.faces:jsf-api:jar:1.1_01:compile
+[INFO] |  +- javax.faces:jsf-impl:jar:1.1:compile
+[INFO] |  +- javax.ws.rs:javax.ws.rs-api:jar:2.0:compile
+[INFO] |  +- org.fenixedu:bennu-search:jar:8.0.1:compile
+[INFO] |  +- org.fenixedu:bennu-modular-rendering:jar:2.0.0:compile
+[INFO] |  +- org.fenixedu:bennu-struts:jar:8.0.0:compile
+[INFO] |  |  +- struts:struts:jar:1.2.7:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.0:compile
+[INFO] |  |  |  \- oro:oro:jar:2.0.8:compile
+[INFO] |  |  \- commons-fileupload:commons-fileupload:jar:1.3.1:compile
+[INFO] |  +- org.fenixedu:tinTools:jar:2.0.0:compile
+[INFO] |  |  \- eu.europa.ec.taxud:tin-algorithm:jar:5.2.2_PUBLIC:compile
+[INFO] |  |     \- log4j:log4j:jar:1.2.16:compile
+[INFO] |  +- org.imgscalr:imgscalr-lib:jar:4.2:compile
+[INFO] |  +- org.mnode.ical4j:ical4j:jar:1.0.5.2:compile
+[INFO] |  |  \- backport-util-concurrent:backport-util-concurrent:jar:3.1:compile
+[INFO] |  +- pt.ist:tidy:jar:1.0:compile
+[INFO] |  +- taglibs:datetime:jar:1.0.1:compile
+[INFO] |  \- taglibs:string:jar:1.1.0:compile
+[INFO] +- org.fenixedu:fenixedu-academic-thesis:jar:7.2.0:compile
+[INFO] +- org.fenixedu:fenixedu-cms:jar:5.0.0:compile
+[INFO] |  +- org.fenixedu:bennu-social:jar:3.0.0:compile
+[INFO] |  |  +- org.kohsuke:github-api:jar:1.132:compile
+[INFO] |  |  +- com.restfb:restfb:jar:1.14.0:compile
+[INFO] |  |  +- org.twitter4j:twitter4j-core:jar:4.0.6:compile
+[INFO] |  |  +- com.flickr4java:flickr4java:jar:2.16:compile
+[INFO] |  |  |  +- org.scribe:scribe:jar:1.3.5:compile
+[INFO] |  |  |  \- org.apache.axis:axis:jar:1.4:compile
+[INFO] |  |  +- com.dropbox.core:dropbox-core-sdk:jar:2.1.2:compile
+[INFO] |  |  \- com.google.api-client:google-api-client:jar:1.22.0:compile
+[INFO] |  |     +- com.google.oauth-client:google-oauth-client:jar:1.22.0:compile
+[INFO] |  |     |  \- com.google.http-client:google-http-client:jar:1.22.0:compile
+[INFO] |  |     \- com.google.http-client:google-http-client-jackson2:jar:1.22.0:compile
+[INFO] |  +- com.mitchellbosecke:pebble:jar:2.3.0:compile
+[INFO] |  |  \- com.coverity.security:coverity-escapers:jar:1.1:compile
+[INFO] |  +- javax.servlet:jstl:jar:1.2:compile
+[INFO] |  +- com.google.apis:google-api-services-analytics:jar:v3-rev136-1.22.0:compile
+[INFO] |  +- com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:jar:20160924.1:compile
+[INFO] |  +- org.ocpsoft.prettytime:prettytime:jar:3.2.7.Final:compile
+[INFO] |  +- org.apache.tika:tika-core:jar:1.19.1:compile
+[INFO] |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] +- org.fenixedu:fenixedu-learning:jar:5.1.1:compile
+[INFO] +- org.fenixedu:fenixedu-spaces:jar:4.0.2:compile
+[INFO] |  +- com.iver.cit:jdwglib:jar:1.0.1:compile
+[INFO] |  \- com.iver.cit:fmap:jar:0.5:compile
+[INFO] +- pt.ist:fenixedu-ist-onlinetests:jar:7.1.1:compile
+[INFO] |  +- org.mathjax:mathjax:jar:2.3:compile
+[INFO] |  \- org.apache.commons:commons-lang3:jar:3.5:compile
+[INFO] +- pt.ist:fenixedu-id-cards:jar:6.2.4:compile
+[INFO] |  \- org.fenixedu:santander-sdk:jar:3.0.2:compile
+[INFO] +- pt.ist:fenixedu-ist-bundle:jar:20.19.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-bullet:jar:20.19.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-cms-components:jar:20.19.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-delegates:jar:20.19.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-giaf-contracts:jar:20.19.0:compile
+[INFO] |  |  \- com.oracle:ojdbc14:jar:9.0.2.0.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-giaf-invoices:jar:20.19.0:compile
+[INFO] |  |  \- org.fenixedu:numberToText:jar:2.0.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-integration:jar:20.19.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-libraryspace:jar:20.19.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-parking:jar:20.19.0:compile
+[INFO] |  |  \- com.healthmarketscience.jackcess:jackcess:jar:1.2.14.3:compile
+[INFO] |  +- pt.ist:fenixedu-ist-quc:jar:20.19.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-registration-process:jar:20.19.0:compile
+[INFO] |  |  \- org.fenixedu:employer:jar:1.0.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-teacher-evaluation:jar:20.19.0:compile
+[INFO] |  +- pt.ist:fenixedu-ist-tutorship:jar:20.19.0:compile
+[INFO] |  \- pt.ist:fenixedu-ist-vigilancies:jar:20.19.0:compile
+[INFO] +- pt.ist:fenixedu-ulisboa-cgdIntegration:jar:4.1.0:compile
+[INFO] |  \- pt.ist:bennu-webservices-core:jar:3.0.0:compile
+[INFO] |     +- commons-net:commons-net:jar:3.3:compile
+[INFO] |     \- javax.xml.ws:jaxws-api:jar:2.2.12:compile
+[INFO] +- org.fenixedu:bennu-core:jar:8.0.1:compile
+[INFO] |  +- org.webjars:bootstrap:jar:3.3.7:compile
+[INFO] |  |  \- org.webjars:jquery:jar:1.11.1:compile
+[INFO] |  \- org.openjdk.nashorn:nashorn-core:jar:15.4:compile
+[INFO] |     +- org.ow2.asm:asm-commons:jar:7.3.1:compile
+[INFO] |     |  \- org.ow2.asm:asm-analysis:jar:7.3.1:compile
+[INFO] |     \- org.ow2.asm:asm-util:jar:7.3.1:compile
+[INFO] +- org.fenixedu:bennu-io:jar:8.0.1:compile
+[INFO] |  \- javax.activation:javax.activation-api:jar:1.2.0:compile
+[INFO] +- org.fenixedu:bennu-scheduler:jar:8.0.1:compile
+[INFO] |  +- net.sf.cron4j:cron4j:jar:2.2.5:compile
+[INFO] |  \- co.elastic.clients:elasticsearch-java:jar:7.17.11:compile
+[INFO] |     +- org.elasticsearch.client:elasticsearch-rest-client:jar:7.17.11:compile
+[INFO] |     +- jakarta.json:jakarta.json-api:jar:2.0.1:compile
+[INFO] |     \- org.eclipse.parsson:parsson:jar:1.0.0:compile
+[INFO] +- org.fenixedu:bennu-spring:jar:8.0.1:compile
+[INFO] |  \- org.springframework:spring-webmvc:jar:5.3.26:compile
+[INFO] |     +- org.springframework:spring-aop:jar:5.3.26:compile
+[INFO] |     +- org.springframework:spring-beans:jar:5.3.26:compile
+[INFO] |     +- org.springframework:spring-context:jar:5.3.26:compile
+[INFO] |     +- org.springframework:spring-core:jar:5.3.26:compile
+[INFO] |     |  \- org.springframework:spring-jcl:jar:5.3.26:compile
+[INFO] |     +- org.springframework:spring-expression:jar:5.3.26:compile
+[INFO] |     \- org.springframework:spring-web:jar:5.3.26:compile
+[INFO] +- org.fenixedu:bennu-portal:jar:8.0.1:compile
+[INFO] |  +- org.fenixedu:bennu-toolkit:jar:8.0.1:compile
+[INFO] |  |  \- org.webjars:ace:jar:1.1.9:compile
+[INFO] |  \- io.pebbletemplates:pebble:jar:2.6.2:compile
+[INFO] +- org.fenixedu:bennu-oauth:jar:8.0.1:compile
+[INFO] +- org.fenixedu:bennu-admin:jar:8.0.1:compile
+[INFO] +- org.fenixedu:bennu-cas-client:jar:8.0.1:compile
+[INFO] |  \- org.jasig.cas.client:cas-client-core:jar:3.4.1:compile
+[INFO] +- org.fenixedu:bennu-saml-client:jar:8.0.1:compile
+[INFO] |  \- com.onelogin:java-saml:jar:2.9.0:compile
+[INFO] |     +- com.onelogin:java-saml-core:jar:2.9.0:compile
+[INFO] |     \- org.apache.santuario:xmlsec:jar:2.2.3:compile
+[INFO] +- pt.ist:papyrus-client:jar:5.0.0:compile
+[INFO] +- org.fenixedu:bennu-papyrus:jar:6.2.0:compile
+[INFO] |  +- com.itextpdf:layout:jar:7.2.5:compile
+[INFO] |  +- com.itextpdf:io:jar:7.2.5:compile
+[INFO] |  |  \- com.itextpdf:commons:jar:7.2.5:compile
+[INFO] |  +- com.itextpdf:sign:jar:7.2.5:compile
+[INFO] |  +- com.itextpdf:pdfa:jar:7.2.5:compile
+[INFO] |  +- com.itextpdf:forms:jar:7.2.5:compile
+[INFO] |  \- com.itextpdf:barcodes:jar:7.2.5:compile
+[INFO] +- org.fenixedu:default-theme:jar:8.0.1:compile
+[INFO] +- org.fenixedu:ashes-theme:jar:3.0.0:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.3:provided
+[INFO] +- org.slf4j:jcl-over-slf4j:jar:1.7.7:compile
+[INFO] +- net.logstash.logback:logstash-logback-encoder:jar:4.8:compile
+[INFO] |  \- ch.qos.logback:logback-core:jar:1.1.6:compile
+[INFO] +- org.glassfish.jersey.containers:jersey-container-servlet:jar:2.17:compile
+[INFO] |  +- org.glassfish.jersey.containers:jersey-container-servlet-core:jar:2.17:compile
+[INFO] |  |  \- org.glassfish.hk2.external:javax.inject:jar:2.4.0-b10:compile
+[INFO] |  +- org.glassfish.jersey.core:jersey-common:jar:2.17:compile
+[INFO] |  |  +- org.glassfish.jersey.bundles.repackaged:jersey-guava:jar:2.17:compile
+[INFO] |  |  +- org.glassfish.hk2:hk2-api:jar:2.4.0-b10:compile
+[INFO] |  |  |  +- org.glassfish.hk2:hk2-utils:jar:2.4.0-b10:compile
+[INFO] |  |  |  \- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.4.0-b10:compile
+[INFO] |  |  +- org.glassfish.hk2:hk2-locator:jar:2.4.0-b10:compile
+[INFO] |  |  |  \- org.javassist:javassist:jar:3.18.1-GA:compile
+[INFO] |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.1:compile
+[INFO] |  \- org.glassfish.jersey.core:jersey-server:jar:2.17:compile
+[INFO] |     +- org.glassfish.jersey.media:jersey-media-jaxb:jar:2.17:compile
+[INFO] |     \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] +- javax.servlet:javax.servlet-api:jar:4.0.1:provided
+[INFO] +- javax.json:javax.json-api:jar:1.1.4:compile
+[INFO] +- org.glassfish:javax.json:jar:1.1.4:compile
+[INFO] +- pt.ist:drive-sdk:jar:3.0.0:compile
+[INFO] |  +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.17:compile
+[INFO] |  \- org.glassfish.jersey.core:jersey-client:jar:2.17:compile
+[INFO] +- org.fenixedu:bennu-renderers:jar:7.1.1:compile
+[INFO] |  \- org.jsoup:jsoup:jar:1.7.3:compile
+[INFO] +- pt.ist:fenixedu-ist-sas-integration:jar:2.0.4-java17:compile
+[INFO] |  +- org.webjars:bootbox:jar:4.4.0:compile
+[INFO] |  +- org.webjars:select2:jar:4.0.0-rc.2:compile
+[INFO] |  +- org.webjars:angularjs:jar:1.3.15:compile
+[INFO] |  +- org.webjars:angular-sanitize:jar:1.3.11:compile
+[INFO] |  +- org.webjars:angular-ui-select:jar:0.11.2:compile
+[INFO] |  +- org.webjars:datatables:jar:1.10.7:compile
+[INFO] |  +- org.webjars:datatables-tools:jar:2.2.4-1:compile
+[INFO] |  \- joda-time:joda-time-jsptags:jar:1.1.1:compile
+[INFO] +- pt.ist:renates-integration:jar:3.1.0:compile
+[INFO] +- com.sun.mail:javax.mail:jar:1.6.0:compile
+[INFO] |  \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.fenixedu:messaging-core:jar:6.3.0:compile
+[INFO] |  +- javax.mail:javax.mail-api:jar:1.6.2:compile
+[INFO] |  \- io.jsonwebtoken:jjwt:jar:0.7.0:compile
+[INFO] +- org.fenixedu:email-dispatch:jar:6.3.0:compile
+[INFO] +- org.fenixedu:sms-dispatch:jar:6.3.0:compile
+[INFO] +- org.apache.poi:poi:jar:3.17:compile
+[INFO] |  \- org.apache.commons:commons-collections4:jar:4.1:compile
+[INFO] +- org.apache.poi:poi-ooxml:jar:3.17:compile
+[INFO] |  +- org.apache.poi:poi-ooxml-schemas:jar:3.17:compile
+[INFO] |  |  \- org.apache.xmlbeans:xmlbeans:jar:2.6.0:compile
+[INFO] |  |     \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  \- com.github.virtuald:curvesapi:jar:1.04:compile
+[INFO] +- pt.ist:sap-sdk-java:jar:6.1.2:compile
+[INFO] |  +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:3.4.0:compile
+[INFO] |  |  +- xml-resolver:xml-resolver:jar:1.2:compile
+[INFO] |  |  +- org.apache.cxf:cxf-core:jar:3.4.0:compile
+[INFO] |  |  |  +- org.glassfish.jaxb:jaxb-runtime:jar:2.3.3:compile
+[INFO] |  |  |  |  +- org.glassfish.jaxb:txw2:jar:2.3.3:compile
+[INFO] |  |  |  |  \- com.sun.istack:istack-commons-runtime:jar:3.0.11:compile
+[INFO] |  |  |  \- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.5:compile
+[INFO] |  |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:3.4.0:compile
+[INFO] |  |  |  +- org.apache.cxf:cxf-rt-wsdl:jar:3.4.0:compile
+[INFO] |  |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:3.4.0:compile
+[INFO] |  |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:3.4.0:compile
+[INFO] |  |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:3.4.0:compile
+[INFO] |  |  +- org.apache.cxf:cxf-rt-ws-addr:jar:3.4.0:compile
+[INFO] |  |  +- com.sun.activation:jakarta.activation:jar:1.2.2:compile
+[INFO] |  |  +- org.apache.geronimo.specs:geronimo-jta_1.1_spec:jar:1.1.1:compile
+[INFO] |  |  \- org.jboss.spec.javax.rmi:jboss-rmi-api_1.0_spec:jar:1.0.6.Final:compile
+[INFO] |  +- org.apache.cxf:cxf-rt-transports-http:jar:3.4.0:compile
+[INFO] |  +- org.apache.wss4j:wss4j-ws-security-common:jar:2.3.0:compile
+[INFO] |  |  +- org.opensaml:opensaml-saml-impl:jar:3.4.5:compile
+[INFO] |  |  |  +- org.opensaml:opensaml-profile-api:jar:3.4.5:compile
+[INFO] |  |  |  |  \- org.opensaml:opensaml-core:jar:3.4.5:compile
+[INFO] |  |  |  |     \- io.dropwizard.metrics:metrics-core:jar:3.1.2:compile
+[INFO] |  |  |  +- org.opensaml:opensaml-saml-api:jar:3.4.5:compile
+[INFO] |  |  |  |  +- org.opensaml:opensaml-xmlsec-api:jar:3.4.5:compile
+[INFO] |  |  |  |  \- org.opensaml:opensaml-soap-api:jar:3.4.5:compile
+[INFO] |  |  |  +- org.opensaml:opensaml-security-impl:jar:3.4.5:compile
+[INFO] |  |  |  |  \- org.opensaml:opensaml-security-api:jar:3.4.5:compile
+[INFO] |  |  |  +- org.opensaml:opensaml-xmlsec-impl:jar:3.4.5:compile
+[INFO] |  |  |  \- net.shibboleth.utilities:java-support:jar:7.5.1:compile
+[INFO] |  |  +- org.cryptacular:cryptacular:jar:1.2.4:compile
+[INFO] |  |  +- org.opensaml:opensaml-xacml-impl:jar:3.4.5:compile
+[INFO] |  |  |  \- org.opensaml:opensaml-xacml-api:jar:3.4.5:compile
+[INFO] |  |  +- org.opensaml:opensaml-xacml-saml-impl:jar:3.4.5:compile
+[INFO] |  |  |  \- org.opensaml:opensaml-xacml-saml-api:jar:3.4.5:compile
+[INFO] |  |  +- org.jasypt:jasypt:jar:1.9.3:compile
+[INFO] |  |  \- org.apache.geronimo.javamail:geronimo-javamail_1.4_mail:jar:1.8.4:compile
+[INFO] |  +- org.apache.wss4j:wss4j-policy:jar:3.0.0:compile
+[INFO] |  |  \- org.apache.neethi:neethi:jar:3.2.0:compile
+[INFO] |  +- org.apache.cxf:cxf-rt-ws-policy:jar:3.4.0:compile
+[INFO] |  |  \- wsdl4j:wsdl4j:jar:1.6.3:compile
+[INFO] |  \- org.apache.cxf:cxf-rt-ws-security:jar:3.4.0:compile
+[INFO] |     +- org.apache.cxf:cxf-rt-security-saml:jar:3.4.0:compile
+[INFO] |     |  \- org.apache.cxf:cxf-rt-security:jar:3.4.0:compile
+[INFO] |     +- org.ehcache:ehcache:jar:3.8.1:compile
+[INFO] |     +- org.apache.wss4j:wss4j-ws-security-dom:jar:2.3.0:compile
+[INFO] |     +- org.apache.wss4j:wss4j-ws-security-stax:jar:2.3.0:compile
+[INFO] |     |  \- org.apache.wss4j:wss4j-bindings:jar:2.3.0:compile
+[INFO] |     \- org.apache.wss4j:wss4j-ws-security-policy-stax:jar:2.3.0:compile
+[INFO] +- pt.ist:sap-group-integration:jar:4.1.0:compile
+[INFO] +- org.fenixedu:JWTTools:jar:2.1.2:compile
+[INFO] +- org.fenixedu:postCodeTools:jar:2.0.0:compile
+[INFO] +- org.fenixedu:a3es:jar:3.1.0:compile
+[INFO] |  \- com.googlecode.json-simple:json-simple:jar:1.1.1:compile
+[INFO] +- pt.ist:a3es-ist:jar:5.1.0:compile
+[INFO] +- org.fenixedu:comm-hub-sdk-java:jar:2.1.0:compile
+[INFO] +- org.fenixedu:fenixedu-academic-transitions:jar:2.1.0:compile
+[INFO] +- org.fenixedu:fenixedu-collaboration-core:jar:2.2.1:compile
+[INFO] +- org.fenixedu:fenixedu-zoom-sdk:jar:2.2.1:compile
+[INFO] +- org.fenixedu:fenixedu-collaboration-integrations:jar:2.2.1:compile
+[INFO] |  \- org.fenixedu:fenixedu-limesurvey-sdk:jar:2.2.1:compile
+[INFO] +- org.fenixedu:profiles:jar:2.0.0:compile
+[INFO] +- org.fenixedu:fenixedu-admissions-core:jar:8.15.0:compile
+[INFO] +- org.fenixedu:fenixedu-admissions-ist:jar:8.15.0:compile
+[INFO] |  +- net.lingala.zip4j:zip4j:jar:2.8.0:compile
+[INFO] |  \- com.github.scribejava:scribejava-apis:jar:8.3.1:compile
+[INFO] |     \- com.github.scribejava:scribejava-core:jar:8.3.1:compile
+[INFO] |        \- com.github.scribejava:scribejava-java8:jar:8.3.1:compile
+[INFO] +- org.fenixedu:fenixedu-connect:jar:2.12.1:compile
+[INFO] |  +- org.fenixedu:phone-call:jar:6.3.0:compile
+[INFO] |  +- org.im4java:im4java:jar:1.4.0:compile
+[INFO] |  \- dev.samstevens.totp:totp:jar:1.7.1:compile
+[INFO] |     +- com.google.zxing:core:jar:3.4.0:compile
+[INFO] |     \- com.google.zxing:javase:jar:3.4.0:compile
+[INFO] |        +- com.beust:jcommander:jar:1.72:compile
+[INFO] |        \- com.github.jai-imageio:jai-imageio-core:jar:1.4.0:runtime
+[INFO] +- org.fenixedu:fenixedu-queueing:jar:3.3.0:compile
+[INFO] +- org.fenixedu:fenixedu-external-teachers:jar:2.0.1:compile
+[INFO] +- pt.ist:fenix-sibs-payments:jar:2.1.0:compile
+[INFO] +- org.fenixedu:fenixedu-safe-file-share:jar:2.0.0:compile
+[INFO] +- org.fenixedu:bennu-vue-pluggable:jar:1.0.0:compile
+[INFO] +- org.fenixedu:git-repo-wrapper:jar:1.0.0:compile
+[INFO] |  \- org.eclipse.jgit:org.eclipse.jgit:jar:5.13.1.202206130422-r:compile
+[INFO] |     \- com.googlecode.javaewah:JavaEWAH:jar:1.1.13:compile
+[INFO] +- org.fenixedu:fenixedu-smart-forms:jar:2.110.0:compile
+[INFO] |  \- org.fenixedu:fenixedu-custom-actions:jar:1.1.1:compile
+[INFO] +- org.fenixedu:fenixedu-dynamic-forms:jar:0.3.0:compile
+[INFO] +- org.fenixedu:fenixedu-smart-flow:jar:2.110.0:compile
+[INFO] +- org.fenixedu:fenixedu-paper-pusher-integration:jar:2.110.0:compile
+[INFO] +- org.fenixedu:fenixedu-paper-pusher-ist:jar:2.110.0:compile
+[INFO] |  +- com.auth0:java-jwt:jar:3.10.2:compile
+[INFO] |  +- org.fenixedu:pdf-utils:jar:1.0.0:compile
+[INFO] |  |  \- org.apache.pdfbox:pdfbox:jar:3.0.0-alpha3:compile
+[INFO] |  |     +- org.apache.pdfbox:io:jar:3.0.0-alpha3:compile
+[INFO] |  |     \- org.apache.pdfbox:fontbox:jar:3.0.0-alpha3:compile
+[INFO] |  +- pt.ulisboa:forward-ewp-api-client:jar:0.30.1-IST.10:compile
+[INFO] |  |  \- pt.ulisboa:ewp-connector-api:jar:3.16.0-IST.4:compile
+[INFO] |  +- org.fenixedu:fenixedu-ewp-adapters:jar:0.4.1:compile
+[INFO] |  +- xerces:xercesImpl:jar:2.12.2:compile
+[INFO] |  |  \- xml-apis:xml-apis:jar:1.4.01:compile
+[INFO] |  +- org.fenixedu:fenixedu-reference-letters:jar:1.0.0:compile
+[INFO] |  \- org.fenixedu:fenixedu-person-management:jar:1.1.0:compile
+[INFO] +- pt.ist:tecnico-api:jar:2.0.0-beta.25:compile
+[INFO] |  +- org.jetbrains:annotations:jar:23.0.0:compile
+[INFO] |  +- org.projectlombok:lombok:jar:1.18.24:compile
+[INFO] |  \- org.fenixedu:springdoc-openapi-maven-plugin:jar:1.0.1:compile
+[INFO] |     +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.11.4:compile
+[INFO] |     |  \- org.yaml:snakeyaml:jar:1.26:compile
+[INFO] |     +- org.reflections:reflections:jar:0.10.2:compile
+[INFO] |     \- io.swagger.core.v3:swagger-core:jar:2.2.9:compile
+[INFO] |        +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.14.2:compile
+[INFO] |        +- io.swagger.core.v3:swagger-annotations:jar:2.2.9:compile
+[INFO] |        +- io.swagger.core.v3:swagger-models:jar:2.2.9:compile
+[INFO] |        \- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] +- mysql:mysql-connector-java:jar:5.1.49:compile
+[INFO] +- com.sun.org.apache.xml.internal:resolver:jar:20050927:compile
+[INFO] +- javax.xml.soap:javax.xml.soap-api:jar:1.4.0:compile
+[INFO] +- com.sun.xml.messaging.saaj:saaj-impl:jar:1.5.1:compile
+[INFO] |  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.2:compile
+[INFO] |  +- jakarta.activation:jakarta.activation-api:jar:1.2.1:compile
+[INFO] |  +- jakarta.xml.soap:jakarta.xml.soap-api:jar:1.4.1:compile
+[INFO] |  +- org.jvnet.mimepull:mimepull:jar:1.9.11:compile
+[INFO] |  \- org.jvnet.staxex:stax-ex:jar:1.8.1:compile
+[INFO] +- com.sun.xml.stream.buffer:streambuffer:jar:1.5.4:compile
+[INFO] +- com.sun.xml.ws:policy:jar:3.0.0:compile
+[INFO] +- com.sun.xml.ws:jaxws-rt:jar:2.2.10:compile
+[INFO] +- com.sun.xml.bind:jaxb-impl:jar:2.3.0.1:compile
+[INFO] +- com.sun.xml.ws:httpspi-servlet:jar:2.3.6:compile
+[INFO] |  +- com.sun.xml.ws:rt:jar:2.3.6:compile
+[INFO] |  |  +- org.glassfish.ha:ha-api:jar:3.1.13:compile
+[INFO] |  |  +- org.glassfish.external:management-api:jar:3.2.3:compile
+[INFO] |  |  +- org.glassfish.gmbal:gmbal-api-only:jar:4.0.3:compile
+[INFO] |  |  \- com.sun.mail:jakarta.mail:jar:1.6.7:compile
+[INFO] |  +- jakarta.xml.ws:jakarta.xml.ws-api:jar:2.3.3:compile
+[INFO] |  +- jakarta.jws:jakarta.jws-api:jar:2.1.0:compile
+[INFO] |  \- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] +- com.sun.xml.bind:jaxb-core:jar:2.3.0.1:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.12.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-core:jar:2.12.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.12.3:compile
+[INFO] +- com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:jar:2.12.3:compile
+[INFO] |  +- com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:jar:2.12.3:compile
+[INFO] |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.12.3:compile
+[INFO] +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.12.3:compile
+[INFO] |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO] |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.4:compile
+[INFO] +- pt.ist:sicabe-sdk-java:jar:1.0.7:compile
+[INFO] +- ch.qos.logback:logback-classic:jar:1.1.8:compile
+[INFO] +- pt.ist:fenix-framework-dml-compiler:jar:3.0.0-beta1:compile
+[INFO] |  +- org.ow2.asm:asm:jar:9.1:compile
+[INFO] |  \- antlr:antlr:jar:2.7.7:compile
+[INFO] +- pt.ist:fenix-framework-core:jar:3.0.0-beta1:compile
+[INFO] |  +- org.ow2.asm:asm-tree:jar:9.1:compile
+[INFO] |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  +- javax.xml.bind:jaxb-api:jar:2.3.0:compile
+[INFO] |  \- pt.ist:db-ojb:jar:1.0.0-escaped:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.22:compile
+[INFO] +- junit:junit:jar:4.12:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] \- org.slf4j:slf4j-simple:jar:1.7.22:test

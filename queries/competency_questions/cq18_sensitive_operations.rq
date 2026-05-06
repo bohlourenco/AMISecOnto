@@ -1,0 +1,39 @@
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# Demo RDF links indicators with amo:hasIndicator (<.../AMISecOnto/hasIndicator>), not amis:hasIndicator (#…).
+# Optional # form covers reasoning stores that align OWL to instance predicates.
+# BIND yields a string for ?indicatorLabel (empty when no indicator) so UIs always show the column.
+SELECT ?event ?timestamp ?host ?userName ?indicatorLabel ?message
+WHERE {
+  GRAPH <http://localhost:8890/AMISecOnto-v27> {
+    ?event a amis:SecurityLogEvent ;
+      amis:hasTimestamp ?timestamp ;
+      amis:hasHostname ?host ;
+      amis:hasRawMessage ?message .
+
+    FILTER (
+      CONTAINS(LCASE(STR(?message)), "sudo") ||
+      CONTAINS(LCASE(STR(?message)), "su:") ||
+      CONTAINS(LCASE(STR(?message)), "sensitive_read") ||
+      CONTAINS(LCASE(STR(?message)), "backdoor") ||
+      CONTAINS(LCASE(STR(?message)), "audit")
+    )
+
+    OPTIONAL { ?event amis:hasUserName ?userName . }
+    OPTIONAL { ?event amo:hasIndicator ?i1 . }
+    OPTIONAL { ?event amis:hasIndicator ?i2 . }
+    BIND(COALESCE(?i1, ?i2) AS ?indicator)
+    OPTIONAL { ?indicator rdfs:label ?il }
+    BIND(
+      IF(
+        BOUND(?indicator),
+        COALESCE(?il, REPLACE(STR(?indicator), "^.*/", "")),
+        ""
+      ) AS ?indicatorLabel
+    )
+  }
+}
+ORDER BY DESC(STRLEN(?indicatorLabel)) ?timestamp
+LIMIT 200

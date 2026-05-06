@@ -1,0 +1,22 @@
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?event ?prev ?next ?timestamp ?message
+WHERE {
+  GRAPH <http://localhost:8890/AMISecOnto> {
+    ?event a amo:LogEvent ;
+           amis:hasRawMessage ?message .
+    OPTIONAL { ?event amis:hasTimestamp ?timestamp . }
+    OPTIONAL { ?event amo:hasPreviousLogEvent ?prev . }
+    OPTIONAL { ?event amo:hasNextLogEvent ?next . }
+
+    FILTER (
+      CONTAINS(LCASE(?message), "error") ||
+      CONTAINS(LCASE(?message), "exception") ||
+      CONTAINS(LCASE(?message), "failed")
+    )
+  }
+}
+ORDER BY xsd:dateTime(?timestamp)
+LIMIT 100

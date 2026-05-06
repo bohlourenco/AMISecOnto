@@ -1,0 +1,52 @@
+{
+  "artifacts": {
+    "log4j:log4j": [
+      {
+        "cve_id": "CVE-2021-4104",
+        "description": "JMSAppender in Log4j 1.2 can be abused in specific configurations, enabling remote code execution.",
+        "severity": "critical",
+        "cvss_score": 7.5
+      }
+    ],
+    "struts:struts": [
+      {
+        "cve_id": "CVE-2017-5638",
+        "description": "Jakarta multipart parser vulnerability in Apache Struts 2 enabling remote code execution.",
+        "severity": "critical",
+        "cvss_score": 10.0
+      }
+    ],
+    "commons-fileupload:commons-fileupload": [
+      {
+        "cve_id": "CVE-2023-24998",
+        "description": "Apache Commons FileUpload vulnerable to denial of service via excessive part headers.",
+        "severity": "high",
+        "cvss_score": 7.5
+      }
+    ],
+    "org.apache.tika:tika-core": [
+      {
+        "cve_id": "CVE-2018-1335",
+        "description": "Apache Tika vulnerable to denial of service due to infinite loop in parsing.",
+        "severity": "medium",
+        "cvss_score": 5.5
+      }
+    ],
+    "commons-dbcp:commons-dbcp": [
+      {
+        "cve_id": "CVE-2014-3578",
+        "description": "Apache Commons DBCP vulnerable to denial of service through crafted JDBC URLs.",
+        "severity": "medium",
+        "cvss_score": 5.0
+      }
+    ],
+    "commons-httpclient:commons-httpclient": [
+      {
+        "cve_id": "CVE-2012-5783",
+        "description": "Apache Commons HttpClient vulnerable to weak TLS hostname verification in legacy configurations.",
+        "severity": "medium",
+        "cvss_score": 4.3
+      }
+    ]
+  }
+}

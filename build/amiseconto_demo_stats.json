@@ -1,0 +1,13 @@
+{
+  "components": 10,
+  "dependencies": 368,
+  "dpkg_nvd_links": 216,
+  "events": 130341,
+  "indicators": 9,
+  "nvd_linux_vulnerabilities": 1000,
+  "packages": 675,
+  "requests": 80,
+  "systems": 14,
+  "users": 32,
+  "vulnerabilities": 1006
+}

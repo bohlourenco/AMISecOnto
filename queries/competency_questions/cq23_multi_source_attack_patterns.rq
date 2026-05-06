@@ -1,0 +1,79 @@
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# hasTimestamp is stored as xsd:string (ISO-8601); use xsd:dateTime(?timestamp) for ordering/comparison when needed.
+
+# CQ23 - Which log events indicate the presence or activation of vulnerable components?
+# Presence: dpkg events with relatedToVulnerability.
+# Activation: events linked to the vulnerability-probe indicator resource (demo NT uses this fixed IRI).
+# Virtuoso SP031: avoid rdfs:label + FILTER on a variable inside nested SELECT/UNION; use grounded indicator IRI.
+# Inner LIMITs keep dpkg rows and probe rows in one result set.
+# Severity: amis:hasSeverityCode stores the NVD/API qualitative label (baseSeverity, e.g. MEDIUM). When UNKNOWN or missing, derive from amo:hasBaseScore (same bands as the build script). Rebuild/reload NT after fetch so labels match API objects.
+# Regenerate NT after adding hasBaseScore. Probe rows have no CVE link: show n/a for severity.
+SELECT DISTINCT ?logEvent ?evidenceKind ?timestamp ?host ?packageName ?packageVersion ?cveId ?severity
+WHERE {
+  {
+    SELECT ?logEvent ?evidenceKind ?timestamp ?host ?packageName ?packageVersion ?cveId ?severity
+    WHERE {
+      GRAPH <http://localhost:8890/AMISecOnto> {
+        ?logEvent a amis:InstalledPackageLogEvent ;
+          amis:hasPackageName ?packageName ;
+          amis:relatedToVulnerability ?vuln .
+        BIND("installed package linked to CVE (presence)" AS ?evidenceKind)
+        OPTIONAL { ?logEvent amis:hasTimestamp ?timestamp . }
+        OPTIONAL { ?logEvent amis:hasHostname ?host . }
+        OPTIONAL { ?logEvent amis:hasPackageVersion ?packageVersion . }
+        ?vuln a amo:Vulnerability .
+        BIND(REPLACE(STR(?vuln), "^.*/", "") AS ?cveId)
+        OPTIONAL { ?vuln amis:hasSeverityCode ?sevRaw . }
+        OPTIONAL { ?vuln amo:hasBaseScore ?cvss . }
+        BIND(
+          IF(
+            BOUND(?sevRaw) && LCASE(STR(?sevRaw)) != "unknown",
+            STR(?sevRaw),
+            IF(
+              BOUND(?cvss),
+              IF(
+                xsd:decimal(?cvss) >= 9.0,
+                "CRITICAL",
+                IF(
+                  xsd:decimal(?cvss) >= 7.0,
+                  "HIGH",
+                  IF(
+                    xsd:decimal(?cvss) >= 4.0,
+                    "MEDIUM",
+                    IF(xsd:decimal(?cvss) > 0.0, "LOW", "UNKNOWN")
+                  )
+                )
+              ),
+              IF(BOUND(?sevRaw), STR(?sevRaw), "UNKNOWN")
+            )
+          ) AS ?severity
+        )
+      }
+    }
+    LIMIT 250
+  }
+  UNION
+  {
+    SELECT ?logEvent ?evidenceKind ?timestamp ?host ?packageName ?packageVersion ?cveId ?severity
+    WHERE {
+      GRAPH <http://localhost:8890/AMISecOnto> {
+        {
+          ?logEvent amis:belongsToLog ?log .
+          ?logEvent amo:hasIndicator <http://www.semanticweb.org/AMISecOnto/indicator/b31be47a71ebb8a6> .
+          BIND("vulnerability-probe (activation pattern)" AS ?evidenceKind)
+          OPTIONAL { ?logEvent amis:hasTimestamp ?timestamp . }
+          OPTIONAL { ?logEvent amis:hasHostname ?host . }
+          BIND("" AS ?packageName)
+          BIND("" AS ?packageVersion)
+          BIND("" AS ?cveId)
+          BIND("n/a (indicator-only row)" AS ?severity)
+        }
+      }
+    }
+    LIMIT 250
+  }
+}
+ORDER BY ?evidenceKind DESC(xsd:dateTime(?timestamp)) ?logEvent

@@ -1,0 +1,316 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix amis: <http://www.semanticweb.org/AMISecOnto#> .
+@prefix amo: <http://www.semanticweb.org/AMISecOnto/> .
+
+# CQ-aligned SHACL for AMISecOnto demo instance data (build_amiseconto_demo_graph.py).
+# Final ontology uses a mixed hash/slash namespace style; constraints below prefer canonical predicates
+# while tolerating legacy hash forms in SPARQL checks where that avoids false negatives.
+
+<http://www.semanticweb.org/AMISecOnto/shapes/cq>
+    a owl:Ontology ;
+    rdfs:label "AMISecOnto competency-question SHACL"@en ;
+    rdfs:comment "Validates patterns needed by queries under queries/competency_questions/. Severity: Violation = data bug; Warning = recommended for correlation/CQ coverage."@en .
+
+#################################################################
+# LogEvent — core columns used across CQs
+# CQ coverage: CQ1, CQ2, CQ24, CQ25 (and foundational support for most CQs)
+#################################################################
+
+<http://www.semanticweb.org/AMISecOnto/shapes#LogEventCoreShape>
+    a sh:NodeShape ;
+    sh:targetClass amo:LogEvent ;
+    sh:property [
+        sh:path amis:belongsToLog ;
+        sh:minCount 1 ;
+        sh:message "Each LogEvent must belong to a Log (belongsToLog) for graph navigation."@en
+    ] ;
+    sh:property [
+        sh:path amis:hasRawMessage ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Each LogEvent must keep the original raw log text."@en
+    ] ;
+    sh:property [
+        sh:path amis:hasLogFileName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Each LogEvent must record source log filename."@en
+    ] ;
+    sh:property [
+        sh:path amis:hasLineNumber ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:message "Each LogEvent should record line number within the log file."@en
+    ] ;
+    sh:property [
+        sh:path amis:hasTimestamp ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "LogEvent should have one timestamp (xsd:string; ISO-8601 lexical form recommended for xsd:dateTime() in SPARQL)."@en
+    ] ;
+    sh:property [
+        sh:path amis:hasHostname ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "LogEvent should include hostname for cross-source correlation."@en
+    ] .
+
+#################################################################
+# Doubly-linked per-log sequences (CQ lineage)
+# CQ coverage: CQ5, CQ6
+#################################################################
+
+<http://www.semanticweb.org/AMISecOnto/shapes#EventLineageShape>
+    a sh:NodeShape ;
+    sh:targetClass amo:LogEvent ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "If a LogEvent has a previous event, that previous event should link back with hasNextLogEvent (slash or legacy hash predicate)."@en ;
+        sh:select """
+            SELECT $this
+            WHERE {
+              {
+                $this amo:hasPreviousLogEvent ?prev .
+              }
+              UNION
+              {
+                $this amis:hasPreviousLogEvent ?prev .
+              }
+              FILTER NOT EXISTS { ?prev amo:hasNextLogEvent $this . }
+              FILTER NOT EXISTS { ?prev amis:hasNextLogEvent $this . }
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:severity sh:Warning ;
+        sh:message "If a LogEvent has a next event, that next event should link back with hasPreviousLogEvent (slash or legacy hash predicate)."@en ;
+        sh:select """
+            SELECT $this
+            WHERE {
+              {
+                $this amo:hasNextLogEvent ?next .
+              }
+              UNION
+              {
+                $this amis:hasNextLogEvent ?next .
+              }
+              FILTER NOT EXISTS { ?next amo:hasPreviousLogEvent $this . }
+              FILTER NOT EXISTS { ?next amis:hasPreviousLogEvent $this . }
+            }
+        """
+    ] .
+
+#################################################################
+# SSH / authentication logs — session hooks for CQ09-style traces
+# Demo NT always sets hasSessionID from syslog PID; user identity is often absent.
+# CQ coverage: CQ9, CQ10, CQ11, CQ12, CQ19
+#################################################################
+
+<http://www.semanticweb.org/AMISecOnto/shapes#AuthenticationEventShape>
+    a sh:NodeShape ;
+    sh:targetClass amis:AuthenticationLogEvent ;
+    sh:property [
+        sh:path amis:hasSessionID ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "AuthenticationLogEvent should record hasSessionID (demo maps syslog PID) for session reconstruction."@en
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:severity sh:Warning ;
+        sh:message "When identity is present, prefer both hasUser and hasUserName for attribution queries."@en ;
+        sh:select """
+            SELECT $this
+            WHERE {
+              { $this amo:hasUser ?u . } UNION { $this amis:hasUser ?u . }
+              FILTER NOT EXISTS { $this amis:hasUserName ?n . }
+            }
+        """
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:severity sh:Info ;
+        sh:message "Authentication events without hasUser or hasUserName limit user-centric CQs."@en ;
+        sh:select """
+            SELECT $this
+            WHERE {
+              $this a amis:AuthenticationLogEvent .
+              FILTER NOT EXISTS { $this amo:hasUser ?u . }
+              FILTER NOT EXISTS { $this amis:hasUser ?u . }
+              FILTER NOT EXISTS { $this amis:hasUserName ?n . }
+            }
+        """
+    ] .
+
+#################################################################
+# Audit / sudo / su — pattern indicators use amo:hasIndicator in instance data
+# CQ coverage: CQ18, CQ19, CQ20 (supports CQ13/CQ24 attribution context)
+#################################################################
+
+<http://www.semanticweb.org/AMISecOnto/shapes#SecurityEventShape>
+    a sh:NodeShape ;
+    sh:targetClass amo:SecurityLogEvent ;
+    sh:property [
+        sh:path amo:hasIndicator ;
+        sh:class amo:Indicator ;
+        sh:severity sh:Warning ;
+        sh:message "When present, hasIndicator must point to an Indicator individual (use amo: /hasIndicator in RDF)."@en
+    ] ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:severity sh:Warning ;
+        sh:message "Sensitive security messages (sudo/su/auth failure) should include user attribution when the log line supports it."@en ;
+        sh:select """
+            SELECT $this
+            WHERE {
+              $this amis:hasRawMessage ?m .
+              FILTER (
+                CONTAINS(LCASE(STR(?m)), "sudo") ||
+                CONTAINS(LCASE(STR(?m)), "su:") ||
+                CONTAINS(LCASE(STR(?m)), "authentication failure")
+              )
+              FILTER NOT EXISTS { $this amis:hasUserName ?u1 . }
+              FILTER NOT EXISTS { $this amo:hasUser ?u2 . }
+              FILTER NOT EXISTS { $this amis:hasUser ?u3 . }
+            }
+        """
+    ] .
+
+#################################################################
+# Dpkg / package events — CQ16, CQ23 presence rows
+# CQ coverage: CQ16, CQ17, CQ21, CQ23
+#################################################################
+
+<http://www.semanticweb.org/AMISecOnto/shapes#PackageEventShape>
+    a sh:NodeShape ;
+    sh:targetClass amis:InstalledPackageLogEvent ;
+    sh:property [
+        sh:path amis:hasPackageName ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "InstalledPackageLogEvent must have package name."@en
+    ] ;
+    sh:property [
+        sh:path amis:hasPackageAction ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "InstalledPackageLogEvent should record package action (install/upgrade/configure/etc.)."@en
+    ] ;
+    sh:property [
+        sh:path amis:hasPackage ;
+        sh:class amo:SystemPackage ;
+        sh:minCount 1 ;
+        sh:message "InstalledPackageLogEvent must link to a SystemPackage via hasPackage."@en
+    ] .
+
+#################################################################
+# HTTP access — CQ21 / request correlation (not all ApplicationLogEvent rows are HTTP)
+# CQ coverage: CQ3, CQ4, CQ8, CQ14
+#################################################################
+
+<http://www.semanticweb.org/AMISecOnto/shapes#AccessLogCorrelationShape>
+    a sh:NodeShape ;
+    sh:targetClass amis:AccessLogEvent ;
+    sh:property [
+        sh:path amis:hasRequestURI ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "AccessLogEvent should include hasRequestURI for URI-centric correlation."@en
+    ] ;
+    sh:property [
+        sh:path amis:belongsToRequest ;
+        sh:class amis:Request ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "AccessLogEvent should link belongsToRequest for request grouping."@en
+    ] .
+
+#################################################################
+# Vulnerability individuals — NVD + curated seed
+# CQ coverage: CQ16, CQ17, CQ21, CQ22, CQ23
+#################################################################
+
+<http://www.semanticweb.org/AMISecOnto/shapes#VulnerabilityShape>
+    a sh:NodeShape ;
+    sh:targetClass amo:Vulnerability ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Each Vulnerability should carry CVE id in rdfs:label."@en
+    ] ;
+    sh:property [
+        sh:path amis:hasSeverityCode ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "Vulnerability should have hasSeverityCode (e.g. NVD baseSeverity or derived band)."@en
+    ] ;
+    sh:property [
+        sh:path amo:hasBaseScore ;
+        sh:datatype xsd:decimal ;
+        sh:maxCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "Vulnerability should expose amo:hasBaseScore when CVSS base score is known."@en
+    ] ;
+    sh:property [
+        sh:path amis:hasMessage ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:severity sh:Warning ;
+        sh:message "Vulnerability should include hasMessage (description text) for reporting."@en
+    ] ;
+    sh:property [
+        sh:path amis:affectsSystem ;
+        sh:nodeKind sh:IRI ;
+        sh:severity sh:Warning ;
+        sh:minCount 1 ;
+        sh:message "Demo graph links vulnerabilities to at least one System via affectsSystem when ingested."@en
+    ] .
+
+#################################################################
+# System-level vulnerability links (CQ22 / NVD platform coverage)
+# CQ coverage: CQ22
+#################################################################
+
+<http://www.semanticweb.org/AMISecOnto/shapes#SystemVulnerabilityShape>
+    a sh:NodeShape ;
+    sh:targetClass amo:System ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:severity sh:Warning ;
+        sh:message "Linux/platform System nodes should expose at least one hasVulnerability link for CQ22-style analysis."@en ;
+        sh:select """
+            SELECT $this
+            WHERE {
+              $this rdfs:label ?label .
+              FILTER(CONTAINS(LCASE(STR(?label)), "linux") || CONTAINS(LCASE(STR(?label)), "platform"))
+              FILTER NOT EXISTS { $this amo:hasVulnerability ?v . }
+              FILTER NOT EXISTS { $this amis:hasVulnerability ?v2 . }
+            }
+        """
+    ] .
+
+#################################################################
+# Indicator resources referenced by events
+# CQ coverage: CQ13, CQ18, CQ23, CQ24
+#################################################################
+
+<http://www.semanticweb.org/AMISecOnto/shapes#IndicatorShape>
+    a sh:NodeShape ;
+    sh:targetClass amo:Indicator ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:message "Each Indicator should have rdfs:label (matches pattern name in the builder)."@en
+    ] .

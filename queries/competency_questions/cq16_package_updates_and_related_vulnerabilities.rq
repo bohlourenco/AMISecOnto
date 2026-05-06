@@ -1,0 +1,34 @@
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# CVE id: event→vuln (build script), evidenceByLogEvent, or Dependency name match.
+# OPTIONAL{UNION} breaks event→CVE on Virtuoso; three OPTIONALs + COALESCE works.
+# ?vulnLabel is bound inside GRAPH and projected by inner SELECT (reliable in Conductor/UI).
+SELECT ?packageEvent ?timestamp ?packageName ?version ?vulnLabel
+WHERE {
+  {
+    SELECT ?packageEvent ?timestamp ?packageName ?version ?vulnLabel
+    WHERE {
+      GRAPH <http://localhost:8890/AMISecOnto> {
+        ?packageEvent a amis:InstalledPackageLogEvent ;
+          amis:hasTimestamp ?timestamp ;
+          amis:hasPackageName ?packageName ;
+          amis:hasPackage ?package .
+        OPTIONAL { ?packageEvent amis:hasPackageVersion ?version . }
+
+        OPTIONAL { ?packageEvent amis:relatedToVulnerability ?v1 . }
+        OPTIONAL { ?packageEvent amis:evidenceByLogEvent ?v2 . }
+        OPTIONAL {
+          ?component a amo:Dependency ;
+            amis:hasPackageName ?packageName ;
+            amis:relatedToVulnerability ?v3 .
+        }
+        BIND(COALESCE(?v1, ?v2, ?v3) AS ?vuln)
+        BIND(IF(BOUND(?vuln), REPLACE(STR(?vuln), "^.*/", ""), "") AS ?vulnLabel)
+      }
+    }
+  }
+}
+ORDER BY DESC(STRLEN(?vulnLabel)) DESC(xsd:dateTime(?timestamp))
+LIMIT 100

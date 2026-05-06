@@ -1,0 +1,46 @@
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+
+# CQ21 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
+# Observed: manifest Dependency via relatedToVulnerability or exposes (slash IRI).
+# Installed: InstalledPackageLogEvent linked to NVD by the demo build.
+# Three plain UNION branches avoid OPTIONAL+COALESCE+FILTER, which some Virtuoso builds reject.
+SELECT DISTINCT ?component ?componentKind ?packageName ?packageVersion ?cveId ?severity
+WHERE {
+  GRAPH <http://localhost:8890/AMISecOnto> {
+    {
+      ?component a amo:Dependency ;
+        amis:hasPackageName ?packageName ;
+        amis:relatedToVulnerability ?vuln .
+      BIND("dependency (manifest)" AS ?componentKind)
+      OPTIONAL { ?component amis:hasPackageVersion ?packageVersion }
+      ?vuln a amo:Vulnerability .
+      BIND(REPLACE(STR(?vuln), "^.*/", "") AS ?cveId)
+      OPTIONAL { ?vuln amis:hasSeverityCode ?severity }
+    }
+    UNION
+    {
+      ?component a amo:Dependency ;
+        amis:hasPackageName ?packageName .
+      ?component amo:exposes ?vuln .
+      BIND("dependency (manifest)" AS ?componentKind)
+      OPTIONAL { ?component amis:hasPackageVersion ?packageVersion }
+      ?vuln a amo:Vulnerability .
+      BIND(REPLACE(STR(?vuln), "^.*/", "") AS ?cveId)
+      OPTIONAL { ?vuln amis:hasSeverityCode ?severity }
+    }
+    UNION
+    {
+      ?component a amis:InstalledPackageLogEvent ;
+        amis:hasPackageName ?packageName ;
+        amis:relatedToVulnerability ?vuln .
+      BIND("installed (dpkg event)" AS ?componentKind)
+      OPTIONAL { ?component amis:hasPackageVersion ?packageVersion }
+      ?vuln a amo:Vulnerability .
+      BIND(REPLACE(STR(?vuln), "^.*/", "") AS ?cveId)
+      OPTIONAL { ?vuln amis:hasSeverityCode ?severity }
+    }
+  }
+}
+ORDER BY ?componentKind ?packageName ?cveId
+LIMIT 500

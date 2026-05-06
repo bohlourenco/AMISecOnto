@@ -1,0 +1,21 @@
+PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
+PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?vuln ?label ?severity ?created ?updated
+WHERE {
+  GRAPH <http://localhost:8890/AMISecOnto> {
+    ?linux a amo:System ;
+           rdfs:label ?linuxLabel ;
+           amo:hasVulnerability ?vuln .
+    FILTER(CONTAINS(LCASE(STR(?linuxLabel)), "linux"))
+
+    ?vuln a amo:Vulnerability ;
+          rdfs:label ?label .
+    OPTIONAL { ?vuln amis:hasSeverityCode ?severity . }
+    OPTIONAL { ?vuln amis:hasCreationDate ?created . }
+    OPTIONAL { ?vuln amis:hasLastModified ?updated . }
+  }
+}
+ORDER BY DESC(?updated)
+LIMIT 200
