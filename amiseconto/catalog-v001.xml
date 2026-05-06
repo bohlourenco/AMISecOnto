@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
-    <uri id="Imports Wizard Entry" name="http://www.semanticweb.org/AMISecOnto/interop" uri="AMISec-alignments.ttl"/>
-    <uri id="Imports Wizard Entry" name="http://www.semanticweb.org/AMISecOnto/interop" uri="https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISec-alignments.ttl"/>
-    <uri id="Imports Wizard Entry" name="http://www.semanticweb.org/AMISecOnto/interop" uri="https://raw.githubusercontent.com/bohlourenco/AMISecOnto/main/amiseconto/AMISec-alignments.ttl"/>
-    <uri id="Imports Wizard Entry" name="http://www.semanticweb.org/AMISecOnto/interop" uri="AMISec-alignments.ttl"/>
-    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public"/>
-</catalog>
