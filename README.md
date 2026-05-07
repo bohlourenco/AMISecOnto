@@ -148,12 +148,20 @@ amiseconto/
 │   ├── AMISecOnto.ttl
 │   ├── AMISecOnto-alignments.ttl
 ├── build/
-│   ├── xxxxx.nt
+│   ├── amiseconto_demo_stats.json
 ├── data/
 │   ├── amiseconto_demo_data.nt
 │   ├── amiseconto_demo_stats.json
-│   └── log_20k_AMISecOnto/
-│
+├── log_20k_AMISecOnto/
+│   ├── access_20k.log
+│   ├── autit_20k.log
+│   ├── catalina_20k.log
+│   ├── dpkg_20k.log
+│   ├── error_20k.log
+│   ├── fenix.dependencies.txt
+│   ├── ssh_20k.log
+│   ├── su_20k.log
+│   ├── sudo_20k.log
 ├── queries/
 │   └── competency_questions/
 │       ├── cq01_time_range_filtering.rq
@@ -166,14 +174,15 @@ amiseconto/
 │       ├── cq23_multi_source_attack_patterns.rq
 │       ├── cq24_incident_reconstruction.rq
 │       └── linux_nvd_vulnerabilities_overview.rq
-│
 ├── scripts/
 │   ├── build_amiseconto_demo_graph.py
 │   ├── fetch_nvd_linux_cves.py
 │   ├── load_to_virtuoso.py
 │   ├── query_virtuoso.py
 │   └── validate_shacl_with_pyshacl.py
-│
+├── shapes/
+│   ├── amiseconto_cq_shapes.py
+├── LICENSE
 ├── README.md
 ```
 
