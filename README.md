@@ -144,6 +144,11 @@ The ontology is designed to answer the following competency questions:
 
 ```bash
 amiseconto/
+├── amiseconto/
+│   ├── AMISecOnto.ttl
+│   ├── AMISecOnto-alignments.ttl
+├── build/
+│   ├── xxxxx.nt
 ├── data/
 │   ├── amiseconto_demo_data.nt
 │   ├── amiseconto_demo_stats.json
@@ -169,9 +174,6 @@ amiseconto/
 │   ├── query_virtuoso.py
 │   └── validate_shacl_with_pyshacl.py
 │
-├── amiseconto/
-│   ├── AMISecOnto.ttl
-│   ├── AMISecOnto-alignments.ttl
 ├── README.md
 ```
 
