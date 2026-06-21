@@ -221,8 +221,6 @@ dolce:host-of rdf:type owl:ObjectProperty ;
     rdfs:label "host-of"@en .
 
 
-
-
 # --- Range classes of the ROSE classification properties ---
 
 
