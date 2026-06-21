@@ -5,39 +5,25 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix itsmo: <https://w3id.org/itsmo#> .
-@prefix dolce:  <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#>.
+@prefix dolce: <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#> .
+@prefix amisec: <http://www.semanticweb.org/AMISecOnto#> .
 
 <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> rdf:type owl:Ontology ;
     dct:title "AMISec Interoperability Alignment Module"@en ;
-    dct:description "Minimal OWL 2 DL-safe module providing class declarations for PROV-O, FOAF and ITSMO without requiring full imports. This allows AMISecOnto classes to align with external ontologies while maintaining DL compliance."@en ;
+    dct:description "Minimal OWL 2 DL-safe module providing class declarations for PROV-O, FOAF, ITSMO and DOLCE without requiring full imports."@en ;
     dct:license <https://creativecommons.org/licenses/by/4.0/> .
+
 #################################################################
-#    Asserted Signatures (No huge imports required)
+#    FOAF
 #################################################################
-
-#<http://xmlns.com/foaf/0.1/Person> rdf:type owl:Class .
-#<http://www.w3.org/ns/prov#Agent> rdf:type owl:Class .
-#<http://www.w3.org/ns/prov#Activity> rdf:type owl:Class .
-#<http://www.w3.org/ns/prov#Entity> rdf:type owl:Class .
-#<https://w3id.org/itsmo#Asset> rdf:type owl:Class .
-#<https://w3id.org/itsmo#Criticality> rdf:type owl:Class .
-#<https://w3id.org/itsmo#Priority> rdf:type owl:Class .
-#<https://w3id.org/itsmo#Scope> rdf:type owl:Class .
-#<https://w3id.org/itsmo#hasOwner> rdf:type owl:ObjectProperty .
-#<https://w3id.org/itsmo#hasResponsible> rdf:type owl:ObjectProperty .
-#<https://w3id.org/itsmo#hasCriticality> rdf:type owl:ObjectProperty .
-#<https://w3id.org/itsmo#hasPriority> rdf:type owl:ObjectProperty .
-#<https://w3id.org/itsmo#hasScope> rdf:type owl:ObjectProperty .
-
-
-# --- Range classes of the FOAF asset classification properties ---
 
 <http://xmlns.com/foaf/0.1/Person> rdf:type owl:Class ;
     rdfs:label "FOAF Person"@en ;
     rdfs:comment "External reference to FOAF Person class for interoperability."@en .
 
-
-# --- Range classes of the PROV asset classification properties ---
+#################################################################
+#    PROV-O
+#################################################################
 
 <http://www.w3.org/ns/prov#Agent> rdf:type owl:Class ;
     rdfs:label "PROV Agent"@en ;
@@ -51,32 +37,33 @@
     rdfs:label "PROV Entity"@en ;
     rdfs:comment "External reference to PROV Entity class for supply chain provenance."@en .
 
+#################################################################
+#    ITSMO Classes
+#################################################################
 
 itsmo:Asset rdf:type owl:Class ;
     rdfs:label "ITSMO Asset"@en ;
-    rdfs:comment "External reference to the ITSMO (IT Service Management Ontology) Asset class: a business-level concept holding business-centric metadata such as priority, criticality, scope, owner and responsible party. See https://w3id.org/itsmo#Asset ."@en ;
+    rdfs:comment "External reference to the ITSMO Asset class."@en ;
     rdfs:isDefinedBy <https://w3id.org/itsmo> .
-
-# --- Range classes of the ITSMO asset classification properties ---
 
 itsmo:Criticality rdf:type owl:Class ;
     rdfs:label "ITSMO Criticality"@en ;
-    rdfs:comment "External reference to the ITSMO Criticality class: a measure of the inherent importance of an Asset. See https://w3id.org/itsmo#Criticality ."@en ;
+    rdfs:comment "External reference to the ITSMO Criticality class."@en ;
     rdfs:isDefinedBy <https://w3id.org/itsmo> .
 
 itsmo:Priority rdf:type owl:Class ;
     rdfs:label "ITSMO Priority"@en ;
-    rdfs:comment "External reference to the ITSMO Priority class: impact combined with urgency, determining handling order. See https://w3id.org/itsmo#Priority ."@en ;
+    rdfs:comment "External reference to the ITSMO Priority class."@en ;
     rdfs:isDefinedBy <https://w3id.org/itsmo> .
 
 itsmo:Scope rdf:type owl:Class ;
     rdfs:label "ITSMO Scope"@en ;
-    rdfs:comment "External reference to the ITSMO Scope class: the classification or functional boundary of a service or asset. See https://w3id.org/itsmo#Scope ."@en ;
+    rdfs:comment "External reference to the ITSMO Scope class."@en ;
     rdfs:isDefinedBy <https://w3id.org/itsmo> .
 
-# --- ITSMO object properties applicable to itsmo:Asset (and thus to :Asset) ---
-# Declared as external signatures only; functional characteristics and ranges
-# are restated to preserve ITSMO semantics while remaining OWL 2 DL-safe.
+#################################################################
+#    ITSMO Object Properties
+#################################################################
 
 itsmo:hasOwner rdf:type owl:ObjectProperty ;
     rdfs:range <http://www.w3.org/ns/prov#Agent> ;
@@ -108,7 +95,9 @@ itsmo:hasScope rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
     rdfs:comment "Service scope / boundary of an Asset (external ITSMO functional property)."@en ;
     rdfs:isDefinedBy <https://w3id.org/itsmo> .
 
-# --- ITSMO predefined individuals (controlled vocabularies) ---
+#################################################################
+#    ITSMO Individuals
+#################################################################
 
 itsmo:HighCriticality   rdf:type owl:NamedIndividual , itsmo:Criticality .
 itsmo:MediumCriticality rdf:type owl:NamedIndividual , itsmo:Criticality .
@@ -123,210 +112,144 @@ itsmo:Infrastructure    rdf:type owl:NamedIndividual , itsmo:Scope .
 itsmo:Internal          rdf:type owl:NamedIndividual , itsmo:Scope .
 itsmo:Support           rdf:type owl:NamedIndividual , itsmo:Scope .
 
+#################################################################
+#    DOLCE Classes
+#################################################################
 
-# --- Range classes of the DOLCE classification properties ---
-
-<!-- 1. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#endurant -->
 dolce:endurant rdf:type owl:Class ;
     rdfs:label "DOLCE Endurant"@en ;
-    rdfs:comment "The main characteristic of endurants is that all of them are independent essential wholes. This does not mean that the corresponding property (being an endurant) carries proper unity, since there is  no common unity criterion for endurants. Endurants can &apos;genuinely&apos; change in time,  in the sense that the very same endurant as a whole can have incompatible properties at different times. To see this, suppose that an endurant - say &apos;this paper&apos; - has a  property at a time t &apos;it&apos;s white&apos;, and a different, incompatible property at time t&apos;  &apos;it&apos;s yellow&apos;: in both cases we refer to the whole object, without picking up any  particular part of it. Within endurants, we distinguish between physical and non-physical  endurants, according to whether they have direct spatial qualities. Within physical  endurants, we distinguish between amounts of matter, objects, and features."@en ;
+    rdfs:comment "Independent essential wholes that can change in time while remaining the same entity."@en .
 
-
-<!-- 2. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#non-physical-endurant -->
 dolce:non-physical-endurant rdf:type owl:Class ;
     rdfs:label "DOLCE Non-physical-endurant"@en ;
-    rdfs:comment "An endurant with no mass, generically constantly depending on some agent. Non-physical endurants can have physical constituents (e.g. in the case of members of a collection)."@en ;
+    rdfs:comment "An endurant with no mass, generically constantly depending on some agent."@en .
 
-
-<!-- 3. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#non-physical-object -->
 dolce:non-physical-object rdf:type owl:Class ;
     rdfs:label "DOLCE Non-physical-object"@en ;
-    rdfs:comment "Formerly known as description. A unitary endurant with no mass (non-physical), generically constantly depending on some agent, on some communication act, and indirectly on some agent participating in that act. Both descriptions (in the now current sense) and concepts are non-physical objects."@en ;
+    rdfs:comment "A unitary endurant with no mass, generically constantly depending on some agent and some communication act."@en .
 
-
-<!-- 4. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#physical-endurant -->
 dolce:physical-endurant rdf:type owl:Class ;
     rdfs:label "DOLCE Physical-endurant"@en ;
-    rdfs:comment "An endurant having a direct physical (at least spatial) quality."@en ;
+    rdfs:comment "An endurant having a direct physical (at least spatial) quality."@en .
 
-
-<!-- 5. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#physical-object -->
 dolce:physical-object rdf:type owl:Class ;
     rdfs:label "DOLCE Physical-object"@en ;
-    rdfs:comment "The main characteristic of physical objects is that  they are endurants with unity. However, they have no common unity criterion, since  different subtypes of objects may  have different unity criteria. Differently from  aggregates, (most) physical objects change some of their parts while keeping their  identity, they can have therefore temporary parts. Often physical objects (indeed,  all endurants) are ontologically independent from occurrences (discussed below).  However, if we admit that every object has a life, it is hard to exclude a mutual  specific constant dependence between the two. Nevertheless, we may still use the  notion of dependence to (weakly) characterize objects as being not specifically  constantly dependent on other objects."@en ;
+    rdfs:comment "Endurants with unity but no common unity criterion."@en .
 
-
-<!-- 6. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#perdurant -->
 dolce:perdurant rdf:type owl:Class ;
     rdfs:label "DOLCE Perdurant"@en ;
-    rdfs:comment "Perdurants (AKA occurrences) comprise what are variously called events, processes, phenomena, activities and states. They can have temporal parts or spatial parts. For instance, the first movement of (an execution of) a symphony is a temporal part of the symphony. On the other hand, the play performed by the left side of the orchestra is a spatial part. In both cases, these parts are occurrences themselves. We assume that objects cannot be parts of occurrences, but rather they participate in them. Perdurants extend in time by accumulating different temporal parts, so that, at any time they are present, they are only partially present, in  the sense that some of their proper temporal parts (e.g., their previous or future phases) may be not present. E.g., the piece of paper you are reading now is wholly present, while some temporal parts of your reading are not present yet, or any more. Philosophers say that endurants are entities that are in time, while lacking temporal parts (so to speak, all their parts flow with them in time). Perdurants, on the contrary, are entities that happen in time, and can have temporal parts (all their parts are fixed in time)."@en ;
+    rdfs:comment "Occurrences comprising events, processes, phenomena, activities and states."@en .
 
-
-<!-- 7. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#accomplishment -->
 dolce:accomplishment rdf:type owl:Class ;
     rdfs:label "DOLCE Accomplishment"@en ;
-    rdfs:comment "Eventive occurrences (events) are called achievements if they are atomic, otherwise they are accomplishments.Further developments: being &apos;achievement&apos;, &apos;accomplishment&apos;, &apos;state&apos;, &apos;event&apos;, etc. can be also considered &apos;aspects&apos; of processes or of parts of them. For example, the same process &apos;rock erosion in the Sinni valley&apos; can be seen as an accomplishment (what has brought the current state that e.g. we are trying to explain), as an achievement (the erosion process as the result of a previous accomplishment), as a state (collapsing the time interval of the erosion into a time point), as an event (what has changed our focus from a state to another).In the erosion case, we could have good motivations to shift from one aspect to another: a) causation focus, b) effectual focus, c) condensation d) transition (causality)."@en ;
+    rdfs:comment "Eventive occurrences that are not atomic."@en .
 
-
-<!-- 8. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#process -->
 dolce:process rdf:type owl:Class ;
     rdfs:label "DOLCE Process"@en ;
-    rdfs:comment "Within stative occurrences, we distinguish between states and processes     according to homeomericity: sitting is classified as a state but running     is classified as a process, since there are (very short) temporal parts of     a running that are not themselves runnings. In general, processes differ     from situations because they are not assumed to have a description from     which they depend. They can be sequenced by some course, but they do not     require a description as a unifying criterion. On the other hand, at any     time, one can conceive a description that asserts the constraints by which     a process of a certian type is such, and in this case, it becomes a     situation. Since the decision of designing an explicit description that     unifies a perdurant depends on context, task, interest, application, etc.,     when aligning an ontology do DLP, there can be indecision on where to     align a process-oriented class. For example, in the WordNet alignment, we     have decided to put only some physical processes under &apos;process&apos;, e.g.     &apos;organic process&apos;, in order to stress the social orientedness of DLP. But     whereas we need to talk explicitly of the criteria by which we conceive     organic processes, these will be put under &apos;situation&apos;. Similar     considerations are made for the other types of perdurants in DOLCE. A     different notion of event (dealing with change) is currently investigated     for further developments: being &apos;achievement&apos;, &apos;accomplishment&apos;, &apos;state&apos;,     &apos;event&apos;, etc. can be also considered &apos;aspects&apos; of processes or of parts of     them. For example, the same process &apos;rock erosion in the Sinni valley&apos; can     be conceptualized as an accomplishment (what has brought the current state     that e.g. we are trying to explain), as an achievement (the erosion     process as the result of a previous accomplishment), as a state (if we     collapse the time interval of the erosion into a time point), or as an     event (what has changed our focus from a state to another). In the erosion     case, we could have good motivations to shift from one aspect to another:     a) causation focus, b) effectual focus, c) condensation d) transition     (causality). If we want to consider all the aspects of a process together,     we need to postulate a unifying descriptive set of criteria (i.e. a     &apos;description&apos;), according to which that process is circumstantiated in a     &apos;situation&apos;. The different aspects will arise as a parts of a same situation."@en ;
+    rdfs:comment "Stative occurrences distinguished from states by homeomericity."@en .
 
-
-<!-- 9. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#quality -->
 dolce:quality rdf:type owl:Class ;
     rdfs:label "DOLCE Quality"@en ;
-    rdfs:comment "Qualities can be seen as the basic entities we can  perceive or measure: shapes, colors, sizes, sounds, smells, as well as weights, lengths,  electrical charges... &apos;Quality&apos; is often used as a synonymous of &apos;property&apos;, but this is  not the case in this upper ontology: qualities are particulars, properties are universals.  Qualities inhere to entities: every entity (including qualities themselves) comes with  certain qualities, which exist as long as the entity exists."@en ;
+    rdfs:comment "Basic entities we can perceive or measure."@en .
 
-
-<!-- 10. http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#event -->
 dolce:event rdf:type owl:Class ;
     rdfs:label "DOLCE Event"@en ;
-    rdfs:comment "An occurrence-type is stative or eventive according  to whether it holds of the mereological sum of two of its instances, i.e. if it is cumulative or not. A sitting occurrence is stative since the sum of two sittings is still a sitting occurrence.In general, events differ from situations because they are not assumed to have a description from which they depend. They can be sequenced by some course, but they do not require a description as a unifying criterion.On the other hand, at any time, one can conceive a description that asserts the constraints by which an event of a certian type is such, and in this case, it becomes a situation.Since the decision of designing an explicit description that unifies a perdurant depends on context, task, interest, application, etc., when aligning an ontology do DLP, there can be indecision on where to align an event-oriented class. For example, in the WordNet alignment, we have decided to put only some physical events under &apos;event&apos;, e.g. &apos;discharge&apos;, in order to stress the social orientedness of DLP. But whereas we need to talk explicitly of the criteria by which we conceive discharge events, these will be put under &apos;situation&apos;.Similar considerations are made for the other types of perdurants in DOLCE.A different notion of event (dealing with change) is currently investigated for further developments: being &apos;achievement&apos;, &apos;accomplishment&apos;, &apos;state&apos;, &apos;event&apos;, etc. can be also considered &apos;aspects&apos; of processes or of parts of them. For example, the same process &apos;rock erosion in the Sinni valley&apos; can be conceptualized as an accomplishment (what has brought the current state that e.g. we are trying to explain), as an achievement (the erosion process as the result of a previous accomplishment), as a state (if we collapse the time interval of the erosion into a time point), or as an event (what has changed our focus from a state to another).In the erosion case, we could have good motivations to shift from one aspect to another: a) causation focus, b) effectual focus, c) condensation d) transition (causality).If we want to consider all the aspects of a process together, we need to postulate a unifying descriptive set of criteria (i.e. a &apos;description&apos;), according to which that process is circumstantiated in a &apos;situation&apos;. The different aspects will arise as a parts of a same situation."@en ;
+    rdfs:comment "Eventive occurrences that are not cumulative."@en .
 
+#################################################################
+#    DOLCE Object Properties
+#################################################################
 
-
-
-
-
-
-itsmo:hasOwner rdf:type owl:ObjectProperty ;
-    rdfs:range <http://www.w3.org/ns/prov#Agent> ;
-    rdfs:label "hasOwner"@en ;
-    rdfs:comment "The owner of an Asset (external ITSMO property)."@en ;
-    rdfs:isDefinedBy <https://w3id.org/itsmo> .
-
-
-# --- DOLCE object properties applicable to ITSMO ---
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#constant-participant -->
 dolce:constant-participant rdf:type owl:ObjectProperty ;
     rdfs:label "constant-participant"@en ;
-    rdfs:comment "Anytime x is present, x has participant y. In other words, all parts of x have a same participant.Participation can be constant (in all parts of the perdurant, e.g. in &apos;the car is running&apos;), or temporary (in only some parts, e.g. in &apos;I&apos;m electing the president&apos;)."@en ;
+    rdfs:comment "Anytime x is present, x has participant y."@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#constant-participant-in -->
 dolce:constant-participant-in rdf:type owl:ObjectProperty ;
-    rdfs:label "constant-participant-in"@en ;
- 
+    rdfs:label "constant-participant-in"@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#exact-location -->
-dolce:exact-location  rdf:type owl:ObjectProperty ;
+dolce:exact-location rdf:type owl:ObjectProperty ;
     rdfs:label "exact-location"@en ;
-    rdfs:comment "A location relation bounded to regions and defined analytically through the composition of inherence and q-location. This is the analytical version of &apos;generic location&apos;."@en ;
+    rdfs:comment "A location relation bounded to regions."@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#exact-location-of -->
 dolce:exact-location-of rdf:type owl:ObjectProperty ;
-    rdfs:label "exact-location-of"@en ;
+    rdfs:label "exact-location-of"@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#generic-constituent -->
 dolce:generic-constituent rdf:type owl:ObjectProperty ;
     rdfs:label "generic-constituent"@en ;
-    rdfs:comment "&apos;Constituent&apos; should depend on some layering of  the ontology. For example, scientific granularities or ontological &apos;strata&apos; are  typical layerings. A constituent is a part belonging to a lower layer. Since layering is actually a partition of the ontology, constituents are not properly classified as parts, although this kinship can be intuitive for common sense. Example of specific constant constituents are the entities constituting a setting (a situation), whilethe entities constituting a collection are examples of generic constant constituents."@en ;
+    rdfs:comment "A part belonging to a lower ontological layer."@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#generic-constituent-of -->
 dolce:generic-constituent-of rdf:type owl:ObjectProperty ;
-    rdfs:label "generic-constituent-of"@en ;
-   
+    rdfs:label "generic-constituent-of"@en .
 
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#generic-dependent -->
 dolce:generic-dependent rdf:type owl:ObjectProperty ;
     rdfs:label "generic-dependent"@en ;
-    rdfs:comment "The dependence on an individual of a given type at some time. This is traditionally a relation between particulars and universals, but this one states that x generically depends on y if a z different from y, but with the same properties, can be equivalently its depend-on.This is a temporally-indexed relation (embedded in this syntax)."@en ;
+    rdfs:comment "The dependence on an individual of a given type at some time."@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#generic-location -->
 dolce:generic-location rdf:type owl:ObjectProperty ;
     rdfs:label "generic-location"@en ;
-    rdfs:comment "The most generic location relation, probably equivalent to more than one image schema in a cognitive system (e.g. containment for exact location, proximity for approximate location).This is meant to reason on generalized, common sense as well as formal locations, including naive localization, between any kinds of entities. Generic location is branched into &apos;exact&apos; location, ranging on regions, and &apos;approximate&apos; (naive) location, ranging on non-regions."@en ;
+    rdfs:comment "The most generic location relation."@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#generic-location-of -->
 dolce:generic-location-of rdf:type owl:ObjectProperty ;
-    rdfs:label "generic-location-of"@en ;
- 
+    rdfs:label "generic-location-of"@en .
 
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#generically-dependent-on -->
 dolce:generically-dependent-on rdf:type owl:ObjectProperty ;
-    rdfs:label "generically-dependent-on"@en ;
+    rdfs:label "generically-dependent-on"@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#has-quale -->
-dolce:has-quale  rdf:type owl:ObjectProperty ;
+dolce:has-quale rdf:type owl:ObjectProperty ;
     rdfs:label "has-quale"@en ;
-    rdfs:comment "A quality having a q-location at an atomic region."@en ;
+    rdfs:comment "A quality having a q-location at an atomic region."@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#has-quality -->
 dolce:has-quality rdf:type owl:ObjectProperty ;
-    rdfs:label "has-quality"@en ;
-  
+    rdfs:label "has-quality"@en .
 
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#has-t-quality -->
 dolce:has-t-quality rdf:type owl:ObjectProperty ;
-    rdfs:label "has-t-quality"@en ;
-    rdfs:comment ""@en ;
+    rdfs:label "has-t-quality"@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#host -->
 dolce:host rdf:type owl:ObjectProperty ;
     rdfs:label "host"@en ;
-    rdfs:comment "The immediate relation holding for features and entities."@en ;
+    rdfs:comment "The immediate relation holding for features and entities."@en .
 
-
-<!-- http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#host-of -->
 dolce:host-of rdf:type owl:ObjectProperty ;
-    rdfs:label "host-of"@en ;
+    rdfs:label "host-of"@en .
 
+#################################################################
+#    DOLCE Alignments for AMISecOnto classes
+#################################################################
 
+# Physical Endurants (tangible, persistent things)
+amisec:Asset rdfs:subClassOf dolce:physical-endurant .
+amisec:Account rdfs:subClassOf dolce:physical-endurant .
+amisec:Process rdfs:subClassOf dolce:physical-endurant .
+amisec:Environment rdfs:subClassOf dolce:physical-endurant .
+amisec:OperatingSystem rdfs:subClassOf dolce:physical-endurant .
+amisec:Logger rdfs:subClassOf dolce:physical-endurant .
 
-<!-- Class 
-<> rdf:type owl:Class ;
-    rdfs:label ""@en ;
-    rdfs:comment ""@en ;
+# Non-physical Endurants (abstract, informational things)
+amisec:Risk rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Threat rdfs:subClassOf dolce:non-physical-endurant .
+amisec:RiskLevel rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Outcome rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Request rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Module rdfs:subClassOf dolce:non-physical-endurant .
+amisec:PackageLibrary rdfs:subClassOf dolce:non-physical-endurant .
 
+# Non-physical Objects (descriptions, specifications)
+amisec:RiskAssessment rdfs:subClassOf dolce:non-physical-object .
 
+# Perdurants (things that happen in time)
+amisec:Activity rdfs:subClassOf dolce:perdurant .
 
-Property -->
-itsmo:hasOwner rdf:type owl:ObjectProperty ;
-    rdfs:range <http://www.w3.org/ns/prov#Agent> ;
-    rdfs:label "hasOwner"@en ;
-    rdfs:comment "The owner of an Asset (external ITSMO property)."@en ;
-    rdfs:isDefinedBy <https://w3id.org/itsmo> .  -->
+# Events (atomic, non-cumulative occurrences)
+<http://www.semanticweb.org/AMISecOnto/LogEvent> rdfs:subClassOf dolce:event .
+<http://www.semanticweb.org/AMISecOnto/SecurityLogEvent> rdfs:subClassOf dolce:event .
+<http://www.semanticweb.org/AMISecOnto/ApplicationLogEvent> rdfs:subClassOf dolce:event .
+amisec:AccessLogEvent rdfs:subClassOf dolce:event .
+amisec:AuthenticationLogEvent rdfs:subClassOf dolce:event .
+amisec:Audit_Log_Event rdfs:subClassOf dolce:event .
 
+# Processes (cumulative, ongoing occurrences)
+<http://www.semanticweb.org/AMISecOnto/BuildProcess> rdfs:subClassOf dolce:process .
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# --- Range classes of the ROSE classification properties ---
-
-
-
-
+# Qualities (measurable properties)
+<http://www.semanticweb.org/AMISecOnto/Severity> rdfs:subClassOf dolce:quality .
+<http://www.semanticweb.org/AMISecOnto/CVSSMetric> rdfs:subClassOf dolce:quality .
