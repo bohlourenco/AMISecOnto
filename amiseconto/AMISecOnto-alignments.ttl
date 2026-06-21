@@ -5,7 +5,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix itsmo: <https://w3id.org/itsmo#> .
-@prefix dolce:  <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#>.
+@prefix dolce: <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#>.
 
 <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> rdf:type owl:Ontology ;
     dct:title "AMISec Interoperability Alignment Module"@en ;
