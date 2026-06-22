@@ -1,0 +1,255 @@
+ @prefix : <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix itsmo: <https://w3id.org/itsmo#> .
+@prefix dolce: <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#> .
+@prefix amisec: <http://www.semanticweb.org/AMISecOnto#> .
+
+<https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> rdf:type owl:Ontology ;
+    dct:title "AMISec Interoperability Alignment Module"@en ;
+    dct:description "Minimal OWL 2 DL-safe module providing class declarations for PROV-O, FOAF, ITSMO and DOLCE without requiring full imports."@en ;
+    dct:license <https://creativecommons.org/licenses/by/4.0/> .
+
+#################################################################
+#    FOAF
+#################################################################
+
+<http://xmlns.com/foaf/0.1/Person> rdf:type owl:Class ;
+    rdfs:label "FOAF Person"@en ;
+    rdfs:comment "External reference to FOAF Person class for interoperability."@en .
+
+#################################################################
+#    PROV-O
+#################################################################
+
+<http://www.w3.org/ns/prov#Agent> rdf:type owl:Class ;
+    rdfs:label "PROV Agent"@en ;
+    rdfs:comment "External reference to PROV Agent class for interoperability."@en .
+
+<http://www.w3.org/ns/prov#Activity> rdf:type owl:Class ;
+    rdfs:label "PROV Activity"@en ;
+    rdfs:comment "External reference to PROV Activity class for provenance tracking."@en .
+
+<http://www.w3.org/ns/prov#Entity> rdf:type owl:Class ;
+    rdfs:label "PROV Entity"@en ;
+    rdfs:comment "External reference to PROV Entity class for supply chain provenance."@en .
+
+#################################################################
+#    ITSMO Classes
+#################################################################
+
+itsmo:Asset rdf:type owl:Class ;
+    rdfs:label "ITSMO Asset"@en ;
+    rdfs:comment "External reference to the ITSMO Asset class."@en ;
+    rdfs:isDefinedBy <https://w3id.org/itsmo> .
+
+itsmo:Criticality rdf:type owl:Class ;
+    rdfs:label "ITSMO Criticality"@en ;
+    rdfs:comment "External reference to the ITSMO Criticality class."@en ;
+    rdfs:isDefinedBy <https://w3id.org/itsmo> .
+
+itsmo:Priority rdf:type owl:Class ;
+    rdfs:label "ITSMO Priority"@en ;
+    rdfs:comment "External reference to the ITSMO Priority class."@en ;
+    rdfs:isDefinedBy <https://w3id.org/itsmo> .
+
+itsmo:Scope rdf:type owl:Class ;
+    rdfs:label "ITSMO Scope"@en ;
+    rdfs:comment "External reference to the ITSMO Scope class."@en ;
+    rdfs:isDefinedBy <https://w3id.org/itsmo> .
+
+#################################################################
+#    ITSMO Object Properties
+#################################################################
+
+itsmo:hasOwner rdf:type owl:ObjectProperty ;
+    rdfs:range <http://www.w3.org/ns/prov#Agent> ;
+    rdfs:label "hasOwner"@en ;
+    rdfs:comment "The owner of an Asset (external ITSMO property)."@en ;
+    rdfs:isDefinedBy <https://w3id.org/itsmo> .
+
+itsmo:hasResponsible rdf:type owl:ObjectProperty ;
+    rdfs:range <http://www.w3.org/ns/prov#Agent> ;
+    rdfs:label "hasResponsible"@en ;
+    rdfs:comment "The maintainer / responsible party of an Asset (external ITSMO property)."@en ;
+    rdfs:isDefinedBy <https://w3id.org/itsmo> .
+
+itsmo:hasCriticality rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:range itsmo:Criticality ;
+    rdfs:label "hasCriticality"@en ;
+    rdfs:comment "Relative criticality of an Asset (external ITSMO functional property)."@en ;
+    rdfs:isDefinedBy <https://w3id.org/itsmo> .
+
+itsmo:hasPriority rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:range itsmo:Priority ;
+    rdfs:label "hasPriority"@en ;
+    rdfs:comment "Priority assigned to an Asset (external ITSMO functional property)."@en ;
+    rdfs:isDefinedBy <https://w3id.org/itsmo> .
+
+itsmo:hasScope rdf:type owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:range itsmo:Scope ;
+    rdfs:label "hasScope"@en ;
+    rdfs:comment "Service scope / boundary of an Asset (external ITSMO functional property)."@en ;
+    rdfs:isDefinedBy <https://w3id.org/itsmo> .
+
+#################################################################
+#    ITSMO Individuals
+#################################################################
+
+itsmo:HighCriticality   rdf:type owl:NamedIndividual , itsmo:Criticality .
+itsmo:MediumCriticality rdf:type owl:NamedIndividual , itsmo:Criticality .
+itsmo:LowCriticality    rdf:type owl:NamedIndividual , itsmo:Criticality .
+
+itsmo:HighPriority      rdf:type owl:NamedIndividual , itsmo:Priority .
+itsmo:MediumPriority    rdf:type owl:NamedIndividual , itsmo:Priority .
+itsmo:LowPriority       rdf:type owl:NamedIndividual , itsmo:Priority .
+
+itsmo:Business          rdf:type owl:NamedIndividual , itsmo:Scope .
+itsmo:Infrastructure    rdf:type owl:NamedIndividual , itsmo:Scope .
+itsmo:Internal          rdf:type owl:NamedIndividual , itsmo:Scope .
+itsmo:Support           rdf:type owl:NamedIndividual , itsmo:Scope .
+
+#################################################################
+#    DOLCE Classes
+#################################################################
+
+dolce:endurant rdf:type owl:Class ;
+    rdfs:label "DOLCE Endurant"@en ;
+    rdfs:comment "Independent essential wholes that can change in time while remaining the same entity."@en .
+
+dolce:non-physical-endurant rdf:type owl:Class ;
+    rdfs:label "DOLCE Non-physical-endurant"@en ;
+    rdfs:comment "An endurant with no mass, generically constantly depending on some agent."@en .
+
+dolce:non-physical-object rdf:type owl:Class ;
+    rdfs:label "DOLCE Non-physical-object"@en ;
+    rdfs:comment "A unitary endurant with no mass, generically constantly depending on some agent and some communication act."@en .
+
+dolce:physical-endurant rdf:type owl:Class ;
+    rdfs:label "DOLCE Physical-endurant"@en ;
+    rdfs:comment "An endurant having a direct physical (at least spatial) quality."@en .
+
+dolce:physical-object rdf:type owl:Class ;
+    rdfs:label "DOLCE Physical-object"@en ;
+    rdfs:comment "Endurants with unity but no common unity criterion."@en .
+
+dolce:perdurant rdf:type owl:Class ;
+    rdfs:label "DOLCE Perdurant"@en ;
+    rdfs:comment "Occurrences comprising events, processes, phenomena, activities and states."@en .
+
+dolce:accomplishment rdf:type owl:Class ;
+    rdfs:label "DOLCE Accomplishment"@en ;
+    rdfs:comment "Eventive occurrences that are not atomic."@en .
+
+dolce:process rdf:type owl:Class ;
+    rdfs:label "DOLCE Process"@en ;
+    rdfs:comment "Stative occurrences distinguished from states by homeomericity."@en .
+
+dolce:quality rdf:type owl:Class ;
+    rdfs:label "DOLCE Quality"@en ;
+    rdfs:comment "Basic entities we can perceive or measure."@en .
+
+dolce:event rdf:type owl:Class ;
+    rdfs:label "DOLCE Event"@en ;
+    rdfs:comment "Eventive occurrences that are not cumulative."@en .
+
+#################################################################
+#    DOLCE Object Properties
+#################################################################
+
+dolce:constant-participant rdf:type owl:ObjectProperty ;
+    rdfs:label "constant-participant"@en ;
+    rdfs:comment "Anytime x is present, x has participant y."@en .
+
+dolce:constant-participant-in rdf:type owl:ObjectProperty ;
+    rdfs:label "constant-participant-in"@en .
+
+dolce:exact-location rdf:type owl:ObjectProperty ;
+    rdfs:label "exact-location"@en ;
+    rdfs:comment "A location relation bounded to regions."@en .
+
+dolce:exact-location-of rdf:type owl:ObjectProperty ;
+    rdfs:label "exact-location-of"@en .
+
+dolce:generic-constituent rdf:type owl:ObjectProperty ;
+    rdfs:label "generic-constituent"@en ;
+    rdfs:comment "A part belonging to a lower ontological layer."@en .
+
+dolce:generic-constituent-of rdf:type owl:ObjectProperty ;
+    rdfs:label "generic-constituent-of"@en .
+
+dolce:generic-dependent rdf:type owl:ObjectProperty ;
+    rdfs:label "generic-dependent"@en ;
+    rdfs:comment "The dependence on an individual of a given type at some time."@en .
+
+dolce:generic-location rdf:type owl:ObjectProperty ;
+    rdfs:label "generic-location"@en ;
+    rdfs:comment "The most generic location relation."@en .
+
+dolce:generic-location-of rdf:type owl:ObjectProperty ;
+    rdfs:label "generic-location-of"@en .
+
+dolce:generically-dependent-on rdf:type owl:ObjectProperty ;
+    rdfs:label "generically-dependent-on"@en .
+
+dolce:has-quale rdf:type owl:ObjectProperty ;
+    rdfs:label "has-quale"@en ;
+    rdfs:comment "A quality having a q-location at an atomic region."@en .
+
+dolce:has-quality rdf:type owl:ObjectProperty ;
+    rdfs:label "has-quality"@en .
+
+dolce:has-t-quality rdf:type owl:ObjectProperty ;
+    rdfs:label "has-t-quality"@en .
+
+dolce:host rdf:type owl:ObjectProperty ;
+    rdfs:label "host"@en ;
+    rdfs:comment "The immediate relation holding for features and entities."@en .
+
+dolce:host-of rdf:type owl:ObjectProperty ;
+    rdfs:label "host-of"@en .
+
+#################################################################
+#    DOLCE Alignments for AMISecOnto classes
+#################################################################
+
+# Physical Endurants (tangible, persistent things)
+amisec:Asset rdfs:subClassOf dolce:physical-endurant .
+amisec:Account rdfs:subClassOf dolce:physical-endurant .
+amisec:Process rdfs:subClassOf dolce:physical-endurant .
+amisec:Environment rdfs:subClassOf dolce:physical-endurant .
+amisec:OperatingSystem rdfs:subClassOf dolce:physical-endurant .
+amisec:Logger rdfs:subClassOf dolce:physical-endurant .
+
+# Non-physical Endurants (abstract, informational things)
+amisec:Risk rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Threat rdfs:subClassOf dolce:non-physical-endurant .
+amisec:RiskLevel rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Outcome rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Request rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Module rdfs:subClassOf dolce:non-physical-endurant .
+amisec:PackageLibrary rdfs:subClassOf dolce:non-physical-endurant .
+
+# Non-physical Objects (descriptions, specifications)
+amisec:RiskAssessment rdfs:subClassOf dolce:non-physical-object .
+
+# Perdurants (things that happen in time)
+amisec:Activity rdfs:subClassOf dolce:perdurant .
+
+# Events (atomic, non-cumulative occurrences)
+<http://www.semanticweb.org/AMISecOnto/LogEvent> rdfs:subClassOf dolce:event .
+<http://www.semanticweb.org/AMISecOnto/SecurityLogEvent> rdfs:subClassOf dolce:event .
+<http://www.semanticweb.org/AMISecOnto/ApplicationLogEvent> rdfs:subClassOf dolce:event .
+amisec:AccessLogEvent rdfs:subClassOf dolce:event .
+amisec:AuthenticationLogEvent rdfs:subClassOf dolce:event .
+amisec:Audit_Log_Event rdfs:subClassOf dolce:event .
+
+# Processes (cumulative, ongoing occurrences)
+<http://www.semanticweb.org/AMISecOnto/BuildProcess> rdfs:subClassOf dolce:process .
+
+# Qualities (measurable properties)
+<http://www.semanticweb.org/AMISecOnto/Severity> rdfs:subClassOf dolce:quality .
+<http://www.semanticweb.org/AMISecOnto/CVSSMetric> rdfs:subClassOf dolce:quality .
