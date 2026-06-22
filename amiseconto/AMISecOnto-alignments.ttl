@@ -1,4 +1,4 @@
-@prefix : <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> .
+ @prefix : <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -122,11 +122,11 @@ dolce:endurant rdf:type owl:Class ;
 
 dolce:non-physical-endurant rdf:type owl:Class ;
     rdfs:label "DOLCE Non-physical-endurant"@en ;
-    rdfs:comment "An endurant with no mass, generically constantly depending on some agent."@en .
+    rdfs:comment "The main characteristic of endurants is that all of them are independent essential wholes. This does not mean that the corresponding property (being an endurant) carries proper unity, since there is  no common unity criterion for endurants. Endurants can &apos;genuinely&apos; change in time,  in the sense that the very same endurant as a whole can have incompatible properties at different times. To see this, suppose that an endurant - say &apos;this paper&apos; - has a  property at a time t &apos;it&apos;s white&apos;, and a different, incompatible property at time t&apos;  &apos;it&apos;s yellow&apos;: in both cases we refer to the whole object, without picking up any  particular part of it. Within endurants, we distinguish between physical and non-physical  endurants, according to whether they have direct spatial qualities. Within physical  endurants, we distinguish between amounts of matter, objects, and features."@en .
 
 dolce:non-physical-object rdf:type owl:Class ;
     rdfs:label "DOLCE Non-physical-object"@en ;
-    rdfs:comment "A unitary endurant with no mass, generically constantly depending on some agent and some communication act."@en .
+    rdfs:comment "An endurant with no mass, generically constantly depending on some agent. Non-physical endurants can have physical constituents (e.g. in the case of members of a collection)."@en .
 
 dolce:physical-endurant rdf:type owl:Class ;
     rdfs:label "DOLCE Physical-endurant"@en ;
@@ -211,4 +211,76 @@ dolce:host rdf:type owl:ObjectProperty ;
 
 dolce:host-of rdf:type owl:ObjectProperty ;
     rdfs:label "host-of"@en .
+
+#################################################################
+#    DOLCE Alignments for AMISecOnto classes
+#################################################################
+
+# Physical Endurants (tangible, persistent things)
+amisec:Asset rdfs:subClassOf dolce:physical-endurant .
+amisec:Account rdfs:subClassOf dolce:physical-endurant .
+amisec:Process rdfs:subClassOf dolce:physical-endurant .
+amisec:Environment rdfs:subClassOf dolce:physical-endurant .
+amisec:OperatingSystem rdfs:subClassOf dolce:physical-endurant .
+amisec:Logger rdfs:subClassOf dolce:physical-endurant .
+
+# Non-physical Endurants (abstract, informational things)
+amisec:Risk rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Threat rdfs:subClassOf dolce:non-physical-endurant .
+amisec:RiskLevel rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Outcome rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Request rdfs:subClassOf dolce:non-physical-endurant .
+amisec:Module rdfs:subClassOf dolce:non-physical-endurant .
+amisec:PackageLibrary rdfs:subClassOf dolce:non-physical-endurant .
+
+# Non-physical Objects (descriptions, specifications)
+amisec:RiskAssessment rdfs:subClassOf dolce:non-physical-object .
+
+# Perdurants (things that happen in time)
+amisec:Activity rdfs:subClassOf dolce:perdurant .
+
+# Events (atomic, non-cumulative occurrences)
+<http://www.semanticweb.org/AMISecOnto/LogEvent> rdfs:subClassOf dolce:event .
+<http://www.semanticweb.org/AMISecOnto/SecurityLogEvent> rdfs:subClassOf dolce:event .
+<http://www.semanticweb.org/AMISecOnto/ApplicationLogEvent> rdfs:subClassOf dolce:event .
+amisec:AccessLogEvent rdfs:subClassOf dolce:event .
+amisec:AuthenticationLogEvent rdfs:subClassOf dolce:event .
+amisec:Audit_Log_Event rdfs:subClassOf dolce:event .
+
+# Processes (cumulative, ongoing occurrences)
+<http://www.semanticweb.org/AMISecOnto/BuildProcess> rdfs:subClassOf dolce:process .
+
+# Qualities (measurable properties)
+<http://www.semanticweb.org/AMISecOnto/Severity> rdfs:subClassOf dolce:quality .
+<http://www.semanticweb.org/AMISecOnto/CVSSMetric> rdfs:subClassOf dolce:quality .
+
+
+#################################################################
+#    ROSE Classes
+#################################################################
+
+gufo:Risk rdf:type owl:Class ;
+    rdfs:label "ROSE Risk"@en ;
+    rdfs:comment ""@en .
+
+
+gufo:RiskAssessment rdf:type owl:Class ;
+    rdfs:label "ROSE RiskAssessment
+    "@en ;
+    rdfs:comment ""@en .
+
+gufo:Vulnerability rdf:type owl:Class ;
+    rdfs:label "ROSE Vulnerability"@en ;
+    rdfs:comment ""@en .
+
+gufo:VulnerabilityType rdf:type owl:Class ;
+    rdfs:label "ROSE VulnerabilityType"@en ;
+    rdfs:comment ""@en .
+
+
+
+
+
+
+
 
