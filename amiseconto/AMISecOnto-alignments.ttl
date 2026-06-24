@@ -226,8 +226,7 @@ dolce:physical-object rdfs:subClassOf dolce:physical-endurant .
 
 dolce:event rdfs:subClassOf dolce:perdurant .
 dolce:accomplishment rdfs:subClassOf dolce:event .
-dolce:achievement rdfs:subClassOf dolce:event .
 dolce:stative rdfs:subClassOf dolce:perdurant .
 dolce:process rdfs:subClassOf dolce:stative .
-dolce:state rdfs:subClassOf dolce:stative .
+
 
