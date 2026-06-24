@@ -214,49 +214,6 @@ dolce:host-of rdf:type owl:ObjectProperty ;
     rdfs:label "host-of"@en .
 
 #################################################################
-#    DOLCE Alignments for AMISecOnto classes
-#################################################################
-
-# Physical Endurants (tangible, persistent things)
-amisec:Asset rdfs:subClassOf dolce:physical-endurant .
-amisec:Account rdfs:subClassOf dolce:physical-endurant .
-amisec:Process rdfs:subClassOf dolce:physical-endurant .
-amisec:Environment rdfs:subClassOf dolce:physical-endurant .
-amisec:OperatingSystem rdfs:subClassOf dolce:physical-endurant .
-amisec:Logger rdfs:subClassOf dolce:physical-endurant .
-
-# Non-physical Endurants (abstract, informational things)
-amisec:Risk rdfs:subClassOf dolce:non-physical-endurant .
-amisec:Threat rdfs:subClassOf dolce:non-physical-endurant .
-amisec:RiskLevel rdfs:subClassOf dolce:non-physical-endurant .
-amisec:Outcome rdfs:subClassOf dolce:non-physical-endurant .
-amisec:Request rdfs:subClassOf dolce:non-physical-endurant .
-amisec:Module rdfs:subClassOf dolce:non-physical-endurant .
-amisec:PackageLibrary rdfs:subClassOf dolce:non-physical-endurant .
-
-# Non-physical Objects (descriptions, specifications)
-amisec:RiskAssessment rdfs:subClassOf dolce:non-physical-object .
-
-# Perdurants (things that happen in time)
-amisec:Activity rdfs:subClassOf dolce:perdurant .
-
-# Events (atomic, non-cumulative occurrences)
-<http://www.semanticweb.org/AMISecOnto/LogEvent> rdfs:subClassOf dolce:event .
-<http://www.semanticweb.org/AMISecOnto/SecurityLogEvent> rdfs:subClassOf dolce:event .
-<http://www.semanticweb.org/AMISecOnto/ApplicationLogEvent> rdfs:subClassOf dolce:event .
-amisec:AccessLogEvent rdfs:subClassOf dolce:event .
-amisec:AuthenticationLogEvent rdfs:subClassOf dolce:event .
-amisec:Audit_Log_Event rdfs:subClassOf dolce:event .
-
-# Processes (cumulative, ongoing occurrences)
-<http://www.semanticweb.org/AMISecOnto/BuildProcess> rdfs:subClassOf dolce:process .
-
-# Qualities (measurable properties)
-<http://www.semanticweb.org/AMISecOnto/Severity> rdfs:subClassOf dolce:quality .
-<http://www.semanticweb.org/AMISecOnto/CVSSMetric> rdfs:subClassOf dolce:quality .
-
-
-#################################################################
 #    ROSE Classes
 #################################################################
 
