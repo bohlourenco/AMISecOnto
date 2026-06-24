@@ -213,7 +213,6 @@ dolce:host rdf:type owl:ObjectProperty ;
 dolce:host-of rdf:type owl:ObjectProperty ;
     rdfs:label "host-of"@en .
 
-
 #################################################################
 #    DOLCE Hierarchy
 #################################################################
