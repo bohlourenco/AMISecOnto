@@ -117,21 +117,37 @@ itsmo:Support           rdf:type owl:NamedIndividual , itsmo:Scope .
 #    DOLCE Classes
 #################################################################
 
+dolce:spatio-temporal-particular rdf:type owl:Class ;
+    rdfs:label "DOLCE Spatio-temporal-particular"@en ;
+    rdfs:comment "The most general DOLCE category."@en .
+
 dolce:endurant rdf:type owl:Class ;
     rdfs:label "DOLCE Endurant"@en ;
     rdfs:comment "Independent essential wholes that can change in time while remaining the same entity."@en .
 
+dolce:arbitrary-sum rdf:type owl:Class ;
+    rdfs:label "DOLCE Arbitrary-sum"@en ;
+    rdfs:comment "Mereological sums without unity criterion."@en .
+
 dolce:non-physical-endurant rdf:type owl:Class ;
     rdfs:label "DOLCE Non-physical-endurant"@en ;
-    rdfs:comment "The main characteristic of endurants is that all of them are independent essential wholes. This does not mean that the corresponding property (being an endurant) carries proper unity, since there is  no common unity criterion for endurants. Endurants can &apos;genuinely&apos; change in time,  in the sense that the very same endurant as a whole can have incompatible properties at different times. To see this, suppose that an endurant - say &apos;this paper&apos; - has a  property at a time t &apos;it&apos;s white&apos;, and a different, incompatible property at time t&apos;  &apos;it&apos;s yellow&apos;: in both cases we refer to the whole object, without picking up any  particular part of it. Within endurants, we distinguish between physical and non-physical  endurants, according to whether they have direct spatial qualities. Within physical  endurants, we distinguish between amounts of matter, objects, and features."@en .
+    rdfs:comment "Endurants with no direct spatial qualities."@en .
 
 dolce:non-physical-object rdf:type owl:Class ;
     rdfs:label "DOLCE Non-physical-object"@en ;
-    rdfs:comment "An endurant with no mass, generically constantly depending on some agent. Non-physical endurants can have physical constituents (e.g. in the case of members of a collection)."@en .
+    rdfs:comment "An endurant with no mass, generically constantly depending on some agent."@en .
 
 dolce:physical-endurant rdf:type owl:Class ;
     rdfs:label "DOLCE Physical-endurant"@en ;
     rdfs:comment "An endurant having a direct physical (at least spatial) quality."@en .
+
+dolce:amount-of-matter rdf:type owl:Class ;
+    rdfs:label "DOLCE Amount-of-matter"@en ;
+    rdfs:comment "Physical endurants with a common unity criterion based on homogeneity."@en .
+
+dolce:feature rdf:type owl:Class ;
+    rdfs:label "DOLCE Feature"@en ;
+    rdfs:comment "Physical endurants that are not self-connected."@en .
 
 dolce:physical-object rdf:type owl:Class ;
     rdfs:label "DOLCE Physical-object"@en ;
@@ -141,21 +157,33 @@ dolce:perdurant rdf:type owl:Class ;
     rdfs:label "DOLCE Perdurant"@en ;
     rdfs:comment "Occurrences comprising events, processes, phenomena, activities and states."@en .
 
+dolce:event rdf:type owl:Class ;
+    rdfs:label "DOLCE Event"@en ;
+    rdfs:comment "Eventive occurrences that are not cumulative."@en .
+
 dolce:accomplishment rdf:type owl:Class ;
     rdfs:label "DOLCE Accomplishment"@en ;
     rdfs:comment "Eventive occurrences that are not atomic."@en .
+
+dolce:achievement rdf:type owl:Class ;
+    rdfs:label "DOLCE Achievement"@en ;
+    rdfs:comment "Atomic eventive occurrences."@en .
+
+dolce:stative rdf:type owl:Class ;
+    rdfs:label "DOLCE Stative"@en ;
+    rdfs:comment "Occurrences that are cumulative and homeomeric."@en .
 
 dolce:process rdf:type owl:Class ;
     rdfs:label "DOLCE Process"@en ;
     rdfs:comment "Stative occurrences distinguished from states by homeomericity."@en .
 
+dolce:state rdf:type owl:Class ;
+    rdfs:label "DOLCE State"@en ;
+    rdfs:comment "Stative occurrences that are homeomeric."@en .
+
 dolce:quality rdf:type owl:Class ;
     rdfs:label "DOLCE Quality"@en ;
     rdfs:comment "Basic entities we can perceive or measure."@en .
-
-dolce:event rdf:type owl:Class ;
-    rdfs:label "DOLCE Event"@en ;
-    rdfs:comment "Eventive occurrences that are not cumulative."@en .
 
 #################################################################
 #    DOLCE Object Properties
@@ -217,13 +245,23 @@ dolce:host-of rdf:type owl:ObjectProperty ;
 #    DOLCE Hierarchy
 #################################################################
 
+dolce:endurant rdfs:subClassOf dolce:spatio-temporal-particular .
+dolce:arbitrary-sum rdfs:subClassOf dolce:endurant .
 dolce:non-physical-endurant rdfs:subClassOf dolce:endurant .
 dolce:non-physical-object rdfs:subClassOf dolce:non-physical-endurant .
 dolce:physical-endurant rdfs:subClassOf dolce:endurant .
+dolce:amount-of-matter rdfs:subClassOf dolce:physical-endurant .
+dolce:feature rdfs:subClassOf dolce:physical-endurant .
 dolce:physical-object rdfs:subClassOf dolce:physical-endurant .
 
+dolce:perdurant rdfs:subClassOf dolce:spatio-temporal-particular .
 dolce:event rdfs:subClassOf dolce:perdurant .
 dolce:accomplishment rdfs:subClassOf dolce:event .
+dolce:achievement rdfs:subClassOf dolce:event .
+dolce:stative rdfs:subClassOf dolce:perdurant .
 dolce:process rdfs:subClassOf dolce:stative .
+dolce:state rdfs:subClassOf dolce:stative .
+
+dolce:quality rdfs:subClassOf dolce:spatio-temporal-particular .
 
 
