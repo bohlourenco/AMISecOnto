@@ -218,7 +218,6 @@ dolce:host-of rdf:type owl:ObjectProperty ;
 #    DOLCE Hierarchy
 #################################################################
 
-dolce:arbitrary-sum rdfs:subClassOf dolce:endurant .
 dolce:non-physical-endurant rdfs:subClassOf dolce:endurant .
 dolce:non-physical-object rdfs:subClassOf dolce:non-physical-endurant .
 dolce:physical-endurant rdfs:subClassOf dolce:endurant .
@@ -226,7 +225,6 @@ dolce:physical-object rdfs:subClassOf dolce:physical-endurant .
 
 dolce:event rdfs:subClassOf dolce:perdurant .
 dolce:accomplishment rdfs:subClassOf dolce:event .
-dolce:stative rdfs:subClassOf dolce:perdurant .
 dolce:process rdfs:subClassOf dolce:stative .
 
 
