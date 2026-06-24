@@ -6,6 +6,7 @@
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix itsmo: <https://w3id.org/itsmo#> .
 @prefix dolce: <http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#> .
+@prefix gufo: <http://purl.org/nemo/gufo#> .
 @prefix amisec: <http://www.semanticweb.org/AMISecOnto#> .
 
 <https://bohlourenco.github.io/AMISecOnto/alignments> rdf:type owl:Ontology ;
