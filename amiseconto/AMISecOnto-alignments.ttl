@@ -9,7 +9,7 @@
 @prefix gufo: <http://purl.org/nemo/gufo#> .
 @prefix amisec: <http://www.semanticweb.org/AMISecOnto#> .
 
-<https://bohlourenco.github.io/AMISecOnto/alignments/> rdf:type owl:Ontology .
+<https://bohlourenco.github.io/AMISecOnto/alignments/> rdf:type owl:Ontology ;
     dct:title "AMISec Interoperability Alignment Module"@en ;
     dct:description "Minimal OWL 2 DL-safe module providing class declarations for PROV-O, FOAF, ITSMO and DOLCE without requiring full imports."@en ;
     dct:license <https://creativecommons.org/licenses/by/4.0/> .
