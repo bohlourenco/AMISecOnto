@@ -245,6 +245,11 @@ dolce:host-of rdf:type owl:ObjectProperty ;
 #    DOLCE Hierarchy
 #################################################################
 
+dolce:abstract rdfs:subClassOf dolce:particular .
+dolce:particular rdfs:subClassOf dolce:abstract .
+dolce:abstract rdfs:subClassOf dolce: region .
+dolce:refion rdfs:subClassOf dolce: abstract-region .
+
 dolce:endurant rdfs:subClassOf dolce:spatio-temporal-particular .
 dolce:arbitrary-sum rdfs:subClassOf dolce:endurant .
 dolce:non-physical-endurant rdfs:subClassOf dolce:endurant .
