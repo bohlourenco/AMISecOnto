@@ -250,10 +250,6 @@ dolce:spatio-temporal-particular rdfs:subClassOf dolce:particular .
 
 dolce:region rdfs:subClassOf dolce:abstract .
 dolce:abstract-region rdfs:subClassOf dolce:region .
-dolce:physical-region rdfs:subClassOf dolce:region .
-dolce:quale rdfs:subClassOf dolce:region .
-dolce:quality-space rdfs:subClassOf dolce:region .
-dolce:temporal-region rdfs:subClassOf dolce:region .
 
 dolce:endurant rdfs:subClassOf dolce:spatio-temporal-particular .
 dolce:arbitrary-sum rdfs:subClassOf dolce:endurant .
