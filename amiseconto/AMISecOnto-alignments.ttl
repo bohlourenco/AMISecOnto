@@ -1,4 +1,4 @@
-@prefix : <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> .
+@prefix : <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/main/amiseconto/AMISecOnto-alignments.ttl> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
