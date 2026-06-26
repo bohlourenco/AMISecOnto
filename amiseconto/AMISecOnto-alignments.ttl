@@ -247,7 +247,6 @@ dolce:host-of rdf:type owl:ObjectProperty ;
 
 dolce:particular rdfs:subClassOf owl:Thing .
 dolce:abstract rdfs:subClassOf dolce:particular .
-dolce:set rdfs:subClassOf dolce:particular .
 dolce:spatio-temporal-particular rdfs:subClassOf dolce:particular .
 
 dolce:region rdfs:subClassOf dolce:abstract .
