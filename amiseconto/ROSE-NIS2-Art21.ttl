@@ -8,7 +8,7 @@
 @prefix rose: <http://rose.com/nis2/art21#> .
 
 <https://bohlourenco.github.io/AMISecOnto/alignments/rose/> rdf:type owl:Ontology ;
-    dct:title "ROSE NIS2 Article 21 Interoperability Alignment Module"@en ;
+    dct:title "ROSE NIS2 Article 21 Interoperability Module"@en ;
     dct:description "Minimal OWL 2 DL-safe module providing class and annotation-property declarations for gUFO, as used by the ROSE NIS2 Article 21 module, without requiring a full gUFO import."@en ;
     dct:license <https://creativecommons.org/licenses/by/4.0/> .
 
