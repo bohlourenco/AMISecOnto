@@ -1,165 +1,254 @@
-@prefix : <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/main/amiseconto/ROSE-NIS2-Art21-alignments.ttl> .
+@prefix : <http://rose.com/nis2/art21/riskassessment#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix dct: <http://purl.org/dc/terms/> .
 @prefix gufo: <http://purl.org/nemo/gufo#> .
-@prefix rose: <http://rose.com/nis2/art21#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://rose.com/nis2/art21/riskassessment> .
 
-<https://bohlourenco.github.io/AMISecOnto/alignments/rose/> rdf:type owl:Ontology ;
-    dct:title "ROSE NIS2 Article 21 Interoperability Module"@en ;
-    dct:description "Minimal OWL 2 DL-safe module providing class and annotation-property declarations for gUFO, as used by the ROSE NIS2 Article 21 module, without requiring a full gUFO import."@en ;
-    dct:license <https://creativecommons.org/licenses/by/4.0/> .
-
-#################################################################
-#    gUFO Annotation Properties
-#################################################################
-
-gufo:categorizes rdf:type owl:AnnotationProperty ;
-    rdfs:label "categorizes"@en ;
-    rdfs:comment "External reference to the gUFO categorizes annotation property, relating a Type to the individuals it categorizes."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+<http://rose.com/nis2/art21/riskassessment> rdf:type owl:Ontology ;
+                              owl:versionIRI <http://rose.com/nis2/art21/riskassessment/1.0.0> ;
+                              owl:imports <http://rose.com/nis2/art21> ;
+                              rdfs:label "ROSE NIS2 Article 21 - Risk Assessment Subset"@en ;
+                              rdfs:comment "Subset module of the ROSE NIS2 Article 21 ontology, restricted to the Risk Assessment branch: assessment relators, assessor/subject agents, assessed dispositions, resulting qualities, and the linked risk events."@en .
 
 #################################################################
-#    gUFO Classes
+#    Annotation properties
 #################################################################
 
-gufo:Particular rdf:type owl:Class ;
-    rdfs:label "gUFO Particular"@en ;
-    rdfs:comment "External reference to the gUFO Particular class, the top-level category of concrete and abstract individuals."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+###  http://purl.org/nemo/gufo#categorizes
+gufo:categorizes rdf:type owl:AnnotationProperty .
 
-gufo:Endurant rdf:type owl:Class ;
-    rdfs:label "gUFO Endurant"@en ;
-    rdfs:comment "External reference to the gUFO Endurant class, representing entities that persist in time while maintaining their identity."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
 
-gufo:Perdurant rdf:type owl:Class ;
-    rdfs:label "gUFO Perdurant"@en ;
-    rdfs:comment "External reference to the gUFO Perdurant class, representing entities that happen or occur in time (events, situations)."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+###  http://www.w3.org/2000/01/rdf-schema#label
+rdfs:label rdf:type owl:AnnotationProperty .
 
-gufo:Object rdf:type owl:Class ;
-    rdfs:label "gUFO Object"@en ;
-    rdfs:comment "External reference to the gUFO Object class, representing existentially independent endurants."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
 
-gufo:Aspect rdf:type owl:Class ;
-    rdfs:label "gUFO Aspect"@en ;
-    rdfs:comment "External reference to the gUFO Aspect class, representing existentially dependent endurants (moments)."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+#################################################################
+#    Object Properties
+#################################################################
 
-gufo:IntrinsicAspect rdf:type owl:Class ;
-    rdfs:label "gUFO Intrinsic Aspect"@en ;
-    rdfs:comment "External reference to the gUFO IntrinsicAspect class, representing aspects dependent on a single individual."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+###  http://rose.com#experienceRiskAssesmentHasThreatCapability
+<http://rose.com#experienceRiskAssesmentHasThreatCapability> rdf:type owl:ObjectProperty ;
+                                                             rdfs:domain <http://rose.com#ExperienceRiskAssesment> ;
+                                                             rdfs:range <http://rose.com#ThreatCapability> ;
+                                                             rdfs:subPropertyOf owl:topObjectProperty ;
+                                                             rdfs:label "experience risk assessment has threat capability"@en .
 
-gufo:RelationalAspect rdf:type owl:Class ;
-    rdfs:label "gUFO Relational Aspect"@en ;
-    rdfs:comment "External reference to the gUFO RelationalAspect class, representing aspects that mediate two or more individuals."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
 
+###  http://rose.com#experienceRiskAssesmentHasVulnerability
+<http://rose.com#experienceRiskAssesmentHasVulnerability> rdf:type owl:ObjectProperty ;
+                                                          rdfs:domain <http://rose.com#ExperienceRiskAssesment> ;
+                                                          rdfs:range <http://rose.com#Vulnerability> ;
+                                                          rdfs:subPropertyOf owl:topObjectProperty ;
+                                                          rdfs:label "experience risk assessment has vulnerability"@en .
+
+
+###  http://rose.com#objectRiskAssesmentHasExperienceRiskAssesment
+<http://rose.com#objectRiskAssesmentHasExperienceRiskAssesment> rdf:type owl:ObjectProperty ;
+                                                                rdfs:domain <http://rose.com#ObjectRiskAssesment> ;
+                                                                rdfs:range <http://rose.com#ExperienceRiskAssesment> ;
+                                                                rdfs:subPropertyOf owl:topObjectProperty ;
+                                                                rdfs:label "object risk assessment has experience risk assessment"@en .
+
+
+###  http://rose.com#riskExperienceHasRiskEvent
+<http://rose.com#riskExperienceHasRiskEvent> rdf:type owl:ObjectProperty ;
+                                             rdfs:domain <http://rose.com#RiskExperience> ;
+                                             rdfs:range <http://rose.com#RiskEvent> ;
+                                             rdfs:subPropertyOf owl:topObjectProperty ;
+                                             rdfs:label "risk experience has risk event"@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://purl.org/nemo/gufo#ConcreteIndividualType
 gufo:ConcreteIndividualType rdf:type owl:Class ;
-    rdfs:label "gUFO Concrete Individual Type"@en ;
-    rdfs:comment "External reference to the gUFO ConcreteIndividualType class, classifying types of concrete individuals."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+                            rdfs:subClassOf owl:Thing .
 
+
+###  http://purl.org/nemo/gufo#Event
 gufo:Event rdf:type owl:Class ;
-    rdfs:label "gUFO Event"@en ;
-    rdfs:comment "External reference to the gUFO Event class."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+           rdfs:subClassOf owl:Thing .
 
-gufo:Situation rdf:type owl:Class ;
-    rdfs:label "gUFO Situation"@en ;
-    rdfs:comment "External reference to the gUFO Situation class, representing configurations of entities perceived as a whole."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
 
+###  http://purl.org/nemo/gufo#FunctionalComplex
 gufo:FunctionalComplex rdf:type owl:Class ;
-    rdfs:label "gUFO Functional Complex"@en ;
-    rdfs:comment "External reference to the gUFO FunctionalComplex class, representing objects with emergent functional unity."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+                       rdfs:subClassOf owl:Thing .
 
+
+###  http://purl.org/nemo/gufo#IntrinsicMode
 gufo:IntrinsicMode rdf:type owl:Class ;
-    rdfs:label "gUFO Intrinsic Mode"@en ;
-    rdfs:comment "External reference to the gUFO IntrinsicMode class, representing intrinsic moments such as dispositions and capabilities."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+                   rdfs:subClassOf owl:Thing .
 
+
+###  http://purl.org/nemo/gufo#Quality
 gufo:Quality rdf:type owl:Class ;
-    rdfs:label "gUFO Quality"@en ;
-    rdfs:comment "External reference to the gUFO Quality class, representing measurable intrinsic moments."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+             rdfs:subClassOf owl:Thing .
 
+
+###  http://purl.org/nemo/gufo#Relator
 gufo:Relator rdf:type owl:Class ;
-    rdfs:label "gUFO Relator"@en ;
-    rdfs:comment "External reference to the gUFO Relator class, representing relational moments that mediate entities."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+             rdfs:subClassOf owl:Thing .
+
+
+###  http://rose.com#CausalLikelihood
+<http://rose.com#CausalLikelihood> rdf:type owl:Class ;
+                                   rdfs:subClassOf gufo:Quality ;
+                                   rdfs:label "Causal Likelihood"@en .
+
+
+###  http://rose.com#Disposition
+<http://rose.com#Disposition> rdf:type owl:Class ;
+                              rdfs:subClassOf gufo:IntrinsicMode ;
+                              rdfs:label "Disposition"@en .
+
+
+###  http://rose.com#ExperienceRiskAssesment
+<http://rose.com#ExperienceRiskAssesment> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://rose.com#RiskAssessment> ;
+                                          rdfs:label "Experience Risk Assesment"@en .
+
+
+###  http://rose.com#ObjectRiskAssesment
+<http://rose.com#ObjectRiskAssesment> rdf:type owl:Class ;
+                                      rdfs:subClassOf <http://rose.com#RiskAssessment> ;
+                                      rdfs:label "Object Risk Assesment"@en .
+
+
+###  http://rose.com#Risk
+<http://rose.com#Risk> rdf:type owl:Class ;
+                       rdfs:subClassOf gufo:Quality ;
+                       rdfs:label "Risk"@en .
+
+
+###  http://rose.com#RiskAssessment
+<http://rose.com#RiskAssessment> rdf:type owl:Class ;
+                                 rdfs:subClassOf gufo:Relator ;
+                                 rdfs:label "Risk Assessment"@en .
+
+
+###  http://rose.com#RiskAssessor
+<http://rose.com#RiskAssessor> rdf:type owl:Class ;
+                               rdfs:subClassOf <http://rose.com#UFOAgent> ;
+                               rdfs:label "Risk Assessor"@en .
+
+
+###  http://rose.com#RiskEvent
+<http://rose.com#RiskEvent> rdf:type owl:Class ;
+                            rdfs:subClassOf gufo:Event ;
+                            rdfs:label "Risk Event"@en .
+
+
+###  http://rose.com#RiskEventType
+<http://rose.com#RiskEventType> rdf:type owl:Class ;
+                                rdfs:subClassOf gufo:ConcreteIndividualType ;
+                                gufo:categorizes <http://rose.com#RiskEvent> ;
+                                rdfs:label "Risk Event Type"@en .
+
+
+###  http://rose.com#RiskExperience
+<http://rose.com#RiskExperience> rdf:type owl:Class ;
+                                 rdfs:subClassOf gufo:Event ;
+                                 rdfs:label "Risk Experience"@en .
+
+
+###  http://rose.com#RiskSubject
+<http://rose.com#RiskSubject> rdf:type owl:Class ;
+                              rdfs:subClassOf <http://rose.com#UFOAgent> ;
+                              rdfs:label "Risk Subject"@en .
+
+
+###  http://rose.com#ThreatCapability
+<http://rose.com#ThreatCapability> rdf:type owl:Class ;
+                                   rdfs:subClassOf <http://rose.com#Disposition> ;
+                                   rdfs:label "Threat Capability"@en .
+
+
+###  http://rose.com#ThreatCapabilityType
+<http://rose.com#ThreatCapabilityType> rdf:type owl:Class ;
+                                       rdfs:subClassOf gufo:ConcreteIndividualType ;
+                                       gufo:categorizes <http://rose.com#ThreatCapability> ;
+                                       rdfs:label "Threat Capability Type"@en .
+
+
+###  http://rose.com#TriggeringLikelihood
+<http://rose.com#TriggeringLikelihood> rdf:type owl:Class ;
+                                       rdfs:subClassOf gufo:Quality ;
+                                       rdfs:label "Triggering Likelihood"@en .
+
+
+###  http://rose.com#UFOAgent
+<http://rose.com#UFOAgent> rdf:type owl:Class ;
+                           rdfs:subClassOf gufo:FunctionalComplex ;
+                           rdfs:label "UFO::Agent"@en .
+
+
+###  http://rose.com#Vulnerability
+<http://rose.com#Vulnerability> rdf:type owl:Class ;
+                                rdfs:subClassOf <http://rose.com#Disposition> ;
+                                rdfs:label "Vulnerability"@en .
+
+
+###  http://rose.com#VulnerabilityType
+<http://rose.com#VulnerabilityType> rdf:type owl:Class ;
+                                    rdfs:subClassOf gufo:ConcreteIndividualType ;
+                                    gufo:categorizes <http://rose.com#Vulnerability> ;
+                                    rdfs:label "Vulnerability Type"@en .
+
 
 #################################################################
-#    gUFO Object Properties
+#    Data properties
 #################################################################
 
-gufo:inheresIn rdf:type owl:ObjectProperty ;
-    rdfs:domain gufo:Aspect ;
-    rdfs:range gufo:Endurant ;
-    rdfs:label "inheresIn"@en ;
-    rdfs:comment "External reference to the gUFO inheresIn property, relating an aspect (mode, quality, relator) to its bearer(s)."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+#  NOTE: the source ROSE NIS2 Article 21 ontology (rose_nis2_art21_extracted.owl)
+#  defines no owl:DatatypeProperty individuals. This subset therefore declares
+#  none either, to stay faithful to the source. If you need literal-valued
+#  attributes (e.g. a numeric/qualitative value for Risk, CausalLikelihood, or
+#  TriggeringLikelihood, or a timestamp for a RiskAssessment), let me know and
+#  I will add them explicitly rather than inferring them silently.
 
-gufo:externallyDependsOn rdf:type owl:ObjectProperty ;
-    rdfs:label "externallyDependsOn"@en ;
-    rdfs:comment "External reference to the gUFO externallyDependsOn property, the generic relation of existential dependence between particulars."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
-
-gufo:participatedIn rdf:type owl:ObjectProperty ;
-    rdfs:domain gufo:Endurant ;
-    rdfs:range gufo:Event ;
-    rdfs:label "participatedIn"@en ;
-    rdfs:comment "External reference to the gUFO participatedIn property, relating an endurant to an event it participates in."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
-
-gufo:manifestedIn rdf:type owl:ObjectProperty ;
-    rdfs:domain gufo:Aspect ;
-    rdfs:range gufo:Event ;
-    rdfs:label "manifestedIn"@en ;
-    rdfs:comment "External reference to the gUFO manifestedIn property, relating a disposition to the event in which it is manifested."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
-
-gufo:broughtAbout rdf:type owl:ObjectProperty ;
-    rdfs:domain gufo:Event ;
-    rdfs:label "broughtAbout"@en ;
-    rdfs:comment "External reference to the gUFO broughtAbout property, relating an event to a situation it brings about."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
-
-gufo:historicallyDependsOn rdf:type owl:ObjectProperty ;
-    rdfs:label "historicallyDependsOn"@en ;
-    rdfs:comment "External reference to the gUFO historicallyDependsOn property, relating a particular to an event in its causal history."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
-
-gufo:contributedToTrigger rdf:type owl:ObjectProperty ;
-    rdfs:domain gufo:Situation ;
-    rdfs:range gufo:Event ;
-    rdfs:label "contributedToTrigger"@en ;
-    rdfs:comment "External reference to the gUFO contributedToTrigger property, relating a situation to an event it helps trigger."@en ;
-    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
 
 #################################################################
-#    gUFO Hierarchy
+#    Hierarchy
 #################################################################
 
-gufo:Endurant rdfs:subClassOf gufo:Particular .
-gufo:Perdurant rdfs:subClassOf gufo:Particular .
+#  gUFO anchors
+gufo:Relator rdfs:subClassOf owl:Thing .
+gufo:Event rdfs:subClassOf owl:Thing .
+gufo:Quality rdfs:subClassOf owl:Thing .
+gufo:FunctionalComplex rdfs:subClassOf owl:Thing .
+gufo:IntrinsicMode rdfs:subClassOf owl:Thing .
+gufo:ConcreteIndividualType rdfs:subClassOf owl:Thing .
 
-gufo:Object rdfs:subClassOf gufo:Endurant .
-gufo:FunctionalComplex rdfs:subClassOf gufo:Object .
+#  Risk Assessment relator branch
+<http://rose.com#RiskAssessment> rdfs:subClassOf gufo:Relator .
+<http://rose.com#ExperienceRiskAssesment> rdfs:subClassOf <http://rose.com#RiskAssessment> .
+<http://rose.com#ObjectRiskAssesment> rdfs:subClassOf <http://rose.com#RiskAssessment> .
 
-gufo:Aspect rdfs:subClassOf gufo:Endurant .
-gufo:IntrinsicAspect rdfs:subClassOf gufo:Aspect .
-gufo:RelationalAspect rdfs:subClassOf gufo:Aspect .
+#  Agents involved in assessment
+<http://rose.com#UFOAgent> rdfs:subClassOf gufo:FunctionalComplex .
+<http://rose.com#RiskAssessor> rdfs:subClassOf <http://rose.com#UFOAgent> .
+<http://rose.com#RiskSubject> rdfs:subClassOf <http://rose.com#UFOAgent> .
 
-gufo:Quality rdfs:subClassOf gufo:IntrinsicAspect .
-gufo:IntrinsicMode rdfs:subClassOf gufo:IntrinsicAspect .
-gufo:Relator rdfs:subClassOf gufo:RelationalAspect .
+#  Dispositions assessed (threat capability / vulnerability)
+<http://rose.com#Disposition> rdfs:subClassOf gufo:IntrinsicMode .
+<http://rose.com#ThreatCapability> rdfs:subClassOf <http://rose.com#Disposition> .
+<http://rose.com#Vulnerability> rdfs:subClassOf <http://rose.com#Disposition> .
 
-gufo:Event rdfs:subClassOf gufo:Perdurant .
-gufo:Situation rdfs:subClassOf gufo:Perdurant .
+#  Types categorizing the dispositions and events
+<http://rose.com#ThreatCapabilityType> rdfs:subClassOf gufo:ConcreteIndividualType .
+<http://rose.com#VulnerabilityType> rdfs:subClassOf gufo:ConcreteIndividualType .
+<http://rose.com#RiskEventType> rdfs:subClassOf gufo:ConcreteIndividualType .
+
+#  Qualities resulting from assessment
+<http://rose.com#Risk> rdfs:subClassOf gufo:Quality .
+<http://rose.com#CausalLikelihood> rdfs:subClassOf gufo:Quality .
+<http://rose.com#TriggeringLikelihood> rdfs:subClassOf gufo:Quality .
+
+#  Events linked to the assessment
+<http://rose.com#RiskExperience> rdfs:subClassOf gufo:Event .
+<http://rose.com#RiskEvent> rdfs:subClassOf gufo:Event .
