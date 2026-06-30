@@ -9,7 +9,6 @@
 
 <http://rose.com/nis2/art21/riskassessment> rdf:type owl:Ontology ;
                               owl:versionIRI <http://rose.com/nis2/art21/riskassessment/1.0.0> ;
-                              owl:imports <http://rose.com/nis2/art21> ;
                               rdfs:label "ROSE NIS2 Article 21 - Risk Assessment Subset"@en ;
                               rdfs:comment "Subset module of the ROSE NIS2 Article 21 ontology, restricted to the Risk Assessment branch: assessment relators, assessor/subject agents, assessed dispositions, resulting qualities, and the linked risk events."@en .
 
