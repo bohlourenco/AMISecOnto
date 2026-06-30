@@ -25,6 +25,41 @@ gufo:categorizes rdf:type owl:AnnotationProperty ;
 #    gUFO Classes
 #################################################################
 
+gufo:Particular rdf:type owl:Class ;
+    rdfs:label "gUFO Particular"@en ;
+    rdfs:comment "External reference to the gUFO Particular class, the top-level category of concrete and abstract individuals."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:Endurant rdf:type owl:Class ;
+    rdfs:label "gUFO Endurant"@en ;
+    rdfs:comment "External reference to the gUFO Endurant class, representing entities that persist in time while maintaining their identity."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:Perdurant rdf:type owl:Class ;
+    rdfs:label "gUFO Perdurant"@en ;
+    rdfs:comment "External reference to the gUFO Perdurant class, representing entities that happen or occur in time (events, situations)."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:Object rdf:type owl:Class ;
+    rdfs:label "gUFO Object"@en ;
+    rdfs:comment "External reference to the gUFO Object class, representing existentially independent endurants."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:Aspect rdf:type owl:Class ;
+    rdfs:label "gUFO Aspect"@en ;
+    rdfs:comment "External reference to the gUFO Aspect class, representing existentially dependent endurants (moments)."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:IntrinsicAspect rdf:type owl:Class ;
+    rdfs:label "gUFO Intrinsic Aspect"@en ;
+    rdfs:comment "External reference to the gUFO IntrinsicAspect class, representing aspects dependent on a single individual."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:RelationalAspect rdf:type owl:Class ;
+    rdfs:label "gUFO Relational Aspect"@en ;
+    rdfs:comment "External reference to the gUFO RelationalAspect class, representing aspects that mediate two or more individuals."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
 gufo:ConcreteIndividualType rdf:type owl:Class ;
     rdfs:label "gUFO Concrete Individual Type"@en ;
     rdfs:comment "External reference to the gUFO ConcreteIndividualType class, classifying types of concrete individuals."@en ;
@@ -33,6 +68,11 @@ gufo:ConcreteIndividualType rdf:type owl:Class ;
 gufo:Event rdf:type owl:Class ;
     rdfs:label "gUFO Event"@en ;
     rdfs:comment "External reference to the gUFO Event class."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:Situation rdf:type owl:Class ;
+    rdfs:label "gUFO Situation"@en ;
+    rdfs:comment "External reference to the gUFO Situation class, representing configurations of entities perceived as a whole."@en ;
     rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
 
 gufo:FunctionalComplex rdf:type owl:Class ;
@@ -55,7 +95,71 @@ gufo:Relator rdf:type owl:Class ;
     rdfs:comment "External reference to the gUFO Relator class, representing relational moments that mediate entities."@en ;
     rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
 
-gufo:Situation rdf:type owl:Class ;
-    rdfs:label "gUFO Situation"@en ;
-    rdfs:comment "External reference to the gUFO Situation class, representing configurations of entities perceived as a whole."@en ;
+#################################################################
+#    gUFO Object Properties
+#################################################################
+
+gufo:inheresIn rdf:type owl:ObjectProperty ;
+    rdfs:domain gufo:Aspect ;
+    rdfs:range gufo:Endurant ;
+    rdfs:label "inheresIn"@en ;
+    rdfs:comment "External reference to the gUFO inheresIn property, relating an aspect (mode, quality, relator) to its bearer(s)."@en ;
     rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:externallyDependsOn rdf:type owl:ObjectProperty ;
+    rdfs:label "externallyDependsOn"@en ;
+    rdfs:comment "External reference to the gUFO externallyDependsOn property, the generic relation of existential dependence between particulars."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:participatedIn rdf:type owl:ObjectProperty ;
+    rdfs:domain gufo:Endurant ;
+    rdfs:range gufo:Event ;
+    rdfs:label "participatedIn"@en ;
+    rdfs:comment "External reference to the gUFO participatedIn property, relating an endurant to an event it participates in."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:manifestedIn rdf:type owl:ObjectProperty ;
+    rdfs:domain gufo:Aspect ;
+    rdfs:range gufo:Event ;
+    rdfs:label "manifestedIn"@en ;
+    rdfs:comment "External reference to the gUFO manifestedIn property, relating a disposition to the event in which it is manifested."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:broughtAbout rdf:type owl:ObjectProperty ;
+    rdfs:domain gufo:Event ;
+    rdfs:label "broughtAbout"@en ;
+    rdfs:comment "External reference to the gUFO broughtAbout property, relating an event to a situation it brings about."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:historicallyDependsOn rdf:type owl:ObjectProperty ;
+    rdfs:label "historicallyDependsOn"@en ;
+    rdfs:comment "External reference to the gUFO historicallyDependsOn property, relating a particular to an event in its causal history."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:contributedToTrigger rdf:type owl:ObjectProperty ;
+    rdfs:domain gufo:Situation ;
+    rdfs:range gufo:Event ;
+    rdfs:label "contributedToTrigger"@en ;
+    rdfs:comment "External reference to the gUFO contributedToTrigger property, relating a situation to an event it helps trigger."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+#################################################################
+#    gUFO Hierarchy
+#################################################################
+
+gufo:Endurant rdfs:subClassOf gufo:Particular .
+gufo:Perdurant rdfs:subClassOf gufo:Particular .
+
+gufo:Object rdfs:subClassOf gufo:Endurant .
+gufo:FunctionalComplex rdfs:subClassOf gufo:Object .
+
+gufo:Aspect rdfs:subClassOf gufo:Endurant .
+gufo:IntrinsicAspect rdfs:subClassOf gufo:Aspect .
+gufo:RelationalAspect rdfs:subClassOf gufo:Aspect .
+
+gufo:Quality rdfs:subClassOf gufo:IntrinsicAspect .
+gufo:IntrinsicMode rdfs:subClassOf gufo:IntrinsicAspect .
+gufo:Relator rdfs:subClassOf gufo:RelationalAspect .
+
+gufo:Event rdfs:subClassOf gufo:Perdurant .
+gufo:Situation rdfs:subClassOf gufo:Perdurant .
