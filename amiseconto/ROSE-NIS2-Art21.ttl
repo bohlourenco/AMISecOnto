@@ -1,0 +1,61 @@
+@prefix : <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/main/amiseconto/ROSE-NIS2-Art21-alignments.ttl> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix gufo: <http://purl.org/nemo/gufo#> .
+@prefix rose: <http://rose.com/nis2/art21#> .
+
+<https://bohlourenco.github.io/AMISecOnto/alignments/rose/> rdf:type owl:Ontology ;
+    dct:title "ROSE NIS2 Article 21 Interoperability Alignment Module"@en ;
+    dct:description "Minimal OWL 2 DL-safe module providing class and annotation-property declarations for gUFO, as used by the ROSE NIS2 Article 21 module, without requiring a full gUFO import."@en ;
+    dct:license <https://creativecommons.org/licenses/by/4.0/> .
+
+#################################################################
+#    gUFO Annotation Properties
+#################################################################
+
+gufo:categorizes rdf:type owl:AnnotationProperty ;
+    rdfs:label "categorizes"@en ;
+    rdfs:comment "External reference to the gUFO categorizes annotation property, relating a Type to the individuals it categorizes."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+#################################################################
+#    gUFO Classes
+#################################################################
+
+gufo:ConcreteIndividualType rdf:type owl:Class ;
+    rdfs:label "gUFO Concrete Individual Type"@en ;
+    rdfs:comment "External reference to the gUFO ConcreteIndividualType class, classifying types of concrete individuals."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:Event rdf:type owl:Class ;
+    rdfs:label "gUFO Event"@en ;
+    rdfs:comment "External reference to the gUFO Event class."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:FunctionalComplex rdf:type owl:Class ;
+    rdfs:label "gUFO Functional Complex"@en ;
+    rdfs:comment "External reference to the gUFO FunctionalComplex class, representing objects with emergent functional unity."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:IntrinsicMode rdf:type owl:Class ;
+    rdfs:label "gUFO Intrinsic Mode"@en ;
+    rdfs:comment "External reference to the gUFO IntrinsicMode class, representing intrinsic moments such as dispositions and capabilities."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:Quality rdf:type owl:Class ;
+    rdfs:label "gUFO Quality"@en ;
+    rdfs:comment "External reference to the gUFO Quality class, representing measurable intrinsic moments."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:Relator rdf:type owl:Class ;
+    rdfs:label "gUFO Relator"@en ;
+    rdfs:comment "External reference to the gUFO Relator class, representing relational moments that mediate entities."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
+
+gufo:Situation rdf:type owl:Class ;
+    rdfs:label "gUFO Situation"@en ;
+    rdfs:comment "External reference to the gUFO Situation class, representing configurations of entities perceived as a whole."@en ;
+    rdfs:isDefinedBy <http://purl.org/nemo/gufo> .
