@@ -240,29 +240,3 @@ dolce:host rdf:type owl:ObjectProperty ;
 
 dolce:host-of rdf:type owl:ObjectProperty ;
     rdfs:label "host-of"@en .
-
-#################################################################
-#    DOLCE Hierarchy
-#################################################################
-
-dolce:region rdfs:subClassOf dolce:abstract .
-dolce:abstract-region rdfs:subClassOf dolce:region .
-
-dolce:non-physical-object rdfs:subClassOf dolce:non-physical-endurant .
-dolce:physical-endurant rdfs:subClassOf dolce:endurant .
-dolce:amount-of-matter rdfs:subClassOf dolce:physical-endurant .
-dolce:feature rdfs:subClassOf dolce:physical-endurant .
-dolce:physical-object rdfs:subClassOf dolce:physical-endurant .
-
-dolce:perdurant rdfs:subClassOf dolce:spatio-temporal-particular .
-dolce:event rdfs:subClassOf dolce:perdurant .
-dolce:accomplishment rdfs:subClassOf dolce:event .
-dolce:achievement rdfs:subClassOf dolce:event .
-dolce:stative rdfs:subClassOf dolce:perdurant .
-dolce:process rdfs:subClassOf dolce:stative .
-dolce:state rdfs:subClassOf dolce:stative .
-
-dolce:quality rdfs:subClassOf dolce:spatio-temporal-particular .
-
-
-
