@@ -139,7 +139,6 @@ dolce:quality rdf:type owl:Class ;
 
 dolce:abstract-region rdf:type owl:Class ;
     rdfs:label "DOLCE Abstract-region"@en ;
-    rdfs:subClassOf dolce:abstract-quality ;
     rdfs:comment "A region in the quality space of abstract qualities, e.g. a numeric or symbolic value."@en .
 
 #################################################################
