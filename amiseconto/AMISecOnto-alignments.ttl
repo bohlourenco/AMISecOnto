@@ -117,73 +117,25 @@ itsmo:Support           rdf:type owl:NamedIndividual , itsmo:Scope .
 #    DOLCE Classes
 #################################################################
 
-dolce:spatio-temporal-particular rdf:type owl:Class ;
-    rdfs:label "DOLCE Spatio-temporal-particular"@en ;
-    rdfs:comment "The most general DOLCE category."@en .
-
-dolce:endurant rdf:type owl:Class ;
-    rdfs:label "DOLCE Endurant"@en ;
-    rdfs:comment "Independent essential wholes that can change in time while remaining the same entity."@en .
-
-dolce:arbitrary-sum rdf:type owl:Class ;
-    rdfs:label "DOLCE Arbitrary-sum"@en ;
-    rdfs:comment "Mereological sums without unity criterion."@en .
-
-dolce:non-physical-endurant rdf:type owl:Class ;
-    rdfs:label "DOLCE Non-physical-endurant"@en ;
-    rdfs:comment "Endurants with no direct spatial qualities."@en .
+dolce:event rdf:type owl:Class ;
+    rdfs:label "DOLCE Event"@en ;
+    rdfs:comment "Eventive occurrences that are not cumulative."@en .
 
 dolce:non-physical-object rdf:type owl:Class ;
     rdfs:label "DOLCE Non-physical-object"@en ;
     rdfs:comment "An endurant with no mass, generically constantly depending on some agent."@en .
 
-dolce:physical-endurant rdf:type owl:Class ;
-    rdfs:label "DOLCE Physical-endurant"@en ;
-    rdfs:comment "An endurant having a direct physical (at least spatial) quality."@en .
-
-dolce:amount-of-matter rdf:type owl:Class ;
-    rdfs:label "DOLCE Amount-of-matter"@en ;
-    rdfs:comment "Physical endurants with a common unity criterion based on homogeneity."@en .
-
-dolce:feature rdf:type owl:Class ;
-    rdfs:label "DOLCE Feature"@en ;
-    rdfs:comment "Physical endurants that are not self-connected."@en .
-
 dolce:physical-object rdf:type owl:Class ;
     rdfs:label "DOLCE Physical-object"@en ;
     rdfs:comment "Endurants with unity but no common unity criterion."@en .
-
-dolce:perdurant rdf:type owl:Class ;
-    rdfs:label "DOLCE Perdurant"@en ;
-    rdfs:comment "Occurrences comprising events, processes, phenomena, activities and states."@en .
-
-dolce:event rdf:type owl:Class ;
-    rdfs:label "DOLCE Event"@en ;
-    rdfs:comment "Eventive occurrences that are not cumulative."@en .
-
-dolce:accomplishment rdf:type owl:Class ;
-    rdfs:label "DOLCE Accomplishment"@en ;
-    rdfs:comment "Eventive occurrences that are not atomic."@en .
-
-dolce:achievement rdf:type owl:Class ;
-    rdfs:label "DOLCE Achievement"@en ;
-    rdfs:comment "Atomic eventive occurrences."@en .
-
-dolce:stative rdf:type owl:Class ;
-    rdfs:label "DOLCE Stative"@en ;
-    rdfs:comment "Occurrences that are cumulative and homeomeric."@en .
 
 dolce:process rdf:type owl:Class ;
     rdfs:label "DOLCE Process"@en ;
     rdfs:comment "Stative occurrences distinguished from states by homeomericity."@en .
 
-dolce:state rdf:type owl:Class ;
-    rdfs:label "DOLCE State"@en ;
-    rdfs:comment "Stative occurrences that are homeomeric."@en .
-
 dolce:quality rdf:type owl:Class ;
-    rdfs:label "DOLCE Quality"@en ;
-    rdfs:comment "Basic entities we can perceive or measure."@en .
+    rdfs:label "DOLCE Quality"@en ; 
+    rdfs:comment "Basic entities we can perceive or measure."@en . 
 
 #################################################################
 #    DOLCE Object Properties
