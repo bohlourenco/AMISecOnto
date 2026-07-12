@@ -7,6 +7,15 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @base <http://www.semanticweb.org/AMISecOnto#> .
 
+<http://purl.org/dc/terms/title> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/description> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/license> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/created> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/creator> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/modified> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/publisher> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/version> a owl:AnnotationProperty .
+
 <http://www.semanticweb.org/AMISecOnto> rdf:type owl:Ontology ;
                                          owl:imports <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> ;
                                          dct:created "2025-10-01"^^xsd:date ;
