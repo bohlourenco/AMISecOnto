@@ -9,6 +9,15 @@
 @prefix gufo: <http://purl.org/nemo/gufo#> .
 @prefix amisec: <http://www.semanticweb.org/AMISecOnto#> .
 
+<http://purl.org/dc/terms/title> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/description> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/license> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/created> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/creator> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/modified> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/publisher> a owl:AnnotationProperty .
+<http://purl.org/dc/terms/version> a owl:AnnotationProperty .
+
 <https://bohlourenco.github.io/AMISecOnto/alignments/> rdf:type owl:Ontology ;
     dct:title "AMISec Interoperability Alignment Module"@en ;
     dct:description "Minimal OWL 2 DL-safe module providing class declarations for PROV-O, FOAF, ITSMO and DOLCE without requiring full imports."@en ;
