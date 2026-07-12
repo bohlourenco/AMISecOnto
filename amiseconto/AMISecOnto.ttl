@@ -17,7 +17,8 @@
 <http://purl.org/dc/terms/version> a owl:AnnotationProperty .
 
 <http://www.semanticweb.org/AMISecOnto> rdf:type owl:Ontology ;
-                                         owl:imports <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl> ;
+                                         owl:imports <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/AMISecOnto-alignments.ttl>,
+                                                     <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/ROSE-DL.ttl> ;
                                          dct:created "2025-10-01"^^xsd:date ;
                                          dct:creator [ rdf:type <http://xmlns.com/foaf/0.1/Person> ;
                                                        rdfs:seeAlso <https://orcid.org/0009-0005-9077-2040> ;
