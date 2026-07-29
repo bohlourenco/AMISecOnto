@@ -2,7 +2,7 @@
   <img src="figures/amiseconto-logo.png" alt="AMISecOnto Logo" width="140"/>
 </p>
 
-# AMISecOnto: An Ontology for Cybersecurity Log and Vulnerability Analysis
+# AMISecOnto: An Ontology-Driven Framework for NIS2-Compliant Cybersecurity Analysis in Academic Management Information Systems
 
 ## Table of Contents
 
