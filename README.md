@@ -99,39 +99,26 @@ The ontology is designed to answer the following competency questions:
 ### Event Discovery and Filtering
 - **CQ1**: Which events occurred within a specific time range and satisfy selected filters?
 - **CQ2**: Which events belong to a specific application, service, host, or component?
-- **CQ3**: Which events belong to the same request or execution flow?
-- **CQ4**: Which identifiers support grouping events into the same flow?
 
 ### Event Lineage Tracing
-- **CQ5**: Which sequence of log events led to a specific error event?
-- **CQ6**: Which events occurred before and after a given incident?
-- **CQ7**: How security events correlate with system or application events?
-- **CQ8**: Which entities or events represent the current analysis workflow?
+- **CQ3**: Which sequence of log events led to a specific error event?
+- **CQ4**: Which events occurred before and after a given incident?
 
 ### Authentication and Access Tracing
-- **CQ9**: Which authentication attempts preceded access or privilege-escalation events?
-- **CQ10**: Which information is required to reconstruct a user session timeline?
-- **CQ11**: Which SSH events belong to the same session?
-- **CQ12**: Which identifiers are consistently used for event correlation?
+- **CQ5**: Which authentication attempts preceded access or privilege-escalation events?
+- **CQ66**: Which information is required to reconstruct a user session timeline?
 
 ### Application, System, and Security Tracing
-- **CQ13**: Which container lifecycle events are linked to application errors?
-- **CQ14**: Which database events correlate with application requests?
-- **CQ15**: Which system-level events preceded instability?
-- **CQ16**: Which package installation or update events affect analysis?
-- **CQ17**: Which evidence indicates that a package update caused an issue?
-- **CQ18**: Which audit information is required for sensitive operations?
-- **CQ19**: Which secret-management events correlate with authentication events?
-- **CQ20**: Which factors complicate security trace reconstruction?
+- **CQ7**: Which container lifecycle events are linked to application errors?
+- **CQ8**: Which database events correlate with application requests?
 
 ### Vulnerability Analysis and Exposure
-- **CQ21**: Which installed or observed software components are affected by known vulnerabilities (CVEs)?
-- **CQ22**: Which vulnerabilities are associated with specific packages, versions, or system components?
-- **CQ23**: Which log events indicate the presence or activation of vulnerable components?
+- **CQ9**: Which installed or observed software components are affected by known vulnerabilities (CVEs)?
+- **CQ10**: Which vulnerabilities are associated with specific packages, versions, or system components?
 
 ### Risk Assessment and Incident Reconstruction (NIS2-aligned)
-- **CQ24**: Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
-- **CQ25**: How can risk exposure be derived from log evidence, vulnerability severity (e.g., CVSS), and observed behavior?
+- **CQ11**: Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
+- **CQ12**: How can risk exposure be derived from log evidence, vulnerability severity (e.g., CVSS), and observed behavior?
 
 ---
 
