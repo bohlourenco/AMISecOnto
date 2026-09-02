@@ -2,7 +2,7 @@
   <img src="figures/amiseconto-logo.png" alt="AMISecOnto Logo" width="140"/>
 </p>
 
-# AMISecOnto: An Ontology-Driven Framework for NIS2-Compliant Cybersecurity Analysis in Academic Management Information Systems
+# AMISecOnto
 
 ## Table of Contents
 
