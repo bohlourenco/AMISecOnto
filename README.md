@@ -3,6 +3,7 @@
 </p>
 
 # AMISecOnto
+This repository contains all development for the project's ontology/knowledge model, a domain-specific ontology designed to support NIS2-compliant cybersecurity analysis in academic management information systems (AMIS) through standardized and semantically enriched knowledge representation. The ontology formally models the complete cybersecurity monitoring and incident-analysis workflow, integrating heterogeneous log evidence (system, application, and security logs), software supply-chain and asset information, vulnerability intelligence (CVE, CPE, CWE, and CVSS), and risk-aware analysis aligned with NIS2 Article 21 obligations. Built upon foundational upper ontologies, such as DOLCE, and reusing established provenance, actor-identity, IT-service-management, and risk-treatment ontologies (PROV-O, FOAF, ITSMO, and ROSE), AMISecOnto ensures interoperability, extensibility, and compliance with FAIR principles. This repository includes a total of 12 competency questions, the corresponding SPARQL queries, the ontology in OWL/Turtle format, knowledge graph construction scripts, and synthetic example datasets (FénixEdu logs and NVD vulnerability records), as well as supporting documentation demonstrating the interoperability of AMISecOnto with major cybersecurity and Semantic Web standards.
 
 ## Table of Contents
 
