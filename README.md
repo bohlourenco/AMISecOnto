@@ -266,28 +266,62 @@ SPARQL queries in AMISSecOnto are designed to retrieve relevant cybersecurity in
 ## Event Discovery and Filtering
 ### CQ1 – Which events occurred within a specific time range and satisfy selected filters?
 ```sparql
-REFIX amis: <http://www.semanticweb.org/AMISecOnto#>
-PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX : <http://www.semanticweb.org/AMISecOnto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-SELECT ?event ?timestamp ?host ?eventType ?message
+SELECT ?event ?timestamp ?logLevel ?hostname ?eventType
 WHERE {
-  GRAPH <http://localhost:8890/AMISecOnto> {
-    ?event a amo:LogEvent ;
-           amis:hasTimestamp ?timestamp ;
-           amis:hasRawMessage ?message .
-    OPTIONAL { ?event amis:hasHostname ?host . }
-    OPTIONAL { ?event amis:hasEventType ?eventType . }
+  ?event a :LogEvent ;
+         :hasEventTimestamp ?timestamp .
 
-    FILTER (
-      xsd:dateTime(?timestamp) >= "2025-02-21T10:00:00Z"^^xsd:dateTime &&
-      xsd:dateTime(?timestamp) <= "2025-02-21T10:10:00Z"^^xsd:dateTime
-    )
-  }
+  OPTIONAL { ?event :hasLogLevel  ?logLevel }
+  OPTIONAL { ?event :hasHostname  ?hostname }
+  OPTIONAL { ?event :hasEventType ?eventType }
+
+  FILTER (?timestamp >= "2026-01-01T00:00:00"^^xsd:dateTime &&
+          ?timestamp <  "2026-02-01T00:00:00"^^xsd:dateTime)
+
+  # Optional/selected filters — comment out or adjust as needed
+  FILTER (!BOUND(?logLevel)  || ?logLevel  = "ERROR")
+  FILTER (!BOUND(?hostname)  || ?hostname  = "app-server-01")
 }
-ORDER BY xsd:dateTime(?timestamp)
-LIMIT 200
+ORDER BY ?timestamp
 ```
+### CQ2 — Which events belong to a specific application, service, host, or component? 
+```sparql
+PREFIX : <http://www.semanticweb.org/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?event ?timestamp ?hostname ?application
+WHERE {
+  ?event a :LogEvent ;
+         :hasEventTimestamp ?timestamp .
+
+  OPTIONAL { ?event :hasHostname ?hostname }
+
+  # Path via System → Application (registersLogEvent / runsOn)
+  OPTIONAL {
+    ?system :registersLogEvent ?event .
+    ?application :runsOn ?system .
+  }
+
+  # Path via ApplicationLogEvent → Environment (executedInEnvironment)
+  OPTIONAL {
+    ?event a :ApplicationLogEvent ;
+           :executedInEnvironment ?environment .
+  }
+
+  FILTER (
+    (BOUND(?hostname)    && ?hostname    = "app-server-01") ||
+    (BOUND(?application) && ?application = :MyApplication)
+  )
+}
+ORDER BY ?timestamp
+
+
+```
+
+
 This query returns a time-ordered list of log events with key information extracted for each event.
 
 ### Event Lineage Tracing
