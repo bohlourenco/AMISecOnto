@@ -76,10 +76,11 @@ AMISecOnto follows a structured pipeline:
 
 AMISecOnto is organized into interconnected modules:
 
-- **Entity & Vulnerability Module**  
-- **Log & Event Module**  
-- **System & Activity Module**  
-- **Security & Indicator Module**  
+- **Asset**  
+- **Log & Event**  
+- **Vulnerability**  
+- **Risk Analysis**
+- **Software Supply-Chain** 
 
 ### Design Principles
 
