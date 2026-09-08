@@ -317,460 +317,258 @@ WHERE {
   )
 }
 ORDER BY ?timestamp
-
-
 ```
-
-
 This query returns a time-ordered list of log events with key information extracted for each event.
 
 ### Event Lineage Tracing
-## CQ5 - Which sequence of log events led to a specific error event?
+## CQ3 — Which sequence of log events led to a specific error event?
 ```sparql
-PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
-PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX : <http://www.semanticweb.org/AMISecOnto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-SELECT ?event ?prev ?next ?timestamp ?message
+SELECT ?precedingEvent ?timestamp ?eventType ?message
 WHERE {
-  GRAPH <http://localhost:8890/AMISecOnto> {
-    ?event a amo:LogEvent ;
-           amis:hasRawMessage ?message .
-    OPTIONAL { ?event amis:hasTimestamp ?timestamp . }
-    OPTIONAL { ?event amo:hasPreviousLogEvent ?prev . }
-    OPTIONAL { ?event amo:hasNextLogEvent ?next . }
+  VALUES ?targetError { :ErrorEvent_123 }   # the specific error event
 
-    FILTER (
-      CONTAINS(LCASE(?message), "error") ||
-      CONTAINS(LCASE(?message), "exception") ||
-      CONTAINS(LCASE(?message), "failed")
-    )
-  }
+  ?targetError :hasPreviousLogEvent* ?precedingEvent .
+
+  ?precedingEvent :hasEventTimestamp ?timestamp .
+  OPTIONAL { ?precedingEvent :hasEventType ?eventType }
+  OPTIONAL { ?precedingEvent :hasTextMessage ?message }
 }
-ORDER BY xsd:dateTime(?timestamp)
-LIMIT 100
+ORDER BY ?timestamp
 ```
-
 This query identifies error-related log events and reconstructs their temporal context by retrieving preceding and succeeding events, along with timestamps and raw messages, enabling the analysis of event sequences leading to failures.
 
-### Authentication and Access Tracing
-## CQ9 - Which authentication attempts preceded access or privilege-escalation events?
+## CQ4 — Which events occurred before and after a given incident?
 ```sparql
-PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
-PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX : <http://www.semanticweb.org/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-# CQ09 optimized for Virtuoso cost limits:
-# 1) preselect candidate sudo events from sudo log only
-# 2) parse command directly from sudo message (cheap, no multi-hop lineage joins)
-# 3) check existence of prior auth events from ssh log only
-SELECT DISTINCT ?user ?sudoEvent ?sudoTime ?command
+SELECT ?event ?timestamp ?relation
 WHERE {
-  {
-    SELECT ?sudoEvent ?sudoTime ?user ?command
-    WHERE {
-      GRAPH <http://localhost:8890/AMISecOnto> {
-        ?sudoEvent a amis:SudoLogEvent ;
-          amis:hasLogFileName "sudo_20k.log" ;
-          amis:hasTimestamp ?sudoTime ;
-          amo:hasUser ?user ;
-          amis:hasRawMessage ?sudoMessage .
-        FILTER (
-          CONTAINS(LCASE(STR(?sudoMessage)), "session opened") ||
-          CONTAINS(LCASE(STR(?sudoMessage)), "suspicious") ||
-          CONTAINS(LCASE(STR(?sudoMessage)), "sudoers")
-        )
-        BIND(
-          IF(
-            CONTAINS(STR(?sudoMessage), "COMMAND="),
-            REPLACE(STR(?sudoMessage), "^.*COMMAND=", ""),
-            STR(?sudoMessage)
-          ) AS ?command
-        )
-      }
-    }
-    ORDER BY DESC(?sudoTime)
-    LIMIT 250
-  }
+  VALUES ?incident { :IncidentEvent_456 }
+  ?incident :hasEventTimestamp ?incidentTime .
 
-  FILTER EXISTS {
-    GRAPH <http://localhost:8890/AMISecOnto> {
-      ?authEvent a amis:AuthenticationLogEvent ;
-        amis:hasLogFileName "ssh_20k.log" ;
-        amis:hasTimestamp ?authTime ;
-        amo:hasUser ?user ;
-        amis:hasRawMessage ?authMessage .
-      FILTER (?authTime <= ?sudoTime)
-      FILTER (
-        CONTAINS(LCASE(STR(?authMessage)), "accepted") ||
-        CONTAINS(LCASE(STR(?authMessage)), "session opened") ||
-        CONTAINS(LCASE(STR(?authMessage)), "authentication")
-      )
-    }
-  }
+  ?event a :LogEvent ;
+         :hasEventTimestamp ?timestamp .
+  FILTER (?event != ?incident)
+
+  BIND (IF(?timestamp < ?incidentTime, "before", "after") AS ?relation)
+
+  # keep to a reasonable window, e.g. +/- 1 hour
+  FILTER (?timestamp >= (?incidentTime - "PT1H"^^xsd:duration) &&
+          ?timestamp <= (?incidentTime + "PT1H"^^xsd:duration))
 }
-ORDER BY DESC(?sudoTime)
-LIMIT 100
+ORDER BY ?timestamp
+```
+jljljljljljljklk
+
+### Authentication and Access Tracing
+## CQ5 - Which authentication attempts preceded access or privilege-escalation events?
+```sparql
+PREFIX : <http://www.semanticweb.org/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?authEvent ?authTime ?username ?privEvent ?privTime ?privType
+WHERE {
+  ?authEvent a :AuthenticationLogEvent ;
+             :hasEventTimestamp ?authTime .
+  OPTIONAL { ?authEvent :hasUserName ?username }
+  OPTIONAL { ?authEvent :hasHostname ?authHost }
+
+  # Access event (AccessLogEvent) OR privilege escalation (SudoLogEvent / SuLogEvent)
+  ?privEvent a ?privType ;
+             :hasEventTimestamp ?privTime .
+  FILTER (?privType IN (:AccessLogEvent, :SudoLogEvent, :SuLogEvent))
+
+  OPTIONAL { ?privEvent :hasHostname ?privHost }
+
+  FILTER (?authTime < ?privTime)
+  FILTER (!BOUND(?authHost) || !BOUND(?privHost) || ?authHost = ?privHost)
+}
+ORDER BY ?privTime ?authTime
 ```
 This query correlates authentication events with subsequent access or privilege-escalation activities by identifying prior successful or relevant authentication attempts and linking them to sudo-related log events, reconstructing the command execution context across sequential log entries.
 
-
-### 
-## CQ16 - Which package installation or update events affect analysis?
+## CQ6 - Which authentication attempts preceded access or privilege-escalation events?
 ```sparql
-PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
-PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
+PREFIX : <http://www.semanticweb.org/AMISecOnto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-# CVE id: event→vuln (build script), evidenceByLogEvent, or Dependency name match.
-# OPTIONAL{UNION} breaks event→CVE on Virtuoso; three OPTIONALs + COALESCE works.
-# ?vulnLabel is bound inside GRAPH and projected by inner SELECT (reliable in Conductor/UI).
-SELECT ?packageEvent ?timestamp ?packageName ?version ?vulnLabel
+SELECT ?event ?timestamp ?eventClass ?sessionID ?username ?sessionStatus ?hostname
 WHERE {
-  {
-    SELECT ?packageEvent ?timestamp ?packageName ?version ?vulnLabel
-    WHERE {
-      GRAPH <http://localhost:8890/AMISecOnto> {
-        ?packageEvent a amis:InstalledPackageLogEvent ;
-          amis:hasTimestamp ?timestamp ;
-          amis:hasPackageName ?packageName ;
-          amis:hasPackage ?package .
-        OPTIONAL { ?packageEvent amis:hasPackageVersion ?version . }
+  VALUES ?user { :User_alice }
 
-        OPTIONAL { ?packageEvent amis:relatedToVulnerability ?v1 . }
-        OPTIONAL { ?packageEvent amis:evidenceByLogEvent ?v2 . }
-        OPTIONAL {
-          ?component a amo:Dependency ;
-            amis:hasPackageName ?packageName ;
-            amis:relatedToVulnerability ?v3 .
-        }
-        BIND(COALESCE(?v1, ?v2, ?v3) AS ?vuln)
-        BIND(IF(BOUND(?vuln), REPLACE(STR(?vuln), "^.*/", ""), "") AS ?vulnLabel)
-      }
-    }
-  }
+  ?event a :LogEvent ;
+         a ?eventClass ;
+         :hasEventTimestamp ?timestamp .
+
+  { ?event :hasUser ?user }
+  UNION
+  { ?event :hasSessionID ?sessionID }
+  UNION
+  { ?event :hasUserName ?username }
+
+  OPTIONAL { ?event :hasSessionID     ?sessionID }
+  OPTIONAL { ?event :hasSessionStatus ?sessionStatus }
+  OPTIONAL { ?event :hasHostname      ?hostname }
+  OPTIONAL { ?event :hasUserName      ?username }
+
+  FILTER (?eventClass != :LogEvent)   # keep the most specific type
 }
-ORDER BY DESC(STRLEN(?vulnLabel)) DESC(xsd:dateTime(?timestamp))
-LIMIT 100
 ```
 
+### Application, system, and security tracing 
+## CQ07 - Which container lifecycle events are linked to application errors?
+```sparql
+PREFIX : <http://www.semanticweb.org/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?containerEvent ?containerTime ?membershipStatus ?errorEvent ?errorTime ?exceptionType
+WHERE {
+  ?containerEvent a :ContainerLogEvent ;
+                   :hasEventTimestamp ?containerTime .
+  OPTIONAL { ?containerEvent :hasMembershipStatus ?membershipStatus }
+
+  ?errorEvent a :ErrorLogEvent ;
+              :hasEventTimestamp ?errorTime .
+  OPTIONAL { ?errorEvent :hasExceptionType ?exceptionType }
+
+  # Linked via explicit correlation or the shared next/previous chain
+  { ?containerEvent :correlatedWith ?errorEvent }
+  UNION
+  { ?containerEvent :hasNextLogEvent+ ?errorEvent }
+}
+ORDER BY ?containerTime
+```
+## CQ08 - Which database events correlate with application requests?
+```sparql
+PREFIX : <http://www.semanticweb.org/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?dbEvent ?dbTime ?exceptionType ?request ?requestURI ?correlatedEvent
+WHERE {
+  ?dbEvent a :ApplicationLogEvent ;
+           :hasEventTimestamp ?dbTime ;
+           :belongsToRequest ?request .
+
+  OPTIONAL { ?dbEvent :hasExceptionType ?exceptionType
+             FILTER (CONTAINS(LCASE(?exceptionType), "sql")) }
+
+  ?request a :Request .
+  OPTIONAL { ?request :hasRequestURI ?requestURI }   # via AccessLogEvent side if present
+
+  OPTIONAL { ?dbEvent :correlatedWith ?correlatedEvent }
+}
+ORDER BY ?dbTime
+```
 This query identifies package installation or update events relevant to security analysis by linking them to associated vulnerabilities (e.g., CVEs) through multiple relationship paths, enabling the detection of potentially affected components and their versions.
 
-### Application, System, and Security Tracing
-## CQ18 - Which audit information is required for sensitive operations?
+
+### Vulnerability analysis and exposure
+## CQ09 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
 ```sparql
-PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
-PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
+PREFIX rose: <http://rose.com#>
 
-# Demo RDF links indicators with amo:hasIndicator (<.../AMISecOnto/hasIndicator>), not amis:hasIndicator (#…).
-# Optional # form covers reasoning stores that align OWL to instance predicates.
-# BIND yields a string for ?indicatorLabel (empty when no indicator) so UIs always show the column.
-SELECT ?event ?timestamp ?host ?userName ?indicatorLabel ?message
-WHERE {
-  GRAPH <http://localhost:8890/AMISecOnto-v27> {
-    ?event a amis:SecurityLogEvent ;
-      amis:hasTimestamp ?timestamp ;
-      amis:hasHostname ?host ;
-      amis:hasRawMessage ?message .
-
-    FILTER (
-      CONTAINS(LCASE(STR(?message)), "sudo") ||
-      CONTAINS(LCASE(STR(?message)), "su:") ||
-      CONTAINS(LCASE(STR(?message)), "sensitive_read") ||
-      CONTAINS(LCASE(STR(?message)), "backdoor") ||
-      CONTAINS(LCASE(STR(?message)), "audit")
-    )
-
-    OPTIONAL { ?event amis:hasUserName ?userName . }
-    OPTIONAL { ?event amo:hasIndicator ?i1 . }
-    OPTIONAL { ?event amis:hasIndicator ?i2 . }
-    BIND(COALESCE(?i1, ?i2) AS ?indicator)
-    OPTIONAL { ?indicator rdfs:label ?il }
-    BIND(
-      IF(
-        BOUND(?indicator),
-        COALESCE(?il, REPLACE(STR(?indicator), "^.*/", "")),
-        ""
-      ) AS ?indicatorLabel
-    )
-  }
-}
-ORDER BY DESC(STRLEN(?indicatorLabel)) ?timestamp
-LIMIT 200
-```
-
-### Vulnerability Analysis and Exposure
-## CQ21 - Which installed or observed software components are affected by known vulnerabilities (CVEs)? 
-```sparql
-PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
-PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
-
-# CQ21 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
-# Observed: manifest Dependency via relatedToVulnerability or exposes (slash IRI).
-# Installed: InstalledPackageLogEvent linked to NVD by the demo build.
-# Three plain UNION branches avoid OPTIONAL+COALESCE+FILTER, which some Virtuoso builds reject.
-SELECT DISTINCT ?component ?componentKind ?packageName ?packageVersion ?cveId ?severity
-WHERE {
-  GRAPH <http://localhost:8890/AMISecOnto> {
-    {
-      ?component a amo:Dependency ;
-        amis:hasPackageName ?packageName ;
-        amis:relatedToVulnerability ?vuln .
-      BIND("dependency (manifest)" AS ?componentKind)
-      OPTIONAL { ?component amis:hasPackageVersion ?packageVersion }
-      ?vuln a amo:Vulnerability .
-      BIND(REPLACE(STR(?vuln), "^.*/", "") AS ?cveId)
-      OPTIONAL { ?vuln amis:hasSeverityCode ?severity }
-    }
-    UNION
-    {
-      ?component a amo:Dependency ;
-        amis:hasPackageName ?packageName .
-      ?component amo:exposes ?vuln .
-      BIND("dependency (manifest)" AS ?componentKind)
-      OPTIONAL { ?component amis:hasPackageVersion ?packageVersion }
-      ?vuln a amo:Vulnerability .
-      BIND(REPLACE(STR(?vuln), "^.*/", "") AS ?cveId)
-      OPTIONAL { ?vuln amis:hasSeverityCode ?severity }
-    }
-    UNION
-    {
-      ?component a amis:InstalledPackageLogEvent ;
-        amis:hasPackageName ?packageName ;
-        amis:relatedToVulnerability ?vuln .
-      BIND("installed (dpkg event)" AS ?componentKind)
-      OPTIONAL { ?component amis:hasPackageVersion ?packageVersion }
-      ?vuln a amo:Vulnerability .
-      BIND(REPLACE(STR(?vuln), "^.*/", "") AS ?cveId)
-      OPTIONAL { ?vuln amis:hasSeverityCode ?severity }
-    }
-  }
-}
-ORDER BY ?componentKind ?packageName ?cveId
-LIMIT 500
-```
-
-### Risk Assessment and Incident Reconstruction (NIS2-aligned)
-## CQ22 - Which vulnerabilities are associated with specific packages, versions, or system components? 
-```sparql
-PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
-PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-# CQ22 - Which vulnerabilities are associated with specific packages, versions, or system components?
-# Vulnerability-centric view: JAR dependencies, dpkg install events, and system-level (NVD-scoped) systems.
-# Per-chunk LIMITs keep manifest, dpkg, and platform rows in one result set; raise LIMITs or drop FILTER for full data.
-SELECT DISTINCT ?vulnerability ?cveId ?severity ?associationKind ?packageName ?packageVersion ?hostingSystemLabel ?componentUri
+SELECT ?component ?componentName ?system ?vulnerability ?cveId
 WHERE {
   {
-    SELECT ?vulnerability ?cveId ?severity ?associationKind ?packageName ?packageVersion ?hostingSystemLabel ?componentUri ?sortKey
-    WHERE {
-      GRAPH <http://localhost:8890/AMISecOnto> {
-        {
-          ?componentUri a amo:Dependency ;
-            amis:hasPackageName ?packageName ;
-            amis:relatedToVulnerability ?vulnerability .
-          BIND("manifest dependency (JAR)" AS ?associationKind)
-          BIND(1 AS ?sortKey)
-          OPTIONAL { ?componentUri amis:hasPackageVersion ?packageVersion }
-          OPTIONAL {
-            ?stack a amo:System ;
-                   amis:containsPackage ?componentUri ;
-                   rdfs:label ?hostingSystemLabel .
-          }
-          ?vulnerability a amo:Vulnerability .
-          BIND(REPLACE(STR(?vulnerability), "^.*/", "") AS ?cveId)
-          OPTIONAL { ?vulnerability amis:hasSeverityCode ?severity }
-        }
-        UNION
-        {
-          ?componentUri a amo:Dependency ;
-            amis:hasPackageName ?packageName .
-          ?componentUri amo:exposes ?vulnerability .
-          BIND("manifest dependency (JAR)" AS ?associationKind)
-          BIND(1 AS ?sortKey)
-          OPTIONAL { ?componentUri amis:hasPackageVersion ?packageVersion }
-          OPTIONAL {
-            ?stack a amo:System ;
-                   amis:containsPackage ?componentUri ;
-                   rdfs:label ?hostingSystemLabel .
-          }
-          ?vulnerability a amo:Vulnerability .
-          BIND(REPLACE(STR(?vulnerability), "^.*/", "") AS ?cveId)
-          OPTIONAL { ?vulnerability amis:hasSeverityCode ?severity }
-        }
-      }
-    }
-    LIMIT 50
+    # Installed system packages
+    ?component a :SystemPackage ;
+               :installedOn ?system .
+    OPTIONAL { ?component :hasPackageName ?componentName }
   }
   UNION
   {
-    SELECT ?vulnerability ?cveId ?severity ?associationKind ?packageName ?packageVersion ?hostingSystemLabel ?componentUri ?sortKey
-    WHERE {
-      GRAPH <http://localhost:8890/AMISecOnto> {
-        ?componentUri a amis:InstalledPackageLogEvent ;
-          amis:hasPackageName ?packageName ;
-          amis:relatedToVulnerability ?vulnerability .
-        BIND("installed package (dpkg log)" AS ?associationKind)
-        BIND(2 AS ?sortKey)
-        OPTIONAL { ?componentUri amis:hasPackageVersion ?packageVersion }
-        ?vulnerability a amo:Vulnerability .
-        BIND(REPLACE(STR(?vulnerability), "^.*/", "") AS ?cveId)
-        OPTIONAL { ?vulnerability amis:hasSeverityCode ?severity }
-        OPTIONAL { ?componentUri amis:hasHostname ?hostingSystemLabel }
-      }
-    }
-    LIMIT 400
+    # Software components declared/observed in an application
+    ?component a :SoftwareComponent .
+    OPTIONAL { ?component :hasVersion ?componentName }
   }
+
+  { ?component :relatedToVulnerability ?vulnerability }
   UNION
-  {
-    SELECT ?vulnerability ?cveId ?severity ?associationKind ?packageName ?packageVersion ?hostingSystemLabel ?componentUri ?sortKey
-    WHERE {
-      GRAPH <http://localhost:8890/AMISecOnto> {
-        ?componentUri a amo:System ;
-          rdfs:label ?hostingSystemLabel ;
-          amo:hasVulnerability ?vulnerability .
-        BIND("platform / infrastructure (system-level)" AS ?associationKind)
-        BIND(3 AS ?sortKey)
-        BIND("" AS ?packageName)
-        BIND("" AS ?packageVersion)
-        ?vulnerability a amo:Vulnerability .
-        BIND(REPLACE(STR(?vulnerability), "^.*/", "") AS ?cveId)
-        OPTIONAL { ?vulnerability amis:hasSeverityCode ?severity }
-        FILTER(CONTAINS(LCASE(?hostingSystemLabel), "linux"))
-      }
-    }
-    LIMIT 200
-  }
-}
-ORDER BY ?sortKey ?packageName ?cveId
-
-```
-This query provides a vulnerability-centric view of affected components by associating CVEs with manifest dependencies, installed packages, and system-level infrastructure, including package names, versions, severity labels, hosting systems, and component URIs.
-
-## CQ23 - Which log events indicate the presence or activation of vulnerable components?
-```sparql
-PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
-PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
-# hasTimestamp is stored as xsd:string (ISO-8601); use xsd:dateTime(?timestamp) for ordering/comparison when needed.
-
-# CQ23 - Which log events indicate the presence or activation of vulnerable components?
-# Presence: dpkg events with relatedToVulnerability.
-# Activation: events linked to the vulnerability-probe indicator resource (demo NT uses this fixed IRI).
-# Virtuoso SP031: avoid rdfs:label + FILTER on a variable inside nested SELECT/UNION; use grounded indicator IRI.
-# Inner LIMITs keep dpkg rows and probe rows in one result set.
-# Severity: amis:hasSeverityCode stores the NVD/API qualitative label (baseSeverity, e.g. MEDIUM). When UNKNOWN or missing, derive from amo:hasBaseScore (same bands as the build script). Rebuild/reload NT after fetch so labels match API objects.
-# Regenerate NT after adding hasBaseScore. Probe rows have no CVE link: show n/a for severity.
-SELECT DISTINCT ?logEvent ?evidenceKind ?timestamp ?host ?packageName ?packageVersion ?cveId ?severity
-WHERE {
-  {
-    SELECT ?logEvent ?evidenceKind ?timestamp ?host ?packageName ?packageVersion ?cveId ?severity
-    WHERE {
-      GRAPH <http://localhost:8890/AMISecOnto> {
-        ?logEvent a amis:InstalledPackageLogEvent ;
-          amis:hasPackageName ?packageName ;
-          amis:relatedToVulnerability ?vuln .
-        BIND("installed package linked to CVE (presence)" AS ?evidenceKind)
-        OPTIONAL { ?logEvent amis:hasTimestamp ?timestamp . }
-        OPTIONAL { ?logEvent amis:hasHostname ?host . }
-        OPTIONAL { ?logEvent amis:hasPackageVersion ?packageVersion . }
-        ?vuln a amo:Vulnerability .
-        BIND(REPLACE(STR(?vuln), "^.*/", "") AS ?cveId)
-        OPTIONAL { ?vuln amis:hasSeverityCode ?sevRaw . }
-        OPTIONAL { ?vuln amo:hasBaseScore ?cvss . }
-        BIND(
-          IF(
-            BOUND(?sevRaw) && LCASE(STR(?sevRaw)) != "unknown",
-            STR(?sevRaw),
-            IF(
-              BOUND(?cvss),
-              IF(
-                xsd:decimal(?cvss) >= 9.0,
-                "CRITICAL",
-                IF(
-                  xsd:decimal(?cvss) >= 7.0,
-                  "HIGH",
-                  IF(
-                    xsd:decimal(?cvss) >= 4.0,
-                    "MEDIUM",
-                    IF(xsd:decimal(?cvss) > 0.0, "LOW", "UNKNOWN")
-                  )
-                )
-              ),
-              IF(BOUND(?sevRaw), STR(?sevRaw), "UNKNOWN")
-            )
-          ) AS ?severity
-        )
-      }
-    }
-    LIMIT 250
-  }
+  { ?component :exposes ?vulnerability }
   UNION
-  {
-    SELECT ?logEvent ?evidenceKind ?timestamp ?host ?packageName ?packageVersion ?cveId ?severity
-    WHERE {
-      GRAPH <http://localhost:8890/AMISecOnto> {
-        {
-          ?logEvent amis:belongsToLog ?log .
-          ?logEvent amo:hasIndicator <http://www.semanticweb.org/AMISecOnto/indicator/b31be47a71ebb8a6> .
-          BIND("vulnerability-probe (activation pattern)" AS ?evidenceKind)
-          OPTIONAL { ?logEvent amis:hasTimestamp ?timestamp . }
-          OPTIONAL { ?logEvent amis:hasHostname ?host . }
-          BIND("" AS ?packageName)
-          BIND("" AS ?packageVersion)
-          BIND("" AS ?cveId)
-          BIND("n/a (indicator-only row)" AS ?severity)
-        }
-      }
-    }
-    LIMIT 250
-  }
+  { ?component :hasVulnerability ?vulnerability }
+
+  ?vulnerability :hasCVEId ?cveId .
 }
-ORDER BY ?evidenceKind DESC(xsd:dateTime(?timestamp)) ?logEvent
+ORDER BY ?cveId
 ```
-This query detects log evidence of vulnerable components by combining package-level CVE presence indicators with vulnerability-probe activation patterns, enriching each event with package details, timestamps, host information, CVE identifiers, and derived severity levels
 
-
-## CQ24 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
+## CQ10 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
 ```sparql
-PREFIX amis: <http://www.semanticweb.org/AMISecOnto#>
-PREFIX amo: <http://www.semanticweb.org/AMISecOnto/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
+PREFIX rose: <http://rose.com#>
 
-# Instance NT uses slash IRI http://.../AMISecOnto/hasIndicator (amo:), not amis:#hasIndicator.
-SELECT ?event ?timestamp ?host ?userName ?indicatorLabel ?message ?vulnLabel
+SELECT ?vulnerability ?cveId ?product ?vendor ?versionMin ?versionMax ?packageVersion
 WHERE {
-  GRAPH <http://localhost:8890/AMISecOnto> {
-    ?event a amo:LogEvent ;
-           amis:hasTimestamp ?timestamp ;
-           amis:hasHostname ?host ;
-           amis:hasRawMessage ?message .
-    OPTIONAL { ?event amis:hasUserName ?userName . }
-    OPTIONAL {
-      ?event amo:hasIndicator ?indicator .
-      ?indicator rdfs:label ?indicatorLabel .
-    }
-    OPTIONAL {
-      ?event amis:evidenceByLogEvent ?vuln .
-      ?vuln rdfs:label ?vulnLabel .
-    }
+  ?vulnerability a rose:Vulnerability ;
+                 :hasCVEId ?cveId .
 
-    FILTER (
-      BOUND(?indicatorLabel) ||
-      CONTAINS(LCASE(?message), "exploit") ||
-      CONTAINS(LCASE(?message), "suspicious") ||
-      CONTAINS(LCASE(?message), "authentication failure") ||
-      CONTAINS(LCASE(?message), "path traversal")
-    )
+  OPTIONAL {
+    ?vulnerability :relatedToProduct ?product .
   }
 }
-ORDER BY xsd:dateTime(?timestamp)
-LIMIT 300
 ```
-This query retrieves potentially suspicious log events by combining semantic indicators and keyword-based detection, linking events to known indicators and associated vulnerabilities while providing contextual information such as timestamps, hosts, users, and raw messages for security analysis.
+ljkllkjkjghjhfjhfghgs
+
+### Risk assessment and incident reconstruction (NIS2-aligned)
+## CQ11 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
+```sparql
+PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
+PREFIX rose: <http://rose.com#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?riskAssessment ?logEvent ?eventTime ?vulnerability ?cveId ?riskLevel
+WHERE {
+  ?riskAssessment a :RiskAssessment ;
+                  :usesEvidence ?logEvent ;
+                  :identifies   ?vulnerability .
+
+  OPTIONAL { ?riskAssessment skos:hasRiskLevel ?riskLevel }
+  OPTIONAL { ?riskAssessment :producesRiskLevel ?riskLevel }
+
+  ?logEvent :hasEventTimestamp ?eventTime .
+  ?vulnerability :hasCVEId ?cveId .
+
+  # Alternative direct-evidence path: a log event that is itself evidence of the vulnerability
+  OPTIONAL { ?logEvent :evidenceByLogEvent ?vulnerability }
+}
+ORDER BY DESC(?eventTime)
+
+```
+
+## CQ11 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
+```sparql
+PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
+PREFIX rose: <http://rose.com#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?riskAssessment ?riskLevel ?logEvent ?eventTime ?logLevel
+       ?vulnerability ?cveId ?baseScore ?baseSeverity
+WHERE {
+  ?riskAssessment a :RiskAssessment ;
+                  :usesEvidence ?logEvent ;
+                  :considers    ?vulnerability .
+
+  OPTIONAL { ?riskAssessment :producesRiskLevel ?riskLevel }
+
+  ?logEvent :hasEventTimestamp ?eventTime .
+  OPTIONAL { ?logEvent :hasLogLevel ?logLevel }
+
+  ?vulnerability :hasCVEId ?cveId .
+  OPTIONAL {
+    ?vulnerability :hasCVSSMetric ?cvss .
+    ?cvss :hasBaseScore    ?baseScore .
+    ?cvss :hasBaseSeverity ?baseSeverity .
+  }
+}
+ORDER BY DESC(?baseScore) DESC(?eventTime)
+```
+
 
 ## Citation
 
