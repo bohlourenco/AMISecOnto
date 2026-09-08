@@ -50,28 +50,6 @@ This repository contains all development for the project's ontology/knowledge mo
   - Evidence tracing  
 
 ---
-
-## Architecture and Processing Pipeline
-AMISecOnto follows a structured pipeline:
-
-1. **Data Ingestion**  
-   Integrates AMIS logs with NVD vulnerability data  
-
-2. **Semantic Knowledge Graph Construction**  
-   Transforms raw data into a structured, queryable graph  
-
-3. **Core Ontology Modules**  
-   - **Entities**: Users, systems, software  
-   - **Vulnerabilities**: CVE, CPE, CVSS  
-   - **Standards**: RDF, OWL, SHACL, PROV-O, FOAF  
-
-4. **Security Outputs**  
-   - Incident reconstruction  
-   - Risk assessment  
-   - Evidence tracing  
-
----
-
 ## Ontology Modules
 
 AMISecOnto is organized into interconnected modules:
