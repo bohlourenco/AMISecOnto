@@ -23,7 +23,6 @@ This repository contains all development for the project's ontology/knowledge mo
   - [Application, System, and Security Tracing](#application-system-and-security-tracing)
   - [Vulnerability Analysis and Exposure](#vulnerability-analysis-and-exposure)
   - [Risk Assessment and Incident Reconstruction (NIS2-aligned)](#risk-assessment-and-incident-reconstruction-nis2-aligned)   
-- [SHACL Validation Shapes](#shacl-validation-shapes)
 - [SPARQL Query Templates](#sparql-query-templates)
 - [Examples](#examples)
 - [Documentation](#documentation)
