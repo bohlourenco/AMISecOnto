@@ -548,6 +548,11 @@ ORDER BY DESC(?baseScore) DESC(?eventTime)
 ```
 
 
+Table that reflects the traceability between competency questions and ontology axioms.****
+
+
+
+
 ## Citation
 
 If you use AMISecOnto in your research, please cite:
