@@ -554,7 +554,10 @@ Table that reflects the traceability between competency questions and ontology a
 |---|---|---|---|
 | CQ1 | LogEvent | hasEventTimestamp, hasLogLevel, hasHostname, hasEventType | Filters and discovers log events within a given time window matching selected criteria |
 | CQ2 | LogEvent, Application, System, Environment | hasHostname, registersLogEvent, runsOn, executedInEnvironment | Scopes log events to the application, host, service, or component that generated them |
-
+| CQ3 | LogEvent, ErrorLogEvent| hasPreviousLogEvent, hasNextLogEvent, hasEventTimestamp| Reconstructs the causal/temporal chain of events that preceded a specific error |
+| CQ4 | LogEvent| hasEventTimestamp |Establishes a before/after timeline around a given incident event |
+| CQ5 | AuthenticationLogEvent, AccessLogEvent, SudoLogEvent, SuLogEvent| hasEventTimestamp, hasUserName, hasHostname, hasSudoStatus, hasSuStatus | Correlates authentication attempts with subsequent access or privilege-escalation events |
+| CQ6 | LogEvent, User, Audit_Log_Event | hasUser, hasSessionID, hasSessionStatus, hasUserName, hasEventTimestamp | Aggregates all events tied to a user/session to reconstruct a session timeline |
 
 ## Citation
 
