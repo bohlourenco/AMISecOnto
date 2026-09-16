@@ -552,8 +552,8 @@ Table that reflects the traceability between competency questions and ontology a
 
 | CQ | Required Classes | Required Object / Data Properties | Ontological Role |
 |---|---|---|---|
-| CQ1 | Legal Dental Medical Exam Data, Forensic Expert Person | has Forensic Expert, Forensic Case Number, foaf:name | Links a forensic case to the responsible professional |
-| CQ2 | Report Data, Legal Dental Medical Exam Data, foaf:Organization | contains Data, has Requesting Entity, rdfs:subClassOf, Forensic Case Number, Requesting Entity Name | Supports legal provenance and institutional responsibility |
+| CQ1 | LogEvent | hasEventTimestamp, hasLogLevel, hasHostname, hasEventType | Filters and discovers log events within a given time window matching selected criteria |
+| CQ2 | LogEvent, Application, System, Environment | hasHostname, registersLogEvent, runsOn, executedInEnvironment | Scopes log events to the application, host, service, or component that generated them |
 
 
 ## Citation
