@@ -59,6 +59,33 @@ This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `
 
 ---
 
+### Log and Event Module
+This diagram shows a sample excerpt of the **Log and Event module** of AMISecOnto, centered on the class `LogEvent`, which is a subclass of `Activity` (itself a subclass of `'PROV Activity'`, tying the module into the PROV-O provenance ontology).
+
+**Key elements:**
+
+- **Subclasses of LogEvent:** `'Security Log Event'`, `'System Log Event'`, `'Application Log Event'` — each with a reflexive `hasPreviousLogEvent` relation.
+- **Core object properties on LogEvent:**
+  - `hasFirstLogEvent`, `hasCurrentLogEvent`, `hasPreviousLogEvent`, `hasNextLogEvent` → sequencing relations with `Log` and other `LogEvent` instances
+  - `correlatedWith`, `hasPreviousCorrelatedEvent`, `hasNextCorrelatedEvent` → reflexive correlation relations between events
+  - `containsEvent` → `Log`
+  - `hasIndicator` → `Indicator`
+  - `registersLogEvent` → `System`
+  - `hasSourceIp` / `hasDestinationIp` → `IPAddress`
+  - `isObservedIn` → `Vulnerability`
+  - `usesEvidence` / `updatedBy` → `'Risk Assessment'`
+  - `hasUser` → `User`
+  - `hasOutcome` / `generates` → `Outcome`
+  - `hasPackage` → `'Software Component'`
+- **Log properties:** `storedOn` → `System`, `producedBy` → `Log`, `hasFirstLogEvent`/`hasCurrentLogEvent` (reflexive on `Log`)
+- **Other links:** `Logger` connects into the correlation/event cluster.
+<p align="center">
+  <img src="figures/log-logevent-module.png" alt="Log and Event Relations" width="600"/>
+</p>
+---
+
+
+
 ## Competency Questions (CQs)
 
 The ontology is designed to answer the following competency questions:
