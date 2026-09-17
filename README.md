@@ -82,6 +82,7 @@ This diagram shows a sample excerpt of the **Log and Event module** of AMISecOnt
 <p align="center">
   <img src="figures/log-event-module.png" alt="Log and Event Relations" width="800"/>
 </p>
+
 ---
 
 
