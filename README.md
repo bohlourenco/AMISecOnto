@@ -67,7 +67,7 @@ AMISecOnto is organized into interconnected modules:
 
 ### Asset Module
 <p align="center">
-  <img src="figures/asset-module.png" alt="Asset Relations" width="900"/>
+  <img src="figures/asset-module.png" alt="Asset Relations" width="700"/>
 </p>
 
 ---
