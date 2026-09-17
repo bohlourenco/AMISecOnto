@@ -80,7 +80,7 @@ This diagram shows a sample excerpt of the **Log and Event module** of AMISecOnt
 - **Log properties:** `storedOn` → `System`, `producedBy` → `Log`, `hasFirstLogEvent`/`hasCurrentLogEvent` (reflexive on `Log`)
 - **Other links:** `Logger` connects into the correlation/event cluster.
 <p align="center">
-  <img src="figures/log-logevent-module.png" alt="Log and Event Relations" width="600"/>
+  <img src="figures/log-logevent-module.png" alt="Log and Event Relations" width="800"/>
 </p>
 ---
 
