@@ -54,7 +54,7 @@ This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `
 - **Object properties:** `Application` runsOn `System`; `'Software Component'` dependsOn itself (reflexive)
 - **Properties on Asset:** hasScope → `'ITSMO Scope'`, hasPriority → `'ITSMO Priority'`, hasCriticality → `'ITSMO Criticality'`
 <p align="center">
-  <img src="figures/asset-module.png" alt="Asset Relations" width="600"/>
+  <img src="figures/asset-module.png" alt="Asset Relations" width="400"/>
 </p>
 
 ---
