@@ -548,7 +548,11 @@ ORDER BY DESC(?baseScore) DESC(?eventTime)
 ```
 
 
-Table that reflects the traceability between competency questions and ontology axioms.****
+## Competency Question → Ontology Mapping
+
+Maps each competency question (CQ) to the AMISecOnto classes and object/data
+properties required to answer it, along with the role each mapping plays in
+the ontology.
 
 | CQ | Required Classes | Required Object / Data Properties | Ontological Role |
 |---|---|---|---|
