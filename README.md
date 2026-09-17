@@ -548,11 +548,13 @@ ORDER BY DESC(?baseScore) DESC(?eventTime)
 ```
 
 
-## Competency Question → Ontology Mapping
+## Competency Question Traceability Matrix
 
-Maps each competency question (CQ) to the AMISecOnto classes and object/data
-properties required to answer it, along with the role each mapping plays in
-the ontology.
+Establishes traceability between each competency question (CQ) and the
+AMISecOnto axioms, classes and object/data properties, needed to satisfy it,
+together with the ontological role each mapping plays. This matrix supports
+requirements validation by tracing every CQ back to concrete elements of the
+ontology.
 
 | CQ | Required Classes | Required Object / Data Properties | Ontological Role |
 |---|---|---|---|
