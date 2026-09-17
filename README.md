@@ -59,14 +59,15 @@ AMISecOnto is organized into interconnected modules:
 - **Risk Analysis**
 - **Software Supply-Chain** 
 
-### Design Principles
+### Design Principle
 
 - Separation of concerns  
 - Reusability  
 - Scalable knowledge graph construction  
 
+### Asset Module
 <p align="center">
-  <img src="figures/amiseconto-core-architecture.png" alt="AMISecOnto Architecture" width="900"/>
+  <img src="figures/asset.module.png" alt="Asset Relations" width="900"/>
 </p>
 
 ---
