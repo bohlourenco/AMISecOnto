@@ -10,11 +10,9 @@ This repository contains all development for the project's ontology/knowledge mo
 
 - [Overview](#overview)
 - [Key Features](#key-features)
-- [Ontology Architecture](#ontology-architecture)
-- [Repository Structure](#repository-structure)
-- [Tools and Technologies](#tools-and-technologies)
-- [Usage](#usage)
-  - [Load Ontology](#load-ontology)
+- [ Ontology Modules](#ontology-modules)
+  - [Asset Module](#asset-module)
+
     
   
 ## Overview
@@ -46,12 +44,6 @@ AMISecOnto is organized into interconnected modules:
 - **Vulnerability**  
 - **Risk Analysis**
 - **Software Supply-Chain** 
-
-### Design Principle
-
-- Separation of concerns  
-- Reusability  
-- Scalable knowledge graph construction  
 
 ### Asset Module
 This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `Asset` is a subclass of `'ITSMO Asset'`, linking it to the broader ITSMO. It does not represent the full ontology.
