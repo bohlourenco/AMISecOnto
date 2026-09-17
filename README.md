@@ -9,26 +9,13 @@ This repository contains all development for the project's ontology/knowledge mo
 ## Table of Contents
 
 - [Overview](#overview)
-- [Ontology Scope](#ontology-scope)
+- [Key Features](#key-features)
 - [Ontology Architecture](#ontology-architecture)
 - [Repository Structure](#repository-structure)
 - [Tools and Technologies](#tools-and-technologies)
 - [Usage](#usage)
   - [Load Ontology](#load-ontology)
-  - [Query the Knowledge Graph](#query-the-knowledge-graph)
-  - [Validate Data with SHACL](#validate-data-with-shacl)
-- [Competency Questions (CQs)](#competency-questions-cqs)
-  - [Event Discovery and Filtering](#event-discovery-and-filtering)
-  - [Event Lineage Tracing](#event-lineage-tracing)
-  - [Authentication and Access Tracing](#authentication-and-access-tracing)
-  - [Application, System, and Security Tracing](#application-system-and-security-tracing)
-  - [Vulnerability Analysis and Exposure](#vulnerability-analysis-and-exposure)
-  - [Risk Assessment and Incident Reconstruction (NIS2-aligned)](#risk-assessment-and-incident-reconstruction-nis2-aligned)   
-- [SPARQL Query Templates](#sparql-query-templates)
-- [Examples](#examples)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
+    
   
 ## Overview
 
