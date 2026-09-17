@@ -519,7 +519,7 @@ ORDER BY DESC(?eventTime)
 
 ```
 
-## CQ11 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
+## CQ12 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
 ```sparql
 PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
 PREFIX rose: <http://rose.com#>
@@ -558,6 +558,12 @@ Table that reflects the traceability between competency questions and ontology a
 | CQ4 | LogEvent| hasEventTimestamp |Establishes a before/after timeline around a given incident event |
 | CQ5 | AuthenticationLogEvent, AccessLogEvent, SudoLogEvent, SuLogEvent| hasEventTimestamp, hasUserName, hasHostname, hasSudoStatus, hasSuStatus | Correlates authentication attempts with subsequent access or privilege-escalation events |
 | CQ6 | LogEvent, User, Audit_Log_Event | hasUser, hasSessionID, hasSessionStatus, hasUserName, hasEventTimestamp | Aggregates all events tied to a user/session to reconstruct a session timeline |
+| CQ7 | ContainerLogEvent, ErrorLogEvent, ApplicationLogEvent | correlatedWith, hasNextLogEvent, hasMembershipStatus, hasExceptionType | Links container lifecycle activity to application-level errors it may have caused |
+| CQ8 | ApplicationLogEvent, Request | belongsToRequest, correlatedWith, hasExceptionType, hasRequestURI | Associates application/database activity with the request that triggered it |
+| CQ9 | SystemPackage, SoftwareComponent, System, rose:Vulnerability | installedOn, relatedToVulnerability, exposes, hasVulnerability, hasCVEId | Identifies which deployed software components are exposed to known CVEs |
+| CQ10 | rose:Vulnerability, Product, CPE, Vendor, VersionInterval, SystemPackage | relatedToProduct, affectsCPE, hasVendor, hasVersionInterval, hasVersionMinIncluding, hasVersionMaxIncluding, hasPackageVersion | Maps vulnerabilities to the specific packages, versions, or components they affect |
+| CQ11 | RiskAssessment, LogEvent, rose:Vulnerability, RiskLevel | usesEvidence, identifies, evidenceByLogEvent, producesRiskLevel / skos:hasRiskLevel | Combines log evidence and identified vulnerabilities to flag high-risk or compromise situations |
+| CQ12 | RiskAssessment, LogEvent, rose:Vulnerability, CVSSMetric, RiskLevel | usesEvidence, considers, hasCVSSMetric, hasBaseScore, hasBaseSeverity, producesRiskLevel | Derives overall (NIS2-aligned) risk posture from CVSS severity, log evidence, and observed behavior |
 
 ## Citation
 
