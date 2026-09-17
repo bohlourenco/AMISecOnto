@@ -17,7 +17,7 @@ This repository contains all development for the project's ontology/knowledge mo
   
 ## Overview
 
-**AMISecOnto** is a modular cybersecurity ontology that transforms heterogeneous data—such as AMIS system logs and vulnerability intelligence (e.g., NVD)—into a unified semantic knowledge graph for advanced security analysis.
+**AMISecOnto** is a modular cybersecurity ontology that transforms heterogeneous data, such as AMIS system logs and vulnerability intelligence (e.g., NVD), into a unified semantic knowledge graph for advanced security analysis.
 
 ---
 
