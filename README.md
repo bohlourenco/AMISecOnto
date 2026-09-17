@@ -1,3 +1,4 @@
+
 <p align="center">
   <img src="figures/amiseconto-logo.png" alt="AMISecOnto Logo" width="140"/>
 </p>
@@ -66,6 +67,13 @@ AMISecOnto is organized into interconnected modules:
 - Scalable knowledge graph construction  
 
 ### Asset Module
+This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `Asset` is a subclass of `'ITSMO Asset'`, linking it to the broader ITSMO. It does not represent the full ontology.
+
+**Key elements:**
+
+- **Subclasses of Asset:** `Application`, `System`, `Process`, `'Software Component'`, `IPAddress`, `Account`
+- **Object properties:** `Application` runsOn `System`; `'Software Component'` dependsOn itself (reflexive)
+- **Properties on Asset:** hasScope → `'ITSMO Scope'`, hasPriority → `'ITSMO Priority'`, hasCriticality → `'ITSMO Criticality'`
 <p align="center">
   <img src="figures/asset-module.png" alt="Asset Relations" width="600"/>
 </p>
