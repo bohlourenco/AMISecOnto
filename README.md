@@ -265,6 +265,8 @@ WHERE {
 }
 ORDER BY ?timestamp
 ```
+This query retrieves log events within a specific time range, optionally filtered by log level, hostname, or event type.
+
 ### CQ2 — Which events belong to a specific application, service, host, or component? 
 ```sparql
 PREFIX : <http://www.semanticweb.org/AMISecOnto#>
@@ -340,7 +342,7 @@ WHERE {
 }
 ORDER BY ?timestamp
 ```
-jljljljljljljklk
+This query finds log events occurring within a time window around a specific incident, labeling each as occurring before or after it to support incident reconstruction.
 
 ### Authentication and Access Tracing
 ## CQ5 - Which authentication attempts preceded access or privilege-escalation events?
@@ -396,6 +398,7 @@ WHERE {
   FILTER (?eventClass != :LogEvent)   # keep the most specific type
 }
 ```
+This query collects every log event associated with a specific user, via their identity, session ID, or username, along with session status and host context, to reconstruct a chronological timeline of that user's session activity.
 
 ### Application, system, and security tracing 
 ## CQ07 - Which container lifecycle events are linked to application errors?
@@ -420,6 +423,8 @@ WHERE {
 }
 ORDER BY ?containerTime
 ```
+This query links container lifecycle events to application errors, via explicit correlation or a shared event sequence chain.
+
 ## CQ08 - Which database events correlate with application requests?
 ```sparql
 PREFIX : <http://www.semanticweb.org/AMISecOnto#>
@@ -475,6 +480,7 @@ WHERE {
 }
 ORDER BY ?cveId
 ```
+This query identifies installed system packages or observed software components and links each one to the known CVEs it is affected by, exposed to, or declared to have.
 
 ## CQ10 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
 ```sparql
@@ -491,7 +497,7 @@ WHERE {
   }
 }
 ```
-ljkllkjkjghjhfjhfghgs
+This query links known vulnerabilities (by CVE ID) to the affected products, their vendors, and the specific version ranges impacted.
 
 ### Risk assessment and incident reconstruction (NIS2-aligned)
 ## CQ11 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
@@ -516,8 +522,8 @@ WHERE {
   OPTIONAL { ?logEvent :evidenceByLogEvent ?vulnerability }
 }
 ORDER BY DESC(?eventTime)
-
 ```
+Combines log events and identified vulnerabilities within a risk assessment to surface potential high-risk or compromise situations.
 
 ## CQ12 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
 ```sparql
@@ -546,7 +552,7 @@ WHERE {
 }
 ORDER BY DESC(?baseScore) DESC(?eventTime)
 ```
-
+This query derives overall risk posture from log evidence, CVSS severity scores, and the risk level produced by the assessment.
 
 ## Competency Question Traceability Matrix
 
