@@ -13,8 +13,6 @@ This repository contains all development for the project's ontology/knowledge mo
 - [ Ontology Modules](#ontology-modules)
   - [Asset Module](#asset-module)
 
-    
-  
 ## Overview
 
 **AMISecOnto** is a modular cybersecurity ontology that transforms heterogeneous data, such as AMIS system logs and vulnerability intelligence (e.g., NVD), into a unified semantic knowledge graph for advanced security analysis.
@@ -53,6 +51,9 @@ This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `
 - **Subclasses of Asset:** `Application`, `System`, `Process`, `'Software Component'`, `IPAddress`, `Account`
 - **Object properties:** `Application` runsOn `System`; `'Software Component'` dependsOn itself (reflexive)
 - **Properties on Asset:** hasScope → `'ITSMO Scope'`, hasPriority → `'ITSMO Priority'`, hasCriticality → `'ITSMO Criticality'`
+
+In short: the Asset module defines Asset as the core entity, decomposed into concrete IT asset types (applications, systems, processes, software components, IP addresses, accounts), while attaching scope, priority, and criticality metadata for security and IT service management assessment.
+
 <p align="center">
   <img src="figures/asset-module.png" alt="Asset Relations" width="400"/>
 </p>
@@ -79,12 +80,42 @@ This diagram shows a sample excerpt of the **Log and Event module** of AMISecOnt
   - `hasPackage` → `'Software Component'`
 - **Log properties:** `storedOn` → `System`, `producedBy` → `Log`, `hasFirstLogEvent`/`hasCurrentLogEvent` (reflexive on `Log`)
 - **Other links:** `Logger` connects into the correlation/event cluster.
+
+In short: `LogEvent` acts as the central provenance-aware entity, linking logs, systems, indicators, IP addresses, vulnerabilities, risk assessments, users, outcomes, and software components to model how security-relevant events are generated, sequenced, correlated, and investigated.
+
 <p align="center">
   <img src="figures/log-event-module.png" alt="Log and Event Relations" width="800"/>
 </p>
 
 ---
 
+### Software Supply-Chain Module
+This diagram shows a sample excerpt of the **Software Component / SBOM module** of AMISecOnto, rooted in the top-level `'DOLCE Non-physical-object'` class, with `Asset`, `System`, `Project`, and `'Build Configuration'` all specializing it as subclasses.
+
+**Key elements:**
+
+- **Class hierarchy:**
+  - `'Software Component'` is a subclass of `'Package Library'`
+  - `System` is a subclass of `Asset`
+- **Object properties:**
+  - `'Class Source'` hasClass → `'Package Library'`
+  - `'Package Library'` containsPackage → `Module`
+  - `'Software Bills of Material'` isDescribedBySBOM → `'Software Component'`
+  - `'Software Component'` dependsOn itself (reflexive)
+  - `'Software Component'` hasPackage → `LogEvent`
+  - `LogEvent` registersLogEvent → `'Software Component'`
+  - `'Software Component'` installedOn → `System`
+  - `System` (via `'Package System'`) belongsToPackage → `Artifact`
+  - `Artifact` hasRootArtifact → `Project`; `Artifact` is reflexive
+  - `Indicator` hasIndicator → `'Package System'`
+  - `'Build Configuration'` configuredFor → `System`
+  - `Project` hasConfiguration → `'Build Configuration'`
+
+In short: this module models the **software supply chain**, linking software components, packages, SBOMs, artifacts, systems, and build configurations, and connecting them to log events and indicators for traceability and security monitoring.
+
+<p align="center">
+  <img src="figures/sbom-module.png" alt="Software Supply-Chain" width="800"/>
+</p>
 
 
 ## Competency Questions (CQs)
