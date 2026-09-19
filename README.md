@@ -387,6 +387,33 @@ ontology.
 | CQ12 | RiskAssessment, LogEvent, rose:Vulnerability, CVSSMetric, RiskLevel | usesEvidence, considers, hasCVSSMetric, hasBaseScore, hasBaseSeverity, producesRiskLevel | Derives overall (NIS2-aligned) risk posture from CVSS severity, log evidence, and observed behavior |
 
 
+## Interoperability Mapping
+
+## Interoperability Mapping with External Ontologies
+
+This appendix presents the explicit mapping between AMISecOnto concepts and corresponding entities from established external ontologies and standards, including ROSE-DL, SKOS, Dublin Core Terms, FOAF, CWE, CPE, and CVSS. The table focuses on upper-level entities that ensure semantic alignment across the log analysis, vulnerability assessment, and risk management workflow, and excludes domain-specific subclasses — such as individual log event types (e.g., SshLogEvent, SudoLogEvent) and specific package or component instances.
+
+Most concepts in this table are modeled as subclasses of classes from an external ontology. Concepts marked with * are reused directly from the external ontology, while those marked with † are defined as equivalent to an existing entity in an external ontology.
+
+This mapping demonstrates how AMISecOnto ensures semantic consistency, data exchangeability, and interoperability across academic institutional systems, cybersecurity threat intelligence sources, and NIS2-aligned risk assessment processes.
+
+
+| AMISecOnto Concept | External Ontology | External Term | Interoperability Purpose |
+|---|---|---|---|
+| `Vulnerability` | ROSE-DL *(imported)* | `rose:Vulnerability` | Native alignment reusing the Risk/Security Ontology Design Pattern for vulnerability semantics |
+| `SecurityMechanism` | ROSE-DL *(imported)* | `rose:SecurityMechanism` | Native alignment for countermeasures/controls that mitigate risk |
+| `Risk` | ROSE-DL *(imported)* | `rose:Risk` | Native alignment for risk-theoretic grounding of assessed risks |
+| `RiskLevel` | SKOS | `skos:hasRiskLevel`, `skos:Concept` | Standard representation of a controlled vocabulary of risk severity levels |
+| `RiskAssessment` metadata | Dublin Core Terms | `dct:created`, `dct:creator`, `dct:description` | Standard bibliographic/provenance metadata for the ontology and its artifacts |
+| `User` | FOAF | `foaf:Person`, `foaf:Agent` | Standard representation of human agents (users, analysts) for cross-ontology interoperability |
+| `Vendor` | FOAF | `foaf:Organization` | Standard representation of organizations (software vendors) |
+| `Weakness` | CWE (MITRE) | `cwe:Weakness` | Aligns root-cause software weaknesses with the industry-standard CWE taxonomy |
+| `CPE` | NIST CPE | `cpe:cpeName` | Aligns affected-platform identifiers with the standard Common Platform Enumeration scheme |
+| `CVSSMetric` | FIRST CVSS | `cvss:baseScore`, `cvss:baseSeverity` | Aligns severity scoring with the industry-standard CVSS specification |
+| `Vulnerability` (CVE) | MITRE CVE / NVD | `cve:CVE-Record` | Aligns vulnerability records with the canonical CVE identifier scheme used by NVD/MITRE |
+
+
+
 ---
 ## Ontology Modules
 
