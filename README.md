@@ -469,6 +469,26 @@ In short: `LogEvent` acts as the central provenance-aware entity, linking logs, 
 
 ### Vulnerability Module
 
+This diagram shows a sample excerpt of the **Vulnerability module** of AMISecOnto, centered on the class `Vulnerability`, which is a subclass of `Disposition` (itself a subclass of `gufo:IntrinsicMode`, tying the module into the gUFO foundational ontology). `'Control Capability'` and `'Threat Capability'` are also subclasses of `Disposition`.
+
+**Key elements:**
+
+- **Class hierarchy:**
+  - `Disposition` is a subclass of `gufo:IntrinsicMode`
+  - `Vulnerability` is a subclass of `Disposition`
+  - `'Control Capability'` and `'Threat Capability'` are subclasses of `Disposition`
+- **Object properties:**
+  - `Vulnerability` isObservedIn → `LogEvent`
+  - `Vulnerability` hasReference → `Reference`
+  - `'Security Mechanism'` mitigates → `Vulnerability`
+  - `Vulnerability` hasCVSSMetric → `'Common Vulnerability S...'` (CVSS)
+  - `Vulnerability` affectsCPE → `'Common Platform Enumeration'`
+  - `Vulnerability` relatedToProduct → `Product`
+  - `Product` hasProduct → `'Common Platform Enumeration'`
+  - `Vulnerability` hasWeakness → `Weakness`
+  - `Vulnerability` hasVulnerabilityType → `'Vulnerability Type'`
+
+**In short:** the Vulnerability module models `Vulnerability` as an intrinsic disposition of an asset, characterizing it through weaknesses, types, CVSS metrics, affected platforms/products, and references, while linking it to log-based observation and to security mechanisms that mitigate it.
 
 <p align="center">
   <img src="figures/vulnerability-module.png" alt="Vulnerability Relations" width="800"/>
@@ -523,9 +543,6 @@ In short: this module models the **software supply chain**, linking software com
 <p align="center">
   <img src="figures/sbom-module.png" alt="Software Supply-Chain" width="800"/>
 </p>
-
-
-
 
 ## Citation
 
