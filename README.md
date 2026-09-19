@@ -33,8 +33,6 @@ This repository contains all development for the project's ontology/knowledge mo
   - Evidence tracing  
 
 ## Competency Question (CQ) – Driven SPARQL Queries
-
-
 The ontology is designed to answer the following competency questions:
 
 ### Event Discovery and Filtering
@@ -66,13 +64,13 @@ The ontology is designed to answer the following competency questions:
 ## SPARQL Queries
 SPARQL queries in AMISSecOnto are designed to retrieve relevant cybersecurity information from the knowledge graph, supporting tasks such as event discovery, filtering, and analysis. This approach ensures that the ontology effectively addresses practical requirements, enabling the extraction of insights related to vulnerabilities, threats, assets, and security events in real-world scenarios.
 
+## Event Discovery and Filtering
 Consider for the following SPARQL queries the prefixes below.
 ```sparql
 PREFIX : <http://www.semanticweb.org/AMISecOnto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 ```
 
-## Event Discovery and Filtering
 ### CQ1 – Which events occurred within a specific time range and satisfy selected filters?
 ```sparql
 SELECT ?event ?timestamp ?logLevel ?hostname ?eventType
