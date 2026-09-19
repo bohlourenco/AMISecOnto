@@ -66,12 +66,15 @@ The ontology is designed to answer the following competency questions:
 ## SPARQL Queries
 SPARQL queries in AMISSecOnto are designed to retrieve relevant cybersecurity information from the knowledge graph, supporting tasks such as event discovery, filtering, and analysis. This approach ensures that the ontology effectively addresses practical requirements, enabling the extraction of insights related to vulnerabilities, threats, assets, and security events in real-world scenarios.
 
-## Event Discovery and Filtering
-### CQ1 – Which events occurred within a specific time range and satisfy selected filters?
+Consider for the following SPARQL queries the prefixes below.
 ```sparql
 PREFIX : <http://www.semanticweb.org/AMISecOnto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+```
 
+## Event Discovery and Filtering
+### CQ1 – Which events occurred within a specific time range and satisfy selected filters?
+```sparql
 SELECT ?event ?timestamp ?logLevel ?hostname ?eventType
 WHERE {
   ?event a :LogEvent ;
@@ -94,9 +97,6 @@ This query retrieves log events within a specific time range, optionally filtere
 
 ### CQ2 — Which events belong to a specific application, service, host, or component? 
 ```sparql
-PREFIX : <http://www.semanticweb.org/AMISecOnto#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
 SELECT ?event ?timestamp ?hostname ?application
 WHERE {
   ?event a :LogEvent ;
@@ -128,9 +128,6 @@ This query returns a time-ordered list of log events with key information extrac
 ### Event Lineage Tracing
 ## CQ3 — Which sequence of log events led to a specific error event?
 ```sparql
-PREFIX : <http://www.semanticweb.org/AMISecOnto#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
 SELECT ?precedingEvent ?timestamp ?eventType ?message
 WHERE {
   VALUES ?targetError { :ErrorEvent_123 }   # the specific error event
@@ -147,9 +144,6 @@ This query identifies error-related log events and reconstructs their temporal c
 
 ## CQ4 — Which events occurred before and after a given incident?
 ```sparql
-PREFIX : <http://www.semanticweb.org/AMISecOnto#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
 SELECT ?event ?timestamp ?relation
 WHERE {
   VALUES ?incident { :IncidentEvent_456 }
@@ -172,9 +166,6 @@ This query finds log events occurring within a time window around a specific inc
 ### Authentication and Access Tracing
 ## CQ5 - Which authentication attempts preceded access or privilege-escalation events?
 ```sparql
-PREFIX : <http://www.semanticweb.org/AMISecOnto#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
 SELECT ?authEvent ?authTime ?username ?privEvent ?privTime ?privType
 WHERE {
   ?authEvent a :AuthenticationLogEvent ;
@@ -198,9 +189,6 @@ This query correlates authentication events with subsequent access or privilege-
 
 ## CQ6 - Which authentication attempts preceded access or privilege-escalation events?
 ```sparql
-PREFIX : <http://www.semanticweb.org/AMISecOnto#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
 SELECT ?event ?timestamp ?eventClass ?sessionID ?username ?sessionStatus ?hostname
 WHERE {
   VALUES ?user { :User_alice }
@@ -228,9 +216,6 @@ This query collects every log event associated with a specific user, via their i
 ### Application, system, and security tracing 
 ## CQ07 - Which container lifecycle events are linked to application errors?
 ```sparql
-PREFIX : <http://www.semanticweb.org/AMISecOnto#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
 SELECT ?containerEvent ?containerTime ?membershipStatus ?errorEvent ?errorTime ?exceptionType
 WHERE {
   ?containerEvent a :ContainerLogEvent ;
@@ -252,9 +237,6 @@ This query links container lifecycle events to application errors, via explicit 
 
 ## CQ08 - Which database events correlate with application requests?
 ```sparql
-PREFIX : <http://www.semanticweb.org/AMISecOnto#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
 SELECT ?dbEvent ?dbTime ?exceptionType ?request ?requestURI ?correlatedEvent
 WHERE {
   ?dbEvent a :ApplicationLogEvent ;
@@ -275,11 +257,14 @@ This query identifies package installation or update events relevant to security
 
 
 ### Vulnerability analysis and exposure
-## CQ09 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
+Consider for the following SPARQL queries the prefixes below.
 ```sparql
 PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
 PREFIX rose: <http://rose.com#>
+```
 
+## CQ09 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
+```sparql
 SELECT ?component ?componentName ?system ?vulnerability ?cveId
 WHERE {
   {
@@ -309,9 +294,6 @@ This query identifies installed system packages or observed software components 
 
 ## CQ10 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
 ```sparql
-PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
-PREFIX rose: <http://rose.com#>
-
 SELECT ?vulnerability ?cveId ?product ?vendor ?versionMin ?versionMax ?packageVersion
 WHERE {
   ?vulnerability a rose:Vulnerability ;
@@ -325,6 +307,14 @@ WHERE {
 This query links known vulnerabilities (by CVE ID) to the affected products, their vendors, and the specific version ranges impacted.
 
 ### Risk assessment and incident reconstruction (NIS2-aligned)
+Consider for the following SPARQL queries the prefixes below.
+
+```sparql
+PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
+PREFIX rose: <http://rose.com#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+```
+
 ## CQ11 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
 ```sparql
 PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
@@ -352,10 +342,6 @@ Combines log events and identified vulnerabilities within a risk assessment to s
 
 ## CQ12 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
 ```sparql
-PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
-PREFIX rose: <http://rose.com#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-
 SELECT ?riskAssessment ?riskLevel ?logEvent ?eventTime ?logLevel
        ?vulnerability ?cveId ?baseScore ?baseSeverity
 WHERE {
