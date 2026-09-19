@@ -420,7 +420,7 @@ This mapping demonstrates how AMISecOnto ensures semantic consistency, data exch
 AMISecOnto is organized into interconnected modules:
 
 - **Asset**  
-- **Log & Event**  
+- **Log and Event**  
 - **Vulnerability**  
 - **Risk Analysis**
 - **Software Supply-Chain** 
@@ -470,6 +470,14 @@ In short: `LogEvent` acts as the central provenance-aware entity, linking logs, 
 </p>
 
 ---
+
+### Risk Analysis Module
+
+
+<p align="center">
+  <img src="figures/risk-assessment-module.png" alt="Risk Analysis Module" width="800"/>
+</p>
+
 
 ### Software Supply-Chain Module
 This diagram shows a sample excerpt of the **Software Component / SBOM module** of AMISecOnto, rooted in the top-level `'DOLCE Non-physical-object'` class, with `Asset`, `System`, `Project`, and `'Build Configuration'` all specializing it as subclasses.
