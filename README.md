@@ -472,10 +472,25 @@ In short: `LogEvent` acts as the central provenance-aware entity, linking logs, 
 ---
 
 ### Risk Analysis Module
+This diagram shows a sample excerpt of the **Risk Analysis module** of AMISecOnto, centered on the class `'Risk Assessment'`, which is a subclass of `gufo:Event` — tying the module into the gUFO foundational ontology. `'Risk Level'` is also a subclass of `gufo:Event`.
 
+**Key elements:**
+
+- **Class hierarchy:**
+  - `'Risk Assessment'` is a subclass of `gufo:Event`
+  - `'Risk Level'` is a subclass of `gufo:Event`
+- **Object properties:**
+  - `'Risk Assessment'` recommends → `'Security Mechanism'`
+  - `'Security Mechanism'` mitigates → `Vulnerability`
+  - `Vulnerability` isObservedIn → `LogEvent`
+  - `'Risk Assessment'` updatedBy → `LogEvent`
+  - `'Risk Assessment'` usesEvidence → `LogEvent`
+  - `'Risk Assessment'` producesRiskLevel → `'Risk Level'`
+
+**In short:** the Risk Analysis module models how `'Risk Assessment'` events use log evidence and observed vulnerabilities to recommend security mechanisms and produce risk levels, linking risk evaluation to concrete log-based evidence and mitigation actions.
 
 <p align="center">
-  <img src="figures/risk-assessment-module.png" alt="Risk Analysis Module" width="800"/>
+  <img src="figures/risk-analysis-module.png" alt="Risk Analysis Module" width="800"/>
 </p>
 
 
