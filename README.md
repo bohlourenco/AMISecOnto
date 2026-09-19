@@ -32,92 +32,6 @@ This repository contains all development for the project's ontology/knowledge mo
   - Incident reconstruction  
   - Evidence tracing  
 
----
-## Ontology Modules
-
-AMISecOnto is organized into interconnected modules:
-
-- **Asset**  
-- **Log & Event**  
-- **Vulnerability**  
-- **Risk Analysis**
-- **Software Supply-Chain** 
-
-### Asset Module
-This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `Asset` is a subclass of `'ITSMO Asset'`, linking it to the broader ITSMO. It does not represent the full ontology.
-
-**Key elements:**
-
-- **Subclasses of Asset:** `Application`, `System`, `Process`, `'Software Component'`, `IPAddress`, `Account`
-- **Object properties:** `Application` runsOn `System`; `'Software Component'` dependsOn itself (reflexive)
-- **Properties on Asset:** hasScope → `'ITSMO Scope'`, hasPriority → `'ITSMO Priority'`, hasCriticality → `'ITSMO Criticality'`
-
-In short: the Asset module defines Asset as the core entity, decomposed into concrete IT asset types (applications, systems, processes, software components, IP addresses, accounts), while attaching scope, priority, and criticality metadata for security and IT service management assessment.
-
-<p align="center">
-  <img src="figures/asset-module.png" alt="Asset Relations" width="400"/>
-</p>
-
----
-
-### Log and Event Module
-This diagram shows a sample excerpt of the **Log and Event module** of AMISecOnto, centered on the class `LogEvent`, which is a subclass of `Activity` (itself a subclass of `'PROV Activity'`, tying the module into the PROV-O provenance ontology).
-
-**Key elements:**
-
-- **Subclasses of LogEvent:** `'Security Log Event'`, `'System Log Event'`, `'Application Log Event'` — each with a reflexive `hasPreviousLogEvent` relation.
-- **Core object properties on LogEvent:**
-  - `hasFirstLogEvent`, `hasCurrentLogEvent`, `hasPreviousLogEvent`, `hasNextLogEvent` → sequencing relations with `Log` and other `LogEvent` instances
-  - `correlatedWith`, `hasPreviousCorrelatedEvent`, `hasNextCorrelatedEvent` → reflexive correlation relations between events
-  - `containsEvent` → `Log`
-  - `hasIndicator` → `Indicator`
-  - `registersLogEvent` → `System`
-  - `hasSourceIp` / `hasDestinationIp` → `IPAddress`
-  - `isObservedIn` → `Vulnerability`
-  - `usesEvidence` / `updatedBy` → `'Risk Assessment'`
-  - `hasUser` → `User`
-  - `hasOutcome` / `generates` → `Outcome`
-  - `hasPackage` → `'Software Component'`
-- **Log properties:** `storedOn` → `System`, `producedBy` → `Log`, `hasFirstLogEvent`/`hasCurrentLogEvent` (reflexive on `Log`)
-- **Other links:** `Logger` connects into the correlation/event cluster.
-
-In short: `LogEvent` acts as the central provenance-aware entity, linking logs, systems, indicators, IP addresses, vulnerabilities, risk assessments, users, outcomes, and software components to model how security-relevant events are generated, sequenced, correlated, and investigated.
-
-<p align="center">
-  <img src="figures/log-event-module.png" alt="Log and Event Relations" width="800"/>
-</p>
-
----
-
-### Software Supply-Chain Module
-This diagram shows a sample excerpt of the **Software Component / SBOM module** of AMISecOnto, rooted in the top-level `'DOLCE Non-physical-object'` class, with `Asset`, `System`, `Project`, and `'Build Configuration'` all specializing it as subclasses.
-
-**Key elements:**
-
-- **Class hierarchy:**
-  - `'Software Component'` is a subclass of `'Package Library'`
-  - `System` is a subclass of `Asset`
-- **Object properties:**
-  - `'Class Source'` hasClass → `'Package Library'`
-  - `'Package Library'` containsPackage → `Module`
-  - `'Software Bills of Material'` isDescribedBySBOM → `'Software Component'`
-  - `'Software Component'` dependsOn itself (reflexive)
-  - `'Software Component'` hasPackage → `LogEvent`
-  - `LogEvent` registersLogEvent → `'Software Component'`
-  - `'Software Component'` installedOn → `System`
-  - `System` (via `'Package System'`) belongsToPackage → `Artifact`
-  - `Artifact` hasRootArtifact → `Project`; `Artifact` is reflexive
-  - `Indicator` hasIndicator → `'Package System'`
-  - `'Build Configuration'` configuredFor → `System`
-  - `Project` hasConfiguration → `'Build Configuration'`
-
-In short: this module models the **software supply chain**, linking software components, packages, SBOMs, artifacts, systems, and build configurations, and connecting them to log events and indicators for traceability and security monitoring.
-
-<p align="center">
-  <img src="figures/sbom-module.png" alt="Software Supply-Chain" width="800"/>
-</p>
-
-
 ## Competency Questions (CQs)
 
 The ontology is designed to answer the following competency questions:
@@ -486,6 +400,95 @@ ontology.
 | CQ10 | rose:Vulnerability, Product, CPE, Vendor, VersionInterval, SystemPackage | relatedToProduct, affectsCPE, hasVendor, hasVersionInterval, hasVersionMinIncluding, hasVersionMaxIncluding, hasPackageVersion | Maps vulnerabilities to the specific packages, versions, or components they affect |
 | CQ11 | RiskAssessment, LogEvent, rose:Vulnerability, RiskLevel | usesEvidence, identifies, evidenceByLogEvent, producesRiskLevel / skos:hasRiskLevel | Combines log evidence and identified vulnerabilities to flag high-risk or compromise situations |
 | CQ12 | RiskAssessment, LogEvent, rose:Vulnerability, CVSSMetric, RiskLevel | usesEvidence, considers, hasCVSSMetric, hasBaseScore, hasBaseSeverity, producesRiskLevel | Derives overall (NIS2-aligned) risk posture from CVSS severity, log evidence, and observed behavior |
+
+
+---
+## Ontology Modules
+
+AMISecOnto is organized into interconnected modules:
+
+- **Asset**  
+- **Log & Event**  
+- **Vulnerability**  
+- **Risk Analysis**
+- **Software Supply-Chain** 
+
+### Asset Module
+This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `Asset` is a subclass of `'ITSMO Asset'`, linking it to the broader ITSMO. It does not represent the full ontology.
+
+**Key elements:**
+
+- **Subclasses of Asset:** `Application`, `System`, `Process`, `'Software Component'`, `IPAddress`, `Account`
+- **Object properties:** `Application` runsOn `System`; `'Software Component'` dependsOn itself (reflexive)
+- **Properties on Asset:** hasScope → `'ITSMO Scope'`, hasPriority → `'ITSMO Priority'`, hasCriticality → `'ITSMO Criticality'`
+
+In short: the Asset module defines Asset as the core entity, decomposed into concrete IT asset types (applications, systems, processes, software components, IP addresses, accounts), while attaching scope, priority, and criticality metadata for security and IT service management assessment.
+
+<p align="center">
+  <img src="figures/asset-module.png" alt="Asset Relations" width="400"/>
+</p>
+
+---
+
+### Log and Event Module
+This diagram shows a sample excerpt of the **Log and Event module** of AMISecOnto, centered on the class `LogEvent`, which is a subclass of `Activity` (itself a subclass of `'PROV Activity'`, tying the module into the PROV-O provenance ontology).
+
+**Key elements:**
+
+- **Subclasses of LogEvent:** `'Security Log Event'`, `'System Log Event'`, `'Application Log Event'` — each with a reflexive `hasPreviousLogEvent` relation.
+- **Core object properties on LogEvent:**
+  - `hasFirstLogEvent`, `hasCurrentLogEvent`, `hasPreviousLogEvent`, `hasNextLogEvent` → sequencing relations with `Log` and other `LogEvent` instances
+  - `correlatedWith`, `hasPreviousCorrelatedEvent`, `hasNextCorrelatedEvent` → reflexive correlation relations between events
+  - `containsEvent` → `Log`
+  - `hasIndicator` → `Indicator`
+  - `registersLogEvent` → `System`
+  - `hasSourceIp` / `hasDestinationIp` → `IPAddress`
+  - `isObservedIn` → `Vulnerability`
+  - `usesEvidence` / `updatedBy` → `'Risk Assessment'`
+  - `hasUser` → `User`
+  - `hasOutcome` / `generates` → `Outcome`
+  - `hasPackage` → `'Software Component'`
+- **Log properties:** `storedOn` → `System`, `producedBy` → `Log`, `hasFirstLogEvent`/`hasCurrentLogEvent` (reflexive on `Log`)
+- **Other links:** `Logger` connects into the correlation/event cluster.
+
+In short: `LogEvent` acts as the central provenance-aware entity, linking logs, systems, indicators, IP addresses, vulnerabilities, risk assessments, users, outcomes, and software components to model how security-relevant events are generated, sequenced, correlated, and investigated.
+
+<p align="center">
+  <img src="figures/log-event-module.png" alt="Log and Event Relations" width="800"/>
+</p>
+
+---
+
+### Software Supply-Chain Module
+This diagram shows a sample excerpt of the **Software Component / SBOM module** of AMISecOnto, rooted in the top-level `'DOLCE Non-physical-object'` class, with `Asset`, `System`, `Project`, and `'Build Configuration'` all specializing it as subclasses.
+
+**Key elements:**
+
+- **Class hierarchy:**
+  - `'Software Component'` is a subclass of `'Package Library'`
+  - `System` is a subclass of `Asset`
+- **Object properties:**
+  - `'Class Source'` hasClass → `'Package Library'`
+  - `'Package Library'` containsPackage → `Module`
+  - `'Software Bills of Material'` isDescribedBySBOM → `'Software Component'`
+  - `'Software Component'` dependsOn itself (reflexive)
+  - `'Software Component'` hasPackage → `LogEvent`
+  - `LogEvent` registersLogEvent → `'Software Component'`
+  - `'Software Component'` installedOn → `System`
+  - `System` (via `'Package System'`) belongsToPackage → `Artifact`
+  - `Artifact` hasRootArtifact → `Project`; `Artifact` is reflexive
+  - `Indicator` hasIndicator → `'Package System'`
+  - `'Build Configuration'` configuredFor → `System`
+  - `Project` hasConfiguration → `'Build Configuration'`
+
+In short: this module models the **software supply chain**, linking software components, packages, SBOMs, artifacts, systems, and build configurations, and connecting them to log events and indicators for traceability and security monitoring.
+
+<p align="center">
+  <img src="figures/sbom-module.png" alt="Software Supply-Chain" width="800"/>
+</p>
+
+
+
 
 ## Citation
 
