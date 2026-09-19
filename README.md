@@ -45,7 +45,7 @@ The ontology is designed to answer the following competency questions:
 
 ### Authentication and Access Tracing
 - **CQ5**: Which authentication attempts preceded access or privilege-escalation events?
-- **CQ66**: Which information is required to reconstruct a user session timeline?
+- **CQ6**: Which information is required to reconstruct a user session timeline?
 
 ### Application, System, and Security Tracing
 - **CQ7**: Which container lifecycle events are linked to application errors?
