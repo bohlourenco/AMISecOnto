@@ -515,7 +515,8 @@ This diagram shows a sample excerpt of the **Vulnerability module** of AMISecOnt
 </p>
 
 ---
-### Risk Analysis Module
+## Risk Analysis Module
+
 This diagram shows a sample excerpt of the **Risk Analysis module** of AMISecOnto, centered on the class `'Risk Assessment'`, which is a subclass of `gufo:Event` — tying the module into the gUFO foundational ontology. `'Risk Level'` is also a subclass of `gufo:Event`.
 
 **Key elements:**
@@ -537,7 +538,8 @@ This diagram shows a sample excerpt of the **Risk Analysis module** of AMISecOnt
   <img src="figures/risk-analysis-module.png" alt="Risk Analysis Module" width="800"/>
 </p>
 
-### Software Supply-Chain Module
+---
+## Software Supply-Chain Module
 
 This diagram shows a sample excerpt of the **Software Component / SBOM module** of AMISecOnto, rooted in the top-level `'DOLCE Non-physical-object'` class, with `Asset`, `System`, `Project`, and `'Build Configuration'` all specializing it as subclasses.
 
