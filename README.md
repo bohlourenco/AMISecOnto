@@ -10,8 +10,19 @@ This repository contains all development for the project's ontology/knowledge mo
 
 - [Overview](#overview)
 - [Key Features](#key-features)
-- [ Ontology Modules](#ontology-modules)
+- [Competency Question (CQ) – Driven SPARQL Queries] (#Competency Question (CQ) – Driven SPARQL Queries)
+- [Competency Question (CQ)] (#Competency Question (CQ))
   - [Asset Module](#asset-module)
+- [ Ontology Modules](#ontology-modules)
+  - [Event Discovery and Filtering](#Event Discovery and Filtering)
+  - [Event Lineage Tracing](#Event Lineage Tracing)
+  - [Authentication and Access Tracing] (#Authentication and Access Tracing)
+  - [Application, System, and Security Tracing] (#Application, System, and Security Tracing)
+  - [Vulnerability Analysis and Exposure] (#Vulnerability Analysis and Exposure)
+  - [Risk Assessment and Incident Reconstruction (NIS2-Aligned)] (#Risk Assessment and Incident Reconstruction (NIS2-Aligned))
+- [Competency Question Traceability Matrix] (#Competency Question Traceability Matrix)
+- [Interoperability Mapping with External Ontologies] (#Interoperability Mapping with External Ontologies)
+
 
 ## Overview
 
