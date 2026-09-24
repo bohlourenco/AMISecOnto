@@ -433,7 +433,6 @@ This mapping demonstrates how AMISecOnto ensures semantic consistency, data exch
 
 ---
 ## Ontology Modules
-
 AMISecOnto is organized into interconnected modules:
 
 - **Asset**  
@@ -444,6 +443,7 @@ AMISecOnto is organized into interconnected modules:
 
 ---
 ### Asset Module
+
 This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `Asset` is a subclass of `'ITSMO Asset'`, linking it to the broader ITSMO. It does not represent the full ontology.
 
 **Key elements:**
@@ -460,6 +460,7 @@ In short: the Asset module defines Asset as the core entity, decomposed into con
 
 ---
 ### Log and Event Module
+
 This diagram shows a sample excerpt of the **Log and Event module** of AMISecOnto, centered on the class `LogEvent`, which is a subclass of `Activity` (itself a subclass of `'PROV Activity'`, tying the module into the PROV-O provenance ontology).
 
 **Key elements:**
