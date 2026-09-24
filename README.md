@@ -442,7 +442,7 @@ AMISecOnto is organized into interconnected modules:
 - **Software Supply-Chain** 
 
 
-### Asset Module
+## Asset Module
 
 This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `Asset` is a subclass of `'ITSMO Asset'`, linking it to the broader ITSMO. It does not represent the full ontology.
 
@@ -459,7 +459,7 @@ In short: the Asset module defines Asset as the core entity, decomposed into con
 </p>
 
 
-### Log and Event Module
+## Log and Event Module
 
 This diagram shows a sample excerpt of the **Log and Event module** of AMISecOnto, centered on the class `LogEvent`, which is a subclass of `Activity` (itself a subclass of `'PROV Activity'`, tying the module into the PROV-O provenance ontology).
 
@@ -488,7 +488,7 @@ In short: `LogEvent` acts as the central provenance-aware entity, linking logs, 
 </p>
 
 
-### Vulnerability Module
+## Vulnerability Module
 
 This diagram shows a sample excerpt of the **Vulnerability module** of AMISecOnto, centered on the class `Vulnerability`, which is a subclass of `Disposition` (itself a subclass of `gufo:IntrinsicMode`, tying the module into the gUFO foundational ontology). `'Control Capability'` and `'Threat Capability'` are also subclasses of `Disposition`.
 
