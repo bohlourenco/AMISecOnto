@@ -542,7 +542,7 @@ This diagram shows a sample excerpt of the **Risk Analysis module** of AMISecOnt
 
 ## Software Supply-Chain Module
 
-This diagram shows a sample excerpt of the **Software Component / SBOM module** of AMISecOnto, rooted in the top-level `'DOLCE Non-physical-object'` class, with `Asset`, `System`, `Project`, and `'Build Configuration'` all specializing it as subclasses.
+This diagram shows a sample excerpt of the **Software Component / SBOM module** of AMISecOnto, rooted in the top-level `'DOLCE Non-physical-object'` class, with `'Asset'`, `'System'`, `'Project'`, and `'Build Configuration'` all specializing it as subclasses.
 
 **Key elements:**
 
