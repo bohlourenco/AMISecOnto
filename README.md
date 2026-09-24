@@ -21,6 +21,12 @@ This repository contains all development for the project's ontology/knowledge mo
   - [Risk Assessment and Incident Reconstruction (NIS2-Aligned)](#risk-assessment-and-incident-reconstruction-nis2-aligned)
 - [Competency Question Traceability Matrix](#competency-question-traceability-matrix)
 - [Interoperability Mapping with External Ontologies](#interoperability-mapping-with-external-ontologies)
+- [Ontology Modules](#ontology-modules)
+  - [Asset Module](#asset-module)
+  - [Log and Event Module](#log-and-event-module)
+  - [Vulnerability Module](#vulnerability-module)
+  - [Risk Analysis Module](#risk-analysis-module)
+  - [Software Supply-Chain Module](#software-supply-chain-module)
 
 
 ## Overview
@@ -436,6 +442,7 @@ AMISecOnto is organized into interconnected modules:
 - **Risk Analysis**
 - **Software Supply-Chain** 
 
+--
 ### Asset Module
 This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `Asset` is a subclass of `'ITSMO Asset'`, linking it to the broader ITSMO. It does not represent the full ontology.
 
