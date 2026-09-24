@@ -442,7 +442,7 @@ AMISecOnto is organized into interconnected modules:
 - **Risk Analysis**
 - **Software Supply-Chain** 
 
---
+---
 ### Asset Module
 This diagram shows a sample excerpt of the Asset module from AMISecOnto, where `Asset` is a subclass of `'ITSMO Asset'`, linking it to the broader ITSMO. It does not represent the full ontology.
 
@@ -458,6 +458,7 @@ In short: the Asset module defines Asset as the core entity, decomposed into con
   <img src="figures/asset-module.png" alt="Asset Relations" width="400"/>
 </p>
 
+---
 ### Log and Event Module
 This diagram shows a sample excerpt of the **Log and Event module** of AMISecOnto, centered on the class `LogEvent`, which is a subclass of `Activity` (itself a subclass of `'PROV Activity'`, tying the module into the PROV-O provenance ontology).
 
@@ -485,6 +486,7 @@ In short: `LogEvent` acts as the central provenance-aware entity, linking logs, 
   <img src="figures/log-event-module.png" alt="Log and Event Relations" width="800"/>
 </p>
 
+---
 ### Vulnerability Module
 
 This diagram shows a sample excerpt of the **Vulnerability module** of AMISecOnto, centered on the class `Vulnerability`, which is a subclass of `Disposition` (itself a subclass of `gufo:IntrinsicMode`, tying the module into the gUFO foundational ontology). `'Control Capability'` and `'Threat Capability'` are also subclasses of `Disposition`.
@@ -512,6 +514,7 @@ This diagram shows a sample excerpt of the **Vulnerability module** of AMISecOnt
   <img src="figures/vulnerability-module.png" alt="Vulnerability Relations" width="800"/>
 </p>
 
+---
 ### Risk Analysis Module
 This diagram shows a sample excerpt of the **Risk Analysis module** of AMISecOnto, centered on the class `'Risk Assessment'`, which is a subclass of `gufo:Event` — tying the module into the gUFO foundational ontology. `'Risk Level'` is also a subclass of `gufo:Event`.
 
@@ -534,6 +537,7 @@ This diagram shows a sample excerpt of the **Risk Analysis module** of AMISecOnt
   <img src="figures/risk-analysis-module.png" alt="Risk Analysis Module" width="800"/>
 </p>
 
+---
 ### Software Supply-Chain Module
 This diagram shows a sample excerpt of the **Software Component / SBOM module** of AMISecOnto, rooted in the top-level `'DOLCE Non-physical-object'` class, with `Asset`, `System`, `Project`, and `'Build Configuration'` all specializing it as subclasses.
 
