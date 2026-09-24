@@ -388,8 +388,7 @@ ontology.
 | CQ11 | RiskAssessment, LogEvent, rose:Vulnerability, RiskLevel | usesEvidence, identifies, evidenceByLogEvent, producesRiskLevel / skos:hasRiskLevel | Combines log evidence and identified vulnerabilities to flag high-risk or compromise situations |
 | CQ12 | RiskAssessment, LogEvent, rose:Vulnerability, CVSSMetric, RiskLevel | usesEvidence, considers, hasCVSSMetric, hasBaseScore, hasBaseSeverity, producesRiskLevel | Derives overall (NIS2-aligned) risk posture from CVSS severity, log evidence, and observed behavior |
 
-
-## Interoperability Mapping
+---
 
 ## Interoperability Mapping with External Ontologies
 
