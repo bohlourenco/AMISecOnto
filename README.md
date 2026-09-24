@@ -363,6 +363,8 @@ ORDER BY DESC(?baseScore) DESC(?eventTime)
 ```
 This query derives overall risk posture from log evidence, CVSS severity scores, and the risk level produced by the assessment.
 
+---
+
 ## Competency Question Traceability Matrix
 
 Establishes traceability between each competency question (CQ) and the
