@@ -48,6 +48,8 @@ This repository contains all development for the project's ontology/knowledge mo
   - Incident reconstruction  
   - Evidence tracing  
 
+---
+
 ## Competency Question (CQ) – Driven SPARQL Queries
 The ontology is designed to answer the following competency questions:
 
