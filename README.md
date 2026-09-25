@@ -419,9 +419,9 @@ This mapping demonstrates how AMISecOnto ensures semantic consistency, data exch
 
 | AMISecOnto Concept | External Ontology | External Term | Interoperability Purpose |
 |---|---|---|---|
-| `Vulnerability` | ROSE *(imported)* | `rose:Vulnerability` | Native alignment reusing the Risk/Security Ontology Design Pattern for vulnerability semantics |
-| `SecurityMechanism` | ROSE *(imported)* | `rose:SecurityMechanism` | Native alignment for countermeasures/controls that mitigate risk |
-| `Risk` | ROSE *(imported)* | `rose:Risk` | Native alignment for risk-theoretic grounding of assessed risks |
+| `Vulnerability` | ROSE | `rose:Vulnerability` | Native alignment reusing the Risk/Security Ontology Design Pattern for vulnerability semantics |
+| `SecurityMechanism` | ROSE | `rose:SecurityMechanism` | Native alignment for countermeasures/controls that mitigate risk |
+| `Risk` | ROSE | `rose:Risk` | Native alignment for risk-theoretic grounding of assessed risks |
 | `RiskLevel` | SKOS | `skos:hasRiskLevel`, `skos:Concept` | Standard representation of a controlled vocabulary of risk severity levels |
 | `RiskAssessment` metadata | Dublin Core Terms | `dct:created`, `dct:creator`, `dct:description` | Standard bibliographic/provenance metadata for the ontology and its artifacts |
 | `User` | FOAF | `foaf:Person`, `foaf:Agent` | Standard representation of human agents (users, analysts) for cross-ontology interoperability |
