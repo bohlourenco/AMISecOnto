@@ -422,10 +422,16 @@ This mapping demonstrates how AMISecOnto ensures semantic consistency, data exch
 | `Vulnerability` | ROSE | `rose:Vulnerability` | Native alignment reusing the Risk/Security Ontology Design Pattern for vulnerability semantics |
 | `SecurityMechanism` | ROSE | `rose:SecurityMechanism` | Native alignment for countermeasures/controls that mitigate risk |
 | `Risk` | ROSE | `rose:Risk` | Native alignment for risk-theoretic grounding of assessed risks |
-| `RiskLevel` | SKOS | `skos:hasRiskLevel`, `skos:Concept` | Standard representation of a controlled vocabulary of risk severity levels |
-| `RiskAssessment` metadata | Dublin Core Terms | `dct:created`, `dct:creator`, `dct:description` | Standard bibliographic/provenance metadata for the ontology and its artifacts |
+| `RiskLevel` | ROSE | `skos:hasRiskLevel`, `skos:Concept` | Standard representation of a controlled vocabulary of risk severity levels |
+
 | `User` | FOAF | `foaf:Person`, `foaf:Agent` | Standard representation of human agents (users, analysts) for cross-ontology interoperability |
 | `Vendor` | FOAF | `foaf:Organization` | Standard representation of organizations (software vendors) |
+
+
+| `RiskAssessment` metadata | Dublin Core Terms | `dct:created`, `dct:creator`, `dct:description` | Standard bibliographic/provenance metadata for the ontology and its artifacts |
+
+
+
 | `Weakness` | CWE (MITRE) | `cwe:Weakness` | Aligns root-cause software weaknesses with the industry-standard CWE taxonomy |
 | `CPE` | NIST CPE | `cpe:cpeName` | Aligns affected-platform identifiers with the standard Common Platform Enumeration scheme |
 | `CVSSMetric` | FIRST CVSS | `cvss:baseScore`, `cvss:baseSeverity` | Aligns severity scoring with the industry-standard CVSS specification |
