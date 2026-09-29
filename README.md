@@ -419,22 +419,26 @@ This mapping demonstrates how AMISecOnto ensures semantic consistency, data exch
 
 | AMISecOnto Concept | External Ontology | External Term | Interoperability Purpose |
 |---|---|---|---|
-| `Common Vulnerability Scoring System Metric` | DOLCE Abstract-region | - | Classifies CVSS metrics as abstract value regions for severity alignment |
-| `Buid Step` | DOLCE Event | - | Classifies build steps as events for traceable software supply-chain activities |
-| `Software Bills of Material` | DOLCE Non-physical-object | - | Classifies SBOMs as non-physical objects for component inventory interoperability |
-| `Log` | PROV Ativity | - | External reference to PROV Activity class for provenance tracking |
-| `LogEvent` | PROV Ativity | - | External reference to PROV Activity class for provenance tracking |
-| `Vulnerability` | ROSE | `rose:Vulnerability` | Native alignment reusing the Risk/Security Ontology Design Pattern for vulnerability semantics |
-| `SecurityMechanism` | ROSE | `rose:SecurityMechanism` | Native alignment for countermeasures/controls that mitigate risk |
-| `Risk` | ROSE | `rose:Risk` | Native alignment for risk-theoretic grounding of assessed risks |
-| `RiskLevel` | ROSE | `skos:hasRiskLevel`, `skos:Concept` | Standard representation of a controlled vocabulary of risk severity levels |
-| `User` | FOAF | `foaf:Person`, `foaf:Agent` | Standard representation of human agents (users, analysts) for cross-ontology interoperability |
-| `Vendor` | FOAF | `foaf:Organization` | Standard representation of organizations (software vendors) |
-| `RiskAssessment` metadata | Dublin Core Terms | `dct:created`, `dct:creator`, `dct:description` | Standard bibliographic/provenance metadata for the ontology and its artifacts |
-| `Weakness` | CWE (MITRE) | `cwe:Weakness` | Aligns root-cause software weaknesses with the industry-standard CWE taxonomy |
-| `CPE` | NIST CPE | `cpe:cpeName` | Aligns affected-platform identifiers with the standard Common Platform Enumeration scheme |
-| `CVSSMetric` | FIRST CVSS | `cvss:baseScore`, `cvss:baseSeverity` | Aligns severity scoring with the industry-standard CVSS specification |
-| `Vulnerability` (CVE) | MITRE CVE / NVD | `cve:CVE-Record` | Aligns vulnerability records with the canonical CVE identifier scheme used by NVD/MITRE |
+| `CVSSMetric` | DOLCE-Lite | `dolce:abstract-region` | Classifies CVSS metrics as abstract value regions for severity alignment |
+| `BuildStep` | DOLCE-Lite | `dolce:event` | Classifies build steps as events for traceable software supply-chain activities |
+| `SoftwareBillsOfMaterial` | DOLCE-Lite | `dolce:non-physical-object` | Classifies SBOMs as non-physical objects for component inventory interoperability |
+| `Weakness` | DOLCE-Lite | `dolce:non-physical-object` | Classifies root-cause weaknesses as non-physical objects, consistent with CWE semantics |
+| `Activity` | PROV-O | `prov:Activity` | Grounds time-bound processes in PROV-O for provenance tracking |
+| `Entity` | PROV-O | `prov:Entity` | Grounds supply-chain things (artifacts, packages, configurations) in PROV-O for traceability |
+| `Log` | PROV-O | `prov:Activity` (via `Activity`) | Tracks log generation provenance through the PROV Activity hierarchy |
+| `LogEvent` | PROV-O | `prov:Activity` (via `Activity`) | Traces individual recorded events through the PROV Activity hierarchy |
+| `RiskAssessment` | gUFO | `gufo:Event` | Grounds risk assessment as an event in the UFO foundational ontology |
+| `RiskLevel` | gUFO | `gufo:Event` | Grounds risk severity levels in UFO for consistent risk classification |
+| `Risk` | ROSE | `rose:Risk` | Direct reuse of ROSE for risk-theoretic grounding of assessed risks |
+| `Vulnerability` | ROSE | `rose:Vulnerability` | Direct reuse of the ROSE pattern for vulnerability semantics |
+| `SecurityMechanism` | ROSE | `rose:SecurityMechanism` | Direct reuse of ROSE for controls that mitigate vulnerabilities |
+| `Asset` | ITSMO | `itsmo:Asset` | Aligns assets with ITSMO, including criticality, priority, and scope |
+| `User` | FOAF / PROV-O | `foaf:Person`, `prov:Agent` | Standard representation of human agents for cross-ontology interoperability |
+| `Vendor` | PROV-O | `prov:Entity` (via `Entity`) | Represents product vendors as provenance-traceable entities |
+| Ontology metadata | Dublin Core Terms | `dct:created`, `dct:creator`, `dct:description` | Standard bibliographic and provenance metadata for the ontology |
+| `CPE` | NIST CPE (conceptual) | - | Mirrors CPE fields (vendor, product, version, target hardware) for platform matching |
+| `CVSSMetric` (properties) | FIRST CVSS (conceptual) | - | Mirrors CVSS base score, severity, and vector for NVD data ingestion |
+| `Vulnerability` (identifier) | MITRE CVE (conceptual) | - | Links vulnerabilities to canonical CVE identifiers via `hasCVEId` |
 
 
 
