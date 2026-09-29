@@ -410,7 +410,7 @@ ontology.
 
 ## Interoperability Mapping with External Ontologies
 
-This appendix presents some explicit mapping between AMISecOnto concepts and corresponding entities from established external ontologies and standards, including ROSE, ITSMO and FOAF. The table focuses on upper-level entities that ensure semantic alignment across the log analysis, vulnerability assessment, and risk management workflow, and excludes domain-specific subclasses — such as individual log event types (e.g., SshLogEvent, SudoLogEvent) and specific package or component instances.
+This appendix presents an excerpt of the explicit mappings between AMISecOnto concepts and corresponding entities in established external ontologies and standards, including DOLCE, ROSE, ITSMO, and FOAF. The table focuses on upper-level entities that ensure semantic alignment across the log analysis, vulnerability assessment, and risk management workflows. Domain-specific subclasses are excluded, such as individual log event types (e.g., SshLogEvent, SudoLogEvent) and specific package or component instances.
 
 Most concepts in this table are modeled as subclasses of classes from an external ontology. Concepts marked with * are reused directly from the external ontology, while those marked with † are defined as equivalent to an existing entity in an external ontology.
 
