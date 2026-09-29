@@ -435,7 +435,6 @@ This mapping demonstrates how AMISecOnto ensures semantic consistency, data exch
 | `Asset` | ITSMO | `itsmo:Asset` | Aligns assets with ITSMO, including criticality, priority, and scope |
 | `User` | FOAF / PROV-O | `foaf:Person`, `prov:Agent` | Standard representation of human agents for cross-ontology interoperability |
 | `Vendor` | PROV-O | `prov:Entity` (via `Entity`) | Represents product vendors as provenance-traceable entities |
-| Ontology metadata | Dublin Core Terms | `dct:created`, `dct:creator`, `dct:description` | Standard bibliographic and provenance metadata for the ontology |
 | `CPE` | NIST CPE (conceptual) | - | Mirrors CPE fields (vendor, product, version, target hardware) for platform matching |
 | `CVSSMetric` (properties) | FIRST CVSS (conceptual) | - | Mirrors CVSS base score, severity, and vector for NVD data ingestion |
 | `Vulnerability` (identifier) | MITRE CVE (conceptual) | - | Links vulnerabilities to canonical CVE identifiers via `hasCVEId` |
