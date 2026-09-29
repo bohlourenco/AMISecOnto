@@ -422,7 +422,7 @@ This mapping demonstrates how AMISecOnto ensures semantic consistency, data exch
 
 
 
-| `Log` | DOLCE Event | - | External reference to PROV Activity class for provenance tracking |
+| `` | DOLCE Abstract-region | - | External reference to PROV Activity class for provenance tracking |
 
 
 
