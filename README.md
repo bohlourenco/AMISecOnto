@@ -410,7 +410,7 @@ ontology.
 
 ## Interoperability Mapping with External Ontologies
 
-This appendix presents the explicit mapping between AMISecOnto concepts and corresponding entities from established external ontologies and standards, including ROSE, ITSMO and FOAF. The table focuses on upper-level entities that ensure semantic alignment across the log analysis, vulnerability assessment, and risk management workflow, and excludes domain-specific subclasses — such as individual log event types (e.g., SshLogEvent, SudoLogEvent) and specific package or component instances.
+This appendix presents some explicit mapping between AMISecOnto concepts and corresponding entities from established external ontologies and standards, including ROSE, ITSMO and FOAF. The table focuses on upper-level entities that ensure semantic alignment across the log analysis, vulnerability assessment, and risk management workflow, and excludes domain-specific subclasses — such as individual log event types (e.g., SshLogEvent, SudoLogEvent) and specific package or component instances.
 
 Most concepts in this table are modeled as subclasses of classes from an external ontology. Concepts marked with * are reused directly from the external ontology, while those marked with † are defined as equivalent to an existing entity in an external ontology.
 
@@ -419,14 +419,9 @@ This mapping demonstrates how AMISecOnto ensures semantic consistency, data exch
 
 | AMISecOnto Concept | External Ontology | External Term | Interoperability Purpose |
 |---|---|---|---|
-
-
-
-| `` | DOLCE Abstract-region | - | External reference to PROV Activity class for provenance tracking |
-
-
-
-
+| `Common Vulnerability Scoring System Metric` | DOLCE Abstract-region | - | Classifies CVSS metrics as abstract value regions for severity alignment |
+| `Buid Step` | DOLCE Event | - | Classifies build steps as events for traceable software supply-chain activities |
+| `Software Bills of Material` | DOLCE Non-physical-object | - | Classifies SBOMs as non-physical objects for component inventory interoperability |
 | `Log` | PROV Ativity | - | External reference to PROV Activity class for provenance tracking |
 | `LogEvent` | PROV Ativity | - | External reference to PROV Activity class for provenance tracking |
 
