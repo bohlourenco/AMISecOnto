@@ -333,10 +333,6 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 ## CQ11 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
 ```sparql
-PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
-PREFIX rose: <http://rose.com#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-
 SELECT ?riskAssessment ?logEvent ?eventTime ?vulnerability ?cveId ?riskLevel
 WHERE {
   ?riskAssessment a :RiskAssessment ;
