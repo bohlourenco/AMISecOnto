@@ -20,7 +20,7 @@ This repository contains all development for the project's ontology/knowledge mo
   - [Vulnerability Analysis and Exposure](#vulnerability-analysis-and-exposure)
   - [Risk Assessment and Incident Reconstruction (NIS2-Aligned)](#risk-assessment-and-incident-reconstruction-nis2-aligned)
 - [Competency Question Traceability Matrix](#competency-question-traceability-matrix)
-- [Alignment of AMISecOnto Classes with External Ontologies](#alignment-classes-with-external-ontologies)
+- [Alignment Classes with External Ontologies](#alignment-classes-with-external-ontologies)
 - [Interoperability Mapping with External Ontologies](#interoperability-mapping-with-external-ontologies)
 - [Ontology Modules](#ontology-modules)
   - [Asset Module](#asset-module)
