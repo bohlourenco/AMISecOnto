@@ -403,7 +403,23 @@ ontology.
 | CQ12 | RiskAssessment, LogEvent, rose:Vulnerability, CVSSMetric, RiskLevel | usesEvidence, considers, hasCVSSMetric, hasBaseScore, hasBaseSeverity, producesRiskLevel | Derives overall (NIS2-aligned) risk posture from CVSS severity, log evidence, and observed behavior |
 
 ---
+## Alignment of AMISecOnto Classes with External Ontologies
 
+| AMISecOnto class | Subclass of | Reference alignment | Rationale |
+|---|---|---|---|
+| `amisec:Asset` | `itsmo:Asset` | – | Resource of value to protect |
+| `amisec:Process` | `amisec:Asset` | `dolce:non-physical-object` | Running program instance; exists while executing |
+| `amisec:Account` | `amisec:Asset` | `dolce:non-physical-object` | Exists by system recognition; grants access |
+| `amisec:IPAddress` | `amisec:Asset` | `dolce:non-physical-object` | Network identifier assigned to a host |
+| `amisec:User` | – | `prov:Agent`, `foaf:Person` | Actor performing actions |
+| `amisec:Log` | – | `prov:Entity` | Record of events |
+| `amisec:LogEvent` | – | `prov:Activity` | Occurrence recorded in a log |
+| `rose:Vulnerability` | `rose:Disposition` | `gufo:IntrinsicMode` | Disposition of the component at risk |
+| `amisec:Severity` | – | `dolce:quality` | Quality of a vulnerability |
+| `amisec:CVSSMetric` | – | `dolce:abstract-region` | Value in the severity space |
+
+
+---
 ## Interoperability Mapping with External Ontologies
 
 This appendix presents an excerpt of the explicit mappings between AMISecOnto concepts and corresponding entities in established external ontologies and standards, including DOLCE, ROSE, ITSMO, and FOAF. The table focuses on upper-level entities that ensure semantic alignment across the log analysis, vulnerability assessment, and risk management workflows. Domain-specific subclasses are excluded, such as individual log event types (e.g., SshLogEvent, SudoLogEvent) and specific package or component instances.
