@@ -404,7 +404,7 @@ ontology.
 | CQ12 | RiskAssessment, LogEvent, rose:Vulnerability, CVSSMetric, RiskLevel | usesEvidence, considers, hasCVSSMetric, hasBaseScore, hasBaseSeverity, producesRiskLevel | Derives overall (NIS2-aligned) risk posture from CVSS severity, log evidence, and observed behavior |
 
 ---
-## Alignment of AMISecOnto Classes with External Ontologies
+## Alignment Classes with External Ontologies
 
 The table below shows how the main AMISecOnto classes are aligned with external ontologies to support interoperability and semantic grounding. Domain classes extend ITSMO for IT service management concepts, PROV-O and FOAF for agents and provenance, and the foundational ontologies DOLCE and gUFO for their ontological nature. The corresponding axioms are defined in [`AMISecOnto-alignments.ttl`](amiseconto/AMISecOnto-alignments.ttl).
 
