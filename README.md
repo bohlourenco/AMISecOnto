@@ -72,6 +72,39 @@ Each non-empty line of the Synthetic Log Dataser is one entry. A line is an **at
 
 On `ssh.log`, the 8,014 suspicious lines are `Failed password` lines, because the text contains "password". The 4,036 attacks are `Invalid user` lines. `catalina_20k.log` and `error_20k.log` contain the exploit strings (Log4Shell, Spring4Shell, path traversal, command injection, and SSRF). `sudo_20k.log`, `dpkg_20k.log`, and `fenix.dependencies.txt` contain no attack or suspicious lines.
 
+
+---
+
+# Triple statistics
+The AMISecOntov knowledge graph in Apache Jena holds **3,151,734 triples** in the default graph. There are **185,478** distinct subjects and **124** predicates.
+**2,685,459** of those triples (85.20%) belong to log events. The other **466,275** describe the logs themselves, hosts, users, packages, the Maven tree, and the 33 vulnerabilities.
+| Log | Events | Event triples | Suspicious events | Vulnerability links |
+|---|---:|---:|---:|---:|
+| access_20k.log | 20,000 | 439,296 | 1,506 | 0 |
+| ssh.log | 20,000 | 384,099 | 12,050 | 0 |
+| sudo_20k.log | 20,000 | 379,999 | 0 | 0 |
+| su_20k.log | 20,000 | 324,772 | 1,012 | 0 |
+| catalina_20k.log | 20,000 | 322,908 | 2,927 | 80 |
+| error_20k.log | 20,000 | 345,503 | 2,438 | 0 |
+| audit_20k.log | 31,690 | 474,563 | 3,626 | 0 |
+| dpkg_20k.log | 1,067 | 14,319 | 0 | 0 |
+| **Total** | **152,757** | **2,685,459** | **23,559** | **80** |
+`SuspiciousEvent` is any event the graph marks with a threat indicator. That includes attacks. Only `catalina_20k.log` has `relatedToVulnerability` links, and there are 80 of them. The graph contains **33** `Vulnerability` individuals, **33** CVSS metrics, **9** CPE entries, and **229** references.
+The largest predicates are:
+| Predicate | Triples |
+|---|---:|
+| rdf:type | 596,564 |
+| containsEvent | 152,757 |
+| hasHost | 152,757 |
+| hasRawMessage | 152,757 |
+| registersLogEvent | 152,757 |
+| hasNextLogEvent | 152,749 |
+| hasEventTimestamp | 150,022 |
+| hasOutcome | 135,709 |
+| hasEventType | 129,274 |
+| hasProcessName | 118,857 |
+Outside the logs, the graph also has **7,706** Maven artifacts, **135** system packages, **4,137** IP addresses, **37** users, **23** hosts, **1** system, and **1** operating system.
+
 ---
 
 ## Competency Question (CQ) – Driven SPARQL Queries
