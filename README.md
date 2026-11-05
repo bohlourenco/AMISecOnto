@@ -10,6 +10,7 @@ This repository contains all development for the project's ontology/knowledge mo
 
 - [Overview](#overview)
 - [Key Features](#key-features)
+- [Test Log Dataset](#test-log-dataset)
 - [Competency Question (CQ) – Driven SPARQL Queries](#competency-question-cq--driven-sparql-queries)
 - [Competency Question (CQ)](#competency-question-cq)
 - [SPARQL Queries](#sparql-queries)
