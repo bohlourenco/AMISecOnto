@@ -51,6 +51,28 @@ This repository contains all development for the project's ontology/knowledge mo
 
 ---
 
+# Test Log Dataset
+
+Each non-empty line in `test_dataset_AMISecOnto` is one entry. A line is an **attack** when it matches a named attack: Log4Shell, Spring4Shell, path traversal, command injection, SSRF, prototype pollution, credential attack, privilege escalation, or a CVE identifier. It is **suspicious** when the only signal is a sensitive read (`password`, `/etc/shadow`, or an audit key such as `sensitive_read`). Otherwise it is **normal**. A line that matches both an attack and a sensitive read is counted as an attack.
+
+| Log | Entries | Normal | Attack | Suspicious |
+|---|---:|---:|---:|---:|
+| access_20k.log | 20,000 | 18,494 (92.47%) | 1,370 (6.85%) | 136 (0.68%) |
+| ssh.log | 20,000 | 7,950 (39.75%) | 4,036 (20.18%) | 8,014 (40.07%) |
+| sudo_20k.log | 20,000 | 20,000 (100%) | 0 | 0 |
+| su_20k.log | 20,000 | 18,988 (94.94%) | 523 (2.62%) | 489 (2.44%) |
+| catalina_20k.log | 20,000 | 17,073 (85.36%) | 2,927 (14.63%) | 0 |
+| error_20k.log | 20,000 | 17,562 (87.81%) | 2,438 (12.19%) | 0 |
+| audit_20k.log | 31,690 | 28,064 (88.56%) | 1,999 (6.31%) | 1,627 (5.13%) |
+| dpkg_20k.log | 1,067 | 1,067 (100%) | 0 | 0 |
+| fenix.dependencies.txt | 20,001 | 20,001 (100%) | 0 | 0 |
+
+`audit_20k.log` contains 31,690 lines, and `fenix.dependencies.txt` contains 20,001 lines. Every other `20k` log contains 20,000 lines. None of the files contain blank lines.
+
+On `ssh.log`, the 8,014 suspicious lines are `Failed password` lines, because the text contains "password". The 4,036 attacks are `Invalid user` lines. `catalina_20k.log` and `error_20k.log` contain the exploit strings (Log4Shell, Spring4Shell, path traversal, command injection, and SSRF). `sudo_20k.log`, `dpkg_20k.log`, and `fenix.dependencies.txt` contain no attack or suspicious lines.
+
+---
+
 ## Competency Question (CQ) – Driven SPARQL Queries
 The ontology is designed to answer the following competency questions:
 
