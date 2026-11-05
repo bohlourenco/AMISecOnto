@@ -53,7 +53,7 @@ This repository contains all development for the project's ontology/knowledge mo
 
 # Test Log Dataset
 
-Each non-empty line in `test_dataset_AMISecOnto` is one entry. A line is an **attack** when it matches a named attack: Log4Shell, Spring4Shell, path traversal, command injection, SSRF, prototype pollution, credential attack, privilege escalation, or a CVE identifier. It is **suspicious** when the only signal is a sensitive read (`password`, `/etc/shadow`, or an audit key such as `sensitive_read`). Otherwise it is **normal**. A line that matches both an attack and a sensitive read is counted as an attack.
+Each non-empty line of the Synthetic Log Dataser is one entry. A line is an **attack** when it matches a named attack: Log4Shell, Spring4Shell, path traversal, command injection, SSRF, prototype pollution, credential attack, privilege escalation, or a CVE identifier. It is **suspicious** when the only signal is a sensitive read (`password`, `/etc/shadow`, or an audit key such as `sensitive_read`). Otherwise it is **normal**. A line that matches both an attack and a sensitive read is counted as an attack.
 
 | Log | Entries | Normal | Attack | Suspicious |
 |---|---:|---:|---:|---:|
