@@ -89,7 +89,9 @@ The AMISecOntov knowledge graph in Apache Jena holds **3,151,734 triples** in th
 | audit_20k.log | 31,690 | 474,563 | 3,626 | 0 |
 | dpkg_20k.log | 1,067 | 14,319 | 0 | 0 |
 | **Total** | **152,757** | **2,685,459** | **23,559** | **80** |
+
 `SuspiciousEvent` is any event the graph marks with a threat indicator. That includes attacks. Only `catalina_20k.log` has `relatedToVulnerability` links, and there are 80 of them. The graph contains **33** `Vulnerability` individuals, **33** CVSS metrics, **9** CPE entries, and **229** references.
+
 The largest predicates are:
 | Predicate | Triples |
 |---|---:|
