@@ -105,6 +105,7 @@ The largest predicates are:
 | hasOutcome | 135,709 |
 | hasEventType | 129,274 |
 | hasProcessName | 118,857 |
+
 Outside the logs, the graph also has **7,706** Maven artifacts, **135** system packages, **4,137** IP addresses, **37** users, **23** hosts, **1** system, and **1** operating system.
 
 ---
