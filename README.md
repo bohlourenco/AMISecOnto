@@ -145,7 +145,7 @@ SPARQL queries in AMISSecOnto are designed to retrieve relevant cybersecurity in
 ## Event Discovery and Filtering
 Consider for the following SPARQL queries the prefixes below.
 ```sparql
-PREFIX : <http://www.semanticweb.org/AMISecOnto#>
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 ```
 
