@@ -335,7 +335,7 @@ This query identifies package installation or update events relevant to security
 ### Vulnerability analysis and exposure
 Consider for the following SPARQL queries the prefixes below.
 ```sparql
-PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 PREFIX rose: <http://rose.com#>
 ```
 
