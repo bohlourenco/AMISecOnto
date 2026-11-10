@@ -172,29 +172,25 @@ This query retrieves log events within a specific time range, optionally filtere
 
 ### CQ2 — Which events belong to a specific application, service, host, or component? 
 ```sparql
-SELECT ?event ?timestamp ?hostname ?application
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX app: <https://bohlourenco.github.io/AMISecOnto/data/application/>
+PREFIX pkg: <https://bohlourenco.github.io/AMISecOnto/data/package/dpkg/>
+
+SELECT ?event ?timestamp ?hostname ?application ?component
 WHERE {
   ?event a :LogEvent ;
-         :hasEventTimestamp ?timestamp .
+         :hasEventTimestamp ?timestamp ;
+         :hasHost ?host .
+  ?host :hasHostname ?hostname .
 
-  OPTIONAL { ?event :hasHostname ?hostname }
+  ?system :registersLogEvent ?event .
+  ?application :runsOn ?system .
 
-  # Path via System → Application (registersLogEvent / runsOn)
-  OPTIONAL {
-    ?system :registersLogEvent ?event .
-    ?application :runsOn ?system .
-  }
+  OPTIONAL { ?event :hasPackage ?component }
 
-  # Path via ApplicationLogEvent → Environment (executedInEnvironment)
-  OPTIONAL {
-    ?event a :ApplicationLogEvent ;
-           :executedInEnvironment ?environment .
-  }
-
-  FILTER (
-    (BOUND(?hostname)    && ?hostname    = "app-server-01") ||
-    (BOUND(?application) && ?application = :MyApplication)
-  )
+  FILTER (?hostname = "webapp01")
+  # FILTER (?application = app:fenix-webapp)
+  # FILTER (?component = pkg:man-db/2.9.4-2)
 }
 ORDER BY ?timestamp
 ```
