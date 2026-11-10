@@ -199,15 +199,20 @@ This query returns a time-ordered list of log events with key information extrac
 ## Event Lineage Tracing
 ## CQ3 — Which sequence of log events led to a specific error event?
 ```sparql
-SELECT ?precedingEvent ?timestamp ?eventType ?message
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX ev: <https://bohlourenco.github.io/AMISecOnto/data/event/error_20k/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?event ?timestamp ?level ?message
+
 WHERE {
-  VALUES ?targetError { :ErrorEvent_123 }   # the specific error event
-
-  ?targetError :hasPreviousLogEvent* ?precedingEvent .
-
-  ?precedingEvent :hasEventTimestamp ?timestamp .
-  OPTIONAL { ?precedingEvent :hasEventType ?eventType }
-  OPTIONAL { ?precedingEvent :hasTextMessage ?message }
+  VALUES ?targetError { ev:4 }
+  ?targetError :hasEventTimestamp ?errorTime .
+  ?event :hasNextLogEvent* ?targetError ;
+         :hasEventTimestamp ?timestamp .
+  FILTER (?timestamp >= ?errorTime - "PT10M"^^xsd:dayTimeDuration)
+  OPTIONAL { ?event :hasLogLevel ?level }
+  OPTIONAL { ?event :hasTextMessage ?message }
 }
 ORDER BY ?timestamp
 ```
