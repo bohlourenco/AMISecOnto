@@ -242,45 +242,43 @@ This query finds log events occurring within a time window around a specific inc
 ## CQ5 - Which authentication attempts preceded access or privilege-escalation events?
 ```sparql
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-SELECT ?authEvent ?authTime ?username ?hostname ?privEvent ?privTime ?privType ?command
+SELECT ?authTime ?username ?hostname ?privTime ?privType ?command
 WHERE {
+  ?log :hasFileName "cq5-monitor.log" ;
+       :containsEvent ?authEvent ;
+       :containsEvent ?privEvent .
+
   ?authEvent a :SshLogEvent ;
              :hasEventTimestamp ?authTime ;
-             :hasUserName ?username ;
+             :hasUser ?user ;
              :hasHost ?host .
+  ?user :hasUsername ?username .
   ?host :hasHostname ?hostname .
+
+  ?privEvent :hasEventTimestamp ?privTime ;
+             :hasUser ?user ;
+             :hasHost ?host .
+  FILTER (?authEvent != ?privEvent)
 
   {
     ?privEvent a :SudoLogEvent ;
-              :hasEventTimestamp ?privTime ;
-              :hasUserName ?username ;
-              :hasHost ?host ;
               :hasCommand ?command .
     BIND(:SudoLogEvent AS ?privType)
   }
   UNION
   {
-    ?privEvent a :SuLogEvent ;
-              :hasEventTimestamp ?privTime ;
-              :hasUserName ?username ;
-              :hasHost ?host .
-    BIND(:SuLogEvent AS ?privType)
-  }
-  UNION
-  {
-    ?privEvent a :AccessLogEvent ;
-              :hasEventTimestamp ?privTime ;
-              :hasAuthenticatedUser ?username ;
-              :hasHost ?host .
+    ?privEvent a :AccessLogEvent .
     BIND(:AccessLogEvent AS ?privType)
   }
 
-  FILTER (?authTime < ?privTime)
+  FILTER (?authTime < ?privTime &&
+          ?privTime <= ?authTime + "PT1H"^^xsd:dayTimeDuration)
 }
-ORDER BY ?hostname ?username ?privTime ?authTime
+ORDER BY ?authTime ?privTime
 ```
-This query correlates authentication events with subsequent access or privilege-escalation activities by identifying prior successful or relevant authentication attempts and linking them to sudo-related log events, reconstructing the command execution context across sequential log entries.
+This query lists SSH attempts that fall within one hour before a sudo or access event for the same user and host. The username comes from :hasUsername. The command is filled only for sudo.
 
 ## CQ6 - Which authentication attempts preceded access or privilege-escalation events?
 ```sparql
