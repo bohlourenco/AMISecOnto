@@ -196,7 +196,7 @@ ORDER BY ?timestamp
 ```
 This query returns a time-ordered list of log events with key information extracted for each event.
 
-### Event Lineage Tracing
+## Event Lineage Tracing
 ## CQ3 — Which sequence of log events led to a specific error event?
 ```sparql
 SELECT ?precedingEvent ?timestamp ?eventType ?message
@@ -234,7 +234,7 @@ ORDER BY ?timestamp
 ```
 This query finds log events occurring within a time window around a specific incident, labeling each as occurring before or after it to support incident reconstruction.
 
-### Authentication and Access Tracing
+## Authentication and Access Tracing
 ## CQ5 - Which authentication attempts preceded access or privilege-escalation events?
 ```sparql
 SELECT ?authEvent ?authTime ?username ?privEvent ?privTime ?privType
@@ -284,7 +284,7 @@ WHERE {
 ```
 This query collects every log event associated with a specific user, via their identity, session ID, or username, along with session status and host context, to reconstruct a chronological timeline of that user's session activity.
 
-### Application, system, and security tracing 
+## Application, system, and security tracing 
 ## CQ07 - Which container lifecycle events are linked to application errors?
 ```sparql
 SELECT ?containerEvent ?containerTime ?membershipStatus ?errorEvent ?errorTime ?exceptionType
@@ -327,7 +327,7 @@ ORDER BY ?dbTime
 This query identifies package installation or update events relevant to security analysis by linking them to associated vulnerabilities (e.g., CVEs) through multiple relationship paths, enabling the detection of potentially affected components and their versions.
 
 
-### Vulnerability analysis and exposure
+## Vulnerability analysis and exposure
 Consider for the following SPARQL queries the prefixes below.
 ```sparql
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
@@ -377,7 +377,7 @@ WHERE {
 ```
 This query links known vulnerabilities (by CVE ID) to the affected products, their vendors, and the specific version ranges impacted.
 
-### Risk assessment and incident reconstruction (NIS2-aligned)
+## Risk assessment and incident reconstruction (NIS2-aligned)
 Consider for the following SPARQL queries the prefixes below.
 
 ```sparql
