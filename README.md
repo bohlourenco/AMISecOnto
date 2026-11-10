@@ -223,6 +223,7 @@ This query identifies error-related log events and reconstructs their temporal c
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 PREFIX ev: <https://bohlourenco.github.io/AMISecOnto/data/event/error_20k/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
 SELECT ?event ?timestamp ?relation
 WHERE {
   VALUES ?incident { ev:4 }
@@ -280,7 +281,7 @@ ORDER BY ?authTime ?privTime
 ```
 This query lists SSH attempts that fall within one hour before a sudo or access event for the same user and host. The username comes from :hasUsername. The command is filled only for sudo.
 
-## CQ6 - Which authentication attempts preceded access or privilege-escalation events?
+## CQ6 -  Which events form the timeline of a given user?
 ```sparql
 SELECT ?event ?timestamp ?eventClass ?sessionID ?username ?sessionStatus ?hostname
 WHERE {
@@ -304,49 +305,53 @@ WHERE {
   FILTER (?eventClass != :LogEvent)   # keep the most specific type
 }
 ```
-This query collects every log event associated with a specific user, via their identity, session ID, or username, along with session status and host context, to reconstruct a chronological timeline of that user's session activity.
+This query lists the SSH, sudo, su, and access events of one user in time order. The username comes from :hasUsername, and the hostname comes from the host. Session status is included when the event has one.
 
 ## Application, system, and security tracing 
-## CQ07 - Which container lifecycle events are linked to application errors?
+## CQ07 -  Which container lifecycle are application errors?
 ```sparql
-SELECT ?containerEvent ?containerTime ?membershipStatus ?errorEvent ?errorTime ?exceptionType
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+
+SELECT ?containerTime ?logLevel ?message ?hostname
 WHERE {
+  ?log :hasFileName "catalina_20k.log" ;
+       :containsEvent ?containerEvent .
   ?containerEvent a :ContainerLogEvent ;
-                   :hasEventTimestamp ?containerTime .
-  OPTIONAL { ?containerEvent :hasMembershipStatus ?membershipStatus }
-
-  ?errorEvent a :ErrorLogEvent ;
-              :hasEventTimestamp ?errorTime .
-  OPTIONAL { ?errorEvent :hasExceptionType ?exceptionType }
-
-  # Linked via explicit correlation or the shared next/previous chain
-  { ?containerEvent :correlatedWith ?errorEvent }
-  UNION
-  { ?containerEvent :hasNextLogEvent+ ?errorEvent }
+                  :hasEventTimestamp ?containerTime ;
+                  :hasLogLevel ?logLevel ;
+                  :hasTextMessage ?message ;
+                  :hasHost ?host .
+  ?host :hasHostname ?hostname .
+  FILTER (?logLevel = "ERROR")
+  FILTER (REGEX(?message, "stop connector|failed to stop it", "i"))
 }
 ORDER BY ?containerTime
 ```
-This query links container lifecycle events to application errors, via explicit correlation or a shared event sequence chain.
+This query lists container events whose message reports a start or stop failure and whose level is ERROR. The hostname comes from the host.
 
 ## CQ08 - Which database events correlate with application requests?
 ```sparql
-SELECT ?dbEvent ?dbTime ?exceptionType ?request ?requestURI ?correlatedEvent
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+
+SELECT ?dbTime ?requestURI ?httpStatus ?userAgent ?hostname
 WHERE {
-  ?dbEvent a :ApplicationLogEvent ;
-           :hasEventTimestamp ?dbTime ;
-           :belongsToRequest ?request .
-
-  OPTIONAL { ?dbEvent :hasExceptionType ?exceptionType
-             FILTER (CONTAINS(LCASE(?exceptionType), "sql")) }
-
+  ?event a :AccessLogEvent ;
+         :hasEventTimestamp ?dbTime ;
+         :belongsToRequest ?request ;
+         :hasRequestURI ?requestURI ;
+         :hasHost ?host .
   ?request a :Request .
-  OPTIONAL { ?request :hasRequestURI ?requestURI }   # via AccessLogEvent side if present
+  ?host :hasHostname ?hostname .
 
-  OPTIONAL { ?dbEvent :correlatedWith ?correlatedEvent }
+  OPTIONAL { ?event :has_user_agent ?userAgent }
+  OPTIONAL { ?event :hasHttpStatusCode ?httpStatus }
+
+  FILTER (REGEX(STR(?requestURI), "sql|[$]ne|[$]regex|'--", "i")
+       || (BOUND(?userAgent) && REGEX(?userAgent, "sqlmap|NoSQLMap", "i")))
 }
 ORDER BY ?dbTime
 ```
-This query identifies package installation or update events relevant to security analysis by linking them to associated vulnerabilities (e.g., CVEs) through multiple relationship paths, enabling the detection of potentially affected components and their versions.
+This query lists access events whose URI or user agent shows a SQL or NoSQL pattern, each linked to its request through :belongsToRequest. The hostname comes from the host.
 
 
 ## Vulnerability analysis and exposure
