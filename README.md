@@ -220,20 +220,19 @@ This query identifies error-related log events and reconstructs their temporal c
 
 ## CQ4 — Which events occurred before and after a given incident?
 ```sparql
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX ev: <https://bohlourenco.github.io/AMISecOnto/data/event/error_20k/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT ?event ?timestamp ?relation
 WHERE {
-  VALUES ?incident { :IncidentEvent_456 }
+  VALUES ?incident { ev:4 }
   ?incident :hasEventTimestamp ?incidentTime .
-
   ?event a :LogEvent ;
          :hasEventTimestamp ?timestamp .
   FILTER (?event != ?incident)
-
   BIND (IF(?timestamp < ?incidentTime, "before", "after") AS ?relation)
-
-  # keep to a reasonable window, e.g. +/- 1 hour
-  FILTER (?timestamp >= (?incidentTime - "PT1H"^^xsd:duration) &&
-          ?timestamp <= (?incidentTime + "PT1H"^^xsd:duration))
+  FILTER (?timestamp >= (?incidentTime - "PT1H"^^xsd:dayTimeDuration) &&
+          ?timestamp <= (?incidentTime + "PT1H"^^xsd:dayTimeDuration))
 }
 ORDER BY ?timestamp
 ```
