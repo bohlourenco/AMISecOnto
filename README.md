@@ -241,24 +241,44 @@ This query finds log events occurring within a time window around a specific inc
 ## Authentication and Access Tracing
 ## CQ5 - Which authentication attempts preceded access or privilege-escalation events?
 ```sparql
-SELECT ?authEvent ?authTime ?username ?privEvent ?privTime ?privType
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+
+SELECT ?authEvent ?authTime ?username ?hostname ?privEvent ?privTime ?privType ?command
 WHERE {
-  ?authEvent a :AuthenticationLogEvent ;
-             :hasEventTimestamp ?authTime .
-  OPTIONAL { ?authEvent :hasUserName ?username }
-  OPTIONAL { ?authEvent :hasHostname ?authHost }
+  ?authEvent a :SshLogEvent ;
+             :hasEventTimestamp ?authTime ;
+             :hasUserName ?username ;
+             :hasHost ?host .
+  ?host :hasHostname ?hostname .
 
-  # Access event (AccessLogEvent) OR privilege escalation (SudoLogEvent / SuLogEvent)
-  ?privEvent a ?privType ;
-             :hasEventTimestamp ?privTime .
-  FILTER (?privType IN (:AccessLogEvent, :SudoLogEvent, :SuLogEvent))
-
-  OPTIONAL { ?privEvent :hasHostname ?privHost }
+  {
+    ?privEvent a :SudoLogEvent ;
+              :hasEventTimestamp ?privTime ;
+              :hasUserName ?username ;
+              :hasHost ?host ;
+              :hasCommand ?command .
+    BIND(:SudoLogEvent AS ?privType)
+  }
+  UNION
+  {
+    ?privEvent a :SuLogEvent ;
+              :hasEventTimestamp ?privTime ;
+              :hasUserName ?username ;
+              :hasHost ?host .
+    BIND(:SuLogEvent AS ?privType)
+  }
+  UNION
+  {
+    ?privEvent a :AccessLogEvent ;
+              :hasEventTimestamp ?privTime ;
+              :hasAuthenticatedUser ?username ;
+              :hasHost ?host .
+    BIND(:AccessLogEvent AS ?privType)
+  }
 
   FILTER (?authTime < ?privTime)
-  FILTER (!BOUND(?authHost) || !BOUND(?privHost) || ?authHost = ?privHost)
 }
-ORDER BY ?privTime ?authTime
+ORDER BY ?hostname ?username ?privTime ?authTime
 ```
 This query correlates authentication events with subsequent access or privilege-escalation activities by identifying prior successful or relevant authentication attempts and linking them to sudo-related log events, reconstructing the command execution context across sequential log entries.
 
