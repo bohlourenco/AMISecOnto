@@ -192,6 +192,7 @@ WHERE {
   # FILTER (?component = pkg:man-db/2.9.4-2)
 }
 ORDER BY ?timestamp
+
 ```
 This query returns a time-ordered list of log events with key information extracted for each event.
 
