@@ -151,23 +151,22 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 ### CQ1 – Which events occurred within a specific time range and satisfy selected filters?
 ```sparql
-SELECT ?event ?timestamp ?logLevel ?hostname ?eventType
+SELECT ?event ?timestamp ?hostname ?eventType ?logLevel
 WHERE {
   ?event a :LogEvent ;
-         :hasEventTimestamp ?timestamp .
+         :hasEventTimestamp ?timestamp ;
+         :hasHost ?host .
+  ?host :hasHostname ?hostname .
 
   OPTIONAL { ?event :hasLogLevel  ?logLevel }
-  OPTIONAL { ?event :hasHostname  ?hostname }
   OPTIONAL { ?event :hasEventType ?eventType }
 
   FILTER (?timestamp >= "2026-01-01T00:00:00"^^xsd:dateTime &&
           ?timestamp <  "2026-02-01T00:00:00"^^xsd:dateTime)
-
-  # Optional/selected filters — comment out or adjust as needed
-  FILTER (!BOUND(?logLevel)  || ?logLevel  = "ERROR")
-  FILTER (!BOUND(?hostname)  || ?hostname  = "app-server-01")
+  FILTER (?hostname = "webapp01")
 }
 ORDER BY ?timestamp
+
 ```
 This query retrieves log events within a specific time range, optionally filtered by log level, hostname, or event type.
 
