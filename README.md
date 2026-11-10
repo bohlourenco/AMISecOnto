@@ -143,14 +143,13 @@ The ontology is designed to answer the following competency questions:
 SPARQL queries in AMISSecOnto are designed to retrieve relevant cybersecurity information from the knowledge graph, supporting tasks such as event discovery, filtering, and analysis. This approach ensures that the ontology effectively addresses practical requirements, enabling the extraction of insights related to vulnerabilities, threats, assets, and security events in real-world scenarios.
 
 ## Event Discovery and Filtering
-Consider for the following SPARQL queries the prefixes below.
-```sparql
-PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-```
+Consider for the following SPARQL queries:
 
 ### CQ1 – Which events occurred within a specific time range and satisfy selected filters?
 ```sparql
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
 SELECT ?event ?timestamp ?hostname ?eventType ?logLevel
 WHERE {
   ?event a :LogEvent ;
