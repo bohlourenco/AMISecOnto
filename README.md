@@ -410,7 +410,7 @@ ORDER BY ?cveId
 This query links each known vulnerability, by CVE ID, to the software component associated with it, including the installed system package, the system it is installed on, and the label that gives the component name and version.
 
 ## Risk assessment and incident reconstruction (NIS2-aligned)
-## CQ11 - Which combinations of log events and CVEs indicate a High or Critical risk?
+## CQ11 -  Which combinations of log events and CVEs indicate a High or Critical risk?
 ```sparql
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
