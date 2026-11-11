@@ -123,10 +123,10 @@ The ontology is designed to answer the following competency questions:
 
 ### Authentication and Access Tracing
 - **CQ5**: Which authentication attempts preceded access or privilege-escalation events?
-- **CQ6**: Which information is required to reconstruct a user session timeline?
+- **CQ6**: Which events form the timeline of a given user?
 
 ### Application, System, and Security Tracing
-- **CQ7**: Which container lifecycle events are linked to application errors?
+- **CQ7**: Which container lifecycle are application errors?
 - **CQ8**: Which database events correlate with application requests?
 
 ### Vulnerability Analysis and Exposure
@@ -135,7 +135,8 @@ The ontology is designed to answer the following competency questions:
 
 ### Risk Assessment and Incident Reconstruction (NIS2-aligned)
 - **CQ11**: Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
-- **CQ12**: How can risk exposure be derived from log evidence, vulnerability severity (e.g., CVSS), and observed behavior?
+- **CQ12**: Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
+
 
 ---
 
@@ -409,7 +410,7 @@ ORDER BY ?cveId
 This query links each known vulnerability, by CVE ID, to the software component associated with it, including the installed system package, the system it is installed on, and the label that gives the component name and version.
 
 ## Risk assessment and incident reconstruction (NIS2-aligned)
-## CQ11 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
+## CQ11 - Which combinations of log events and CVEs indicate a High or Critical risk?
 ```sparql
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
