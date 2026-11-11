@@ -244,43 +244,42 @@ This query finds log events occurring within a time window around a specific inc
 ## CQ5 - Which authentication attempts preceded access or privilege-escalation events?
 ```sparql
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-SELECT ?authTime ?username ?hostname ?privTime ?privType ?command
+SELECT ?host ?account ?sshTime ?sudoTime
 WHERE {
-  ?log :hasFileName "cq5-monitor.log" ;
-       :containsEvent ?authEvent ;
-       :containsEvent ?privEvent .
 
-  ?authEvent a :SshLogEvent ;
-             :hasEventTimestamp ?authTime ;
-             :hasUser ?user ;
-             :hasHost ?host .
-  ?user :hasUsername ?username .
-  ?host :hasHostname ?hostname .
-
-  ?privEvent :hasEventTimestamp ?privTime ;
-             :hasUser ?user ;
-             :hasHost ?host .
-  FILTER (?authEvent != ?privEvent)
-
+  # Earliest failed SSH attempt for each host and user.
   {
-    ?privEvent a :SudoLogEvent ;
-              :hasCommand ?command .
-    BIND(:SudoLogEvent AS ?privType)
-  }
-  UNION
-  {
-    ?privEvent a :AccessLogEvent .
-    BIND(:AccessLogEvent AS ?privType)
+    SELECT ?hostNode ?user (MIN(?t) AS ?sshTime)
+    WHERE {
+      ?ssh a :SshLogEvent ;
+           :hasHost ?hostNode ;
+           :hasUser ?user ;
+           :hasEventTimestamp ?t ;
+           :hasOutcome ?failed .
+      ?failed a :Failed .
+    }
+    GROUP BY ?hostNode ?user
   }
 
-  FILTER (?authTime < ?privTime &&
-          ?privTime <= ?authTime + "PT1H"^^xsd:dayTimeDuration)
+  # Successful sudo by that same user on that same host.
+  ?sudo a :SudoLogEvent ;
+        :hasHost ?hostNode ;
+        :hasUser ?user ;
+        :hasEventTimestamp ?sudoTime ;
+        :hasOutcome ?ok .
+  ?ok a :Successful .
+
+  # Keep a sudo event only when it is later than that SSH attempt.
+  FILTER (?sudoTime > ?sshTime)
+
+  # Hostname from the host. Account name from :hasUsername on the user.
+  ?hostNode :hasHostname ?host .
+  ?user :hasUsername ?account .
 }
-ORDER BY ?authTime ?privTime
+ORDER BY ?host ?account ?sudoTime
 ```
-This query lists SSH attempts that fall within one hour before a sudo or access event for the same user and host. The username comes from :hasUsername. The command is filled only for sudo.
+This query lists SSH events that fall within one hour before a sudo or access event for the same user and host. The username comes from :hasUsername. The command is filled only for sudo.
 
 ## CQ6 -  Which events form the timeline of a given user?
 ```sparql
