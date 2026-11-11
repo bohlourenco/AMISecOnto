@@ -355,109 +355,105 @@ This query lists access events whose URI or user agent shows a SQL or NoSQL patt
 
 
 ## Vulnerability analysis and exposure
-Consider for the following SPARQL queries the prefixes below.
-```sparql
-PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
-PREFIX rose: <http://rose.com#>
-```
-
 ## CQ09 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
 ```sparql
-SELECT ?component ?componentName ?system ?vulnerability ?cveId
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?component ?componentName ?system ?vulnerability ?cveId
 WHERE {
   {
-    # Installed system packages
     ?component a :SystemPackage ;
                :installedOn ?system .
-    OPTIONAL { ?component :hasPackageName ?componentName }
   }
   UNION
   {
-    # Software components declared/observed in an application
     ?component a :SoftwareComponent .
-    OPTIONAL { ?component :hasVersion ?componentName }
+    FILTER NOT EXISTS { ?component a :SystemPackage }
   }
-
-  { ?component :relatedToVulnerability ?vulnerability }
-  UNION
-  { ?component :exposes ?vulnerability }
-  UNION
-  { ?component :hasVulnerability ?vulnerability }
-
+  ?component (:exposes|:hasVulnerability|:relatedToVulnerability) ?vulnerability .
   ?vulnerability :hasCVEId ?cveId .
+  OPTIONAL { ?component rdfs:label ?componentName }
 }
-ORDER BY ?cveId
+ORDER BY ?cveId ?componentName
 ```
 This query identifies installed system packages or observed software components and links each one to the known CVEs it is affected by, exposed to, or declared to have.
 
-## CQ10 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
+## CQ10 - Which vulnerabilities are associated with specific packages, versions, or system components?
 ```sparql
-SELECT ?vulnerability ?cveId ?product ?vendor ?versionMin ?versionMax ?packageVersion
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX rose: <http://rose.com#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?vulnerability ?cveId ?package ?component ?componentName ?system
 WHERE {
   ?vulnerability a rose:Vulnerability ;
                  :hasCVEId ?cveId .
 
+  ?component a :SoftwareComponent ;
+             :exposes ?vulnerability .
+  OPTIONAL { ?component rdfs:label ?componentName }
+  OPTIONAL { ?component :installedOn ?system }
   OPTIONAL {
-    ?vulnerability :relatedToProduct ?product .
+    ?component a :SystemPackage .
+    BIND(?component AS ?package)
   }
 }
+ORDER BY ?cveId
 ```
-This query links known vulnerabilities (by CVE ID) to the affected products, their vendors, and the specific version ranges impacted.
+This query links each known vulnerability, by CVE ID, to the software component associated with it, including the installed system package, the system it is installed on, and the label that gives the component name and version.
 
 ## Risk assessment and incident reconstruction (NIS2-aligned)
-Consider for the following SPARQL queries the prefixes below.
-
-```sparql
-PREFIX :     <http://www.semanticweb.org/AMISecOnto#>
-PREFIX rose: <http://rose.com#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-```
-
 ## CQ11 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
 ```sparql
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
 SELECT ?riskAssessment ?logEvent ?eventTime ?vulnerability ?cveId ?riskLevel
 WHERE {
   ?riskAssessment a :RiskAssessment ;
                   :usesEvidence ?logEvent ;
-                  :identifies   ?vulnerability .
-
-  OPTIONAL { ?riskAssessment skos:hasRiskLevel ?riskLevel }
-  OPTIONAL { ?riskAssessment :producesRiskLevel ?riskLevel }
+                  :identifies ?vulnerability ;
+                  :producesRiskLevel ?riskLevel .
 
   ?logEvent :hasEventTimestamp ?eventTime .
   ?vulnerability :hasCVEId ?cveId .
 
-  # Alternative direct-evidence path: a log event that is itself evidence of the vulnerability
-  OPTIONAL { ?logEvent :evidenceByLogEvent ?vulnerability }
+  ?riskLevel rdfs:label ?levelName .
+  FILTER(?levelName IN ("High", "Critical"))
 }
 ORDER BY DESC(?eventTime)
 ```
-Combines log events and identified vulnerabilities within a risk assessment to surface potential high-risk or compromise situations.
+This query combines log events and identified vulnerabilities within a risk assessment to surface potential high-risk or compromise situations.
 
 ## CQ12 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
 ```sparql
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
 SELECT ?riskAssessment ?riskLevel ?logEvent ?eventTime ?logLevel
        ?vulnerability ?cveId ?baseScore ?baseSeverity
 WHERE {
   ?riskAssessment a :RiskAssessment ;
                   :usesEvidence ?logEvent ;
-                  :considers    ?vulnerability .
-
-  OPTIONAL { ?riskAssessment :producesRiskLevel ?riskLevel }
+                  :identifies ?vulnerability ;
+                  :producesRiskLevel ?riskLevel .
 
   ?logEvent :hasEventTimestamp ?eventTime .
   OPTIONAL { ?logEvent :hasLogLevel ?logLevel }
 
-  ?vulnerability :hasCVEId ?cveId .
-  OPTIONAL {
-    ?vulnerability :hasCVSSMetric ?cvss .
-    ?cvss :hasBaseScore    ?baseScore .
-    ?cvss :hasBaseSeverity ?baseSeverity .
-  }
+  ?vulnerability :hasCVEId ?cveId ;
+                 :hasCVSSMetric ?cvss .
+  ?cvss rdfs:seeAlso ?severity .
+  ?severity :hasBaseScore ?baseScore ;
+            :hasBaseSeverity ?baseSeverity .
+
+  ?riskLevel rdfs:label ?levelName .
+  FILTER(?levelName IN ("High", "Critical"))
 }
 ORDER BY DESC(?baseScore) DESC(?eventTime)
 ```
-This query derives overall risk posture from log evidence, CVSS severity scores, and the risk level produced by the assessment.
+This query uses log evidence, CVSS severity scores, and the assessment risk level to surface High and Critical situations.
 
 ---
 
