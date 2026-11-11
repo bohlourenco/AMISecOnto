@@ -134,7 +134,7 @@ The ontology is designed to answer the following competency questions:
 - **CQ10**: Which vulnerabilities are associated with specific packages, versions, or system components?
 
 ### Risk Assessment and Incident Reconstruction (NIS2-aligned)
-- **CQ11**: Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
+- **CQ11**: Which combinations of log events and CVEs indicate a High or Critical risk?
 - **CQ12**: Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
 
 
