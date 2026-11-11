@@ -436,29 +436,26 @@ This query combines log events and identified vulnerabilities within a risk asse
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?riskAssessment ?riskLevel ?logEvent ?eventTime ?logLevel
+SELECT ?riskAssessment ?riskLevel ?logEvent ?eventTime ?behavior ?logLevel
        ?vulnerability ?cveId ?baseScore ?baseSeverity
 WHERE {
   ?riskAssessment a :RiskAssessment ;
                   :usesEvidence ?logEvent ;
                   :identifies ?vulnerability ;
                   :producesRiskLevel ?riskLevel .
-
-  ?logEvent :hasEventTimestamp ?eventTime .
+  ?logEvent :hasEventTimestamp ?eventTime ;
+            :hasIndicator ?indicator .
+  ?indicator rdfs:label ?behavior .
   OPTIONAL { ?logEvent :hasLogLevel ?logLevel }
-
   ?vulnerability :hasCVEId ?cveId ;
                  :hasCVSSMetric ?cvss .
   ?cvss rdfs:seeAlso ?severity .
   ?severity :hasBaseScore ?baseScore ;
             :hasBaseSeverity ?baseSeverity .
-
-  ?riskLevel rdfs:label ?levelName .
-  FILTER(?levelName IN ("High", "Critical"))
 }
 ORDER BY DESC(?baseScore) DESC(?eventTime)
 ```
-This query uses log evidence, CVSS severity scores, and the assessment risk level to surface High and Critical situations.
+This query derives risk exposure from log evidence, CVSS severity, and the behavior observed on that event.
 
 ---
 
