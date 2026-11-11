@@ -283,6 +283,9 @@ This query lists SSH attempts that fall within one hour before a sudo or access 
 
 ## CQ6 -  Which events form the timeline of a given user?
 ```sparql
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
 SELECT ?event ?timestamp ?eventClass ?sessionID ?username ?sessionStatus ?hostname
 WHERE {
   VALUES ?user { :User_alice }
@@ -310,6 +313,8 @@ This query lists the SSH, sudo, su, and access events of one user in time order.
 ## Application, system, and security tracing 
 ## CQ07 -  Which container lifecycle are application errors?
 ```sparql
+PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 
 SELECT ?containerTime ?logLevel ?message ?hostname
