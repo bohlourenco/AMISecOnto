@@ -324,7 +324,6 @@ Execution returned 234481 results in 11.45 seconds.
 ```sparql
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 
 SELECT ?containerTime ?logLevel ?message ?hostname
 WHERE {
