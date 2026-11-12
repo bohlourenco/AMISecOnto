@@ -169,6 +169,7 @@ ORDER BY ?timestamp
 
 ```
 This query retrieves log events within a specific time range, optionally filtered by log level, hostname, or event type.
+Execution returned 2491 results in 0.915 seconds.
 
 ### CQ2 — Which events belong to a specific application, service, host, or component? 
 ```sparql
@@ -195,7 +196,8 @@ WHERE {
 ORDER BY ?timestamp
 
 ```
-This query returns a time-ordered list of log events with key information extracted for each event.
+The query retrieves all log events in chronological order, together with their key attributes. 
+Execution returned 5367 results in 0.279 seconds.
 
 ## Event Lineage Tracing
 ## CQ3 — Which sequence of log events led to a specific error event?
@@ -218,6 +220,7 @@ WHERE {
 ORDER BY ?timestamp
 ```
 This query identifies error-related log events and reconstructs their temporal context by retrieving preceding and succeeding events, along with timestamps and raw messages, enabling the analysis of event sequences leading to failures.
+Execution returned 4 results in 0.046 seconds.
 
 ## CQ4 — Which events occurred before and after a given incident?
 ```sparql
@@ -237,8 +240,10 @@ WHERE {
           ?timestamp <= (?incidentTime + "PT1H"^^xsd:dayTimeDuration))
 }
 ORDER BY ?timestamp
+
 ```
 This query finds log events occurring within a time window around a specific incident, labeling each as occurring before or after it to support incident reconstruction.
+Execution returned 3956 results in 1.35 seconds.
 
 ## Authentication and Access Tracing
 ## CQ5 - Which authentication attempts preceded access or privilege-escalation events?
@@ -280,6 +285,7 @@ WHERE {
 ORDER BY ?host ?account ?sudoTime
 ```
 This query lists SSH events that fall within one hour before a sudo or access event for the same user and host. The username comes from :hasUsername. The command is filled only for sudo.
+Execution returned 1720 results in 1.028 seconds.
 
 ## CQ6 -  Which events form the timeline of a given user?
 ```sparql
@@ -307,8 +313,11 @@ WHERE {
 
   FILTER (?eventClass != :LogEvent)   # keep the most specific type
 }
+
 ```
 This query lists the SSH, sudo, su, and access events of one user in time order. The username comes from :hasUsername, and the hostname comes from the host. Session status is included when the event has one.
+Execution returned 234481 results in 11.45 seconds.
+
 
 ## Application, system, and security tracing 
 ## CQ07 -  Which container lifecycle are application errors?
@@ -333,6 +342,7 @@ WHERE {
 ORDER BY ?containerTime
 ```
 This query lists container events whose message reports a start or stop failure and whose level is ERROR. The hostname comes from the host.
+Execution returned 1199 results in 0.288 seconds.
 
 ## CQ08 - Which database events correlate with application requests?
 ```sparql
@@ -355,9 +365,10 @@ WHERE {
        || (BOUND(?userAgent) && REGEX(?userAgent, "sqlmap|NoSQLMap", "i")))
 }
 ORDER BY ?dbTime
+
 ```
 This query lists access events whose URI or user agent shows a SQL or NoSQL pattern, each linked to its request through :belongsToRequest. The hostname comes from the host.
-
+Execution returned 334 results in 0.536 seconds.
 
 ## Vulnerability analysis and exposure
 ## CQ09 - Which installed or observed software components are affected by known vulnerabilities (CVEs)?
@@ -383,6 +394,7 @@ WHERE {
 ORDER BY ?cveId ?componentName
 ```
 This query identifies installed system packages or observed software components and links each one to the known CVEs it is affected by, exposed to, or declared to have.
+Execution returned 31 results in 0.643 seconds.
 
 ## CQ10 - Which vulnerabilities are associated with specific packages, versions, or system components?
 ```sparql
@@ -405,8 +417,10 @@ WHERE {
   }
 }
 ORDER BY ?cveId
+
 ```
 This query links each known vulnerability, by CVE ID, to the software component associated with it, including the installed system package, the system it is installed on, and the label that gives the component name and version.
+Execution returned 31 results in 0.026 seconds.
 
 ## Risk assessment and incident reconstruction (NIS2-aligned)
 ## CQ11 -  Which combinations of log events and CVEs indicate a High or Critical risk?
@@ -430,6 +444,7 @@ WHERE {
 ORDER BY DESC(?eventTime)
 ```
 This query combines log events and identified vulnerabilities within a risk assessment to surface potential high-risk or compromise situations.
+Execution returned 19 results in 0.037 seconds.
 
 ## CQ12 - Which combinations of log events and vulnerabilities indicate high-risk situations or potential compromise?
 ```sparql
@@ -456,6 +471,7 @@ WHERE {
 ORDER BY DESC(?baseScore) DESC(?eventTime)
 ```
 This query derives risk exposure from log evidence, CVSS severity, and the behavior observed on that event.
+Execution returned 64 results in 0.046 seconds.
 
 ---
 
