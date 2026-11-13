@@ -10,8 +10,8 @@
 
 <https://bohlourenco.github.io/AMISecOnto> rdf:type owl:Ontology ;
                                             owl:versionIRI <https://bohlourenco.github.io/AMISecOnto/1.1> ;
-                                            owl:imports <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/main/amiseconto/AMISecOnto-alignments.ttl> ,
-                                                        <https://raw.githubusercontent.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/ROSE-DL.ttl> ;
+                                            owl:imports <https://github.com/bohlourenco/AMISecOnto/main/amiseconto/AMISecOnto-alignments.ttl> ,
+                                                        <https://github.com/bohlourenco/AMISecOnto/refs/heads/main/amiseconto/ROSE-DL.ttl> ;
                                             dct:bibliographicCitation "Lourenço, B., Vaz, C., Francisco, A.P., Adão, P., Gonçalves, A., Marques, M.M., Ferreira, J.F. (2026). AMISecOnto: Academic Management Information Systems Security Ontology. Version 1.0." ;
                                             dct:created "2025-10-01"^^xsd:date ;
                                             dct:creator [ rdf:type <http://xmlns.com/foaf/0.1/Person> ;
