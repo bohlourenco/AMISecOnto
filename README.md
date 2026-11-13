@@ -343,7 +343,7 @@ ORDER BY ?containerTime
 This query lists container events whose message reports a start or stop failure and whose level is ERROR. The hostname comes from the host.
 Execution returned 1199 results in 0.288 seconds.
 
-## CQ08 - Which database events correlate with application requests?
+## CQ08 - Which application requests show signs of SQL or NoSQL injection attempts?
 ```sparql
 PREFIX : <https://bohlourenco.github.io/AMISecOnto#>
 
