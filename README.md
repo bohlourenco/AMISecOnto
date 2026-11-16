@@ -127,7 +127,7 @@ The ontology is designed to answer the following competency questions:
 
 ### Application, System, and Security Tracing
 - **CQ7**: Which container lifecycle are application errors?
-- **CQ8**: Which database events correlate with application requests?
+- **CQ8**: Which application requests show signs of SQL or NoSQL injection attempts?
 
 ### Vulnerability Analysis and Exposure
 - **CQ9**: Which installed or observed software components are affected by known vulnerabilities (CVEs)?
